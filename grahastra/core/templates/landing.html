@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ml">
+<head>
+    <meta charset="UTF-8">
+    <title>Grahastra – നിങ്ങളുടെ ജ്യോതിഷ കൂട്ടുകാരൻ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1 class="display-5">🌠 Grahastra</h1>
+        <p class="lead">നിങ്ങളുടെ ചോദ്യങ്ങൾക്ക് ജ്യോതിഷ അധിഷ്ഠിത ഐ.ആർ. സഹായം</p>
+    </div>
+
+    <div class="card p-4 shadow-sm">
+        <h4 class="mb-3">നിങ്ങളുടെ വിവരങ്ങൾ നൽകൂ</h4>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">അയയ്ക്കുക</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
