@@ -34,3 +34,15 @@ def get_planet_positions(date_str, time_str, lat, lon):
 
     return positions
 
+
+def get_nakshatra(moon_longitude):
+    nakshatras = [
+        'Ashwini', 'Bharani', 'Krittika', 'Rohini', 'Mrigashirsha', 'Ardra', 'Punarvasu',
+        'Pushya', 'Ashlesha', 'Magha', 'Purva Phalguni', 'Uttara Phalguni',
+        'Hasta', 'Chitra', 'Swati', 'Vishakha', 'Anuradha', 'Jyeshtha',
+        'Mula', 'Purva Ashadha', 'Uttara Ashadha', 'Shravana', 'Dhanishta',
+        'Shatabhisha', 'Purva Bhadrapada', 'Uttara Bhadrapada', 'Revati'
+    ]
+    
+    index = int(moon_longitude // (360 / 27))
+    return nakshatras[index]
