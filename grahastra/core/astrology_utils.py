@@ -46,3 +46,20 @@ def get_nakshatra(moon_longitude):
     
     index = int(moon_longitude // (360 / 27))
     return nakshatras[index]
+
+
+
+def get_birth_chart_data(positions, nakshatra, lagna=None):
+    return {
+        "Sun": positions["Sun"],
+        "Moon": positions["Moon"],
+        "Mars": positions["Mars"],
+        "Mercury": positions["Mercury"],
+        "Jupiter": positions["Jupiter"],
+        "Venus": positions["Venus"],
+        "Saturn": positions["Saturn"],
+        "Rahu": positions["Rahu"],
+        "Ketu": positions["Ketu"],
+        "Nakshatra": nakshatra,
+        "Lagna": lagna  # You can add this later
+    }

@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from core.astrology_utils import get_planet_positions, get_nakshatra
 
+from core.nlp_utils import detect_intent_and_generate_answer
+from core.astrology_utils import get_birth_chart_data
+
 def landing_page(request):
     answer = None
 
@@ -24,22 +27,12 @@ def landing_page(request):
                 moon_deg = positions['Moon']
                 nakshatra = get_nakshatra(moon_deg)
 
-                if "marriage" in question.lower():
-                    answer = f"Based on Venus and Moon, marriage could be after age 27."
-                else:
-                    answer = f"Nakshatra: {nakshatra}. Full answers coming soon."
+                chart_data = get_birth_chart_data(positions, nakshatra)
+                answer = detect_intent_and_generate_answer(question, chart_data)
 
             except Exception as e:
                 print("ERROR:", e)
                 answer = "Something went wrong with your input."
 
-    print("DOB:", dob)
-    print("TOB:", tob)
-    print("Lat:", lat)
-    print("Lon:", lon)
-    print("Question:", question)
-
     return render(request, 'landing.html', {'answer': answer})
-
-
 
