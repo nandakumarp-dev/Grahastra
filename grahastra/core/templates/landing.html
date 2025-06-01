@@ -1,27 +1,37 @@
 <!DOCTYPE html>
-<html lang="ml">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Grahastra – നിങ്ങളുടെ ജ്യോതിഷ കൂട്ടുകാരൻ</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Grahastra – Your Astro Partner</title>
 </head>
-<body class="bg-light">
+<body>
+    <h1>Grahastra – Your Astro Partner</h1>
 
-<div class="container mt-5">
-    <div class="text-center mb-4">
-        <h1 class="display-5">🌠 Grahastra</h1>
-        <p class="lead">നിങ്ങളുടെ ചോദ്യങ്ങൾക്ക് ജ്യോതിഷ അധിഷ്ഠിത ഐ.ആർ. സഹായം</p>
-    </div>
+    <form method="POST">
+    {% csrf_token %}
 
-    <div class="card p-4 shadow-sm">
-        <h4 class="mb-3">നിങ്ങളുടെ വിവരങ്ങൾ നൽകൂ</h4>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">അയയ്ക്കുക</button>
-        </form>
-    </div>
-</div>
+    <label>Date of Birth:</label>
+    <input type="date" name="dob" required><br>
+
+    <label>Time of Birth:</label>
+    <input type="time" name="tob" required><br>
+
+    <label>Latitude (e.g. 8.5241):</label>
+    <input type="text" name="latitude" required><br>
+
+    <label>Longitude (e.g. 76.9366):</label>
+    <input type="text" name="longitude" required><br>
+
+    <label>Your Question:</label>
+    <input type="text" name="question" required><br>
+
+    <button type="submit">Submit</button>
+    </form>
+
+    {% if answer %}
+    <h2>Answer:</h2>
+    <p>{{ answer }}</p>
+    {% endif %}
+
 
 </body>
 </html>
