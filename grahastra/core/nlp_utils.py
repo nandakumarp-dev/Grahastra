@@ -1,54 +1,56 @@
-import requests
-from decouple import config
-
-import re
-
-TOGETHER_API_KEY = config('TOGETHER_API_KEY')
+from datetime import datetime
+from core.llm import query_llama
 
 def detect_intent_and_generate_answer(question, chart_data):
-    prompt = f"""
-Here is the user's birth chart: {chart_data}
+    today = datetime.now().strftime("%B %d, %Y")
 
-Question: "{question}"
+    SYSTEM_PROMPT = (
+        "You are a wise and compassionate Vedic astrologer. "
+        "Explain things clearly, using simple language that anyone can understand — "
+        "as if you are speaking to a curious, non-astrologer friend. "
+        "Avoid complex jargon unless necessary, and use plain explanations with relatable examples."
+    )
 
-You are a wise and kind Vedic astrologer. Provide an insightful answer in fluent, gentle English. Avoid repetition. Make it sound personal and helpful.
+    # Format planetary positions
+    planet_lines = "\n".join([
+        f"- {planet}: {deg}°" for planet, deg in chart_data.items()
+        if planet in ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn', 'Rahu', 'Ketu']
+    ])
 
+    # Format house placements
+    house_data = chart_data.get("Houses", {})
+    house_lines = "\n".join([
+        f"- {planet}: House {house}" for planet, house in house_data.items()
+    ]) if house_data else "House data not available."
+
+    yoga_lines = "\n".join(chart_data.get("Yogas", [])) or "No special yogas detected."
+
+
+    lagna = chart_data.get("Lagna", "Unknown")
+    nakshatra = chart_data.get("Nakshatra", "Unknown")
+
+    full_prompt = f"""
+{SYSTEM_PROMPT}
+
+Today's date: {today}
+
+User's Birth Chart:
+- Lagna (Ascendant): {lagna}
+- Moon Nakshatra: {nakshatra}
+
+Planetary Positions:
+{planet_lines}
+
+House Placements:
+{house_lines}
+
+Yoga Indicators:
+{yoga_lines}
+
+User's Question:
+{question}
+
+Your Answer:
 """
 
-    try:
-        response = requests.post(
-            "https://api.together.xyz/inference",
-            headers={"Authorization": f"Bearer {TOGETHER_API_KEY}"},
-            json={
-                "model": "mistralai/Mistral-7B-Instruct-v0.2",
-                "messages": [{"role": "system", "content": "You are a Vedic astrologer. Reply in fluent English with empathy."},
-  {"role": "user", "content": prompt}]
-            },
-            timeout=15
-        )
-
-        print("STATUS:", response.status_code)
-        print("BODY:", response.text)
-
-        if response.status_code == 200:
-            raw = response.json()["output"]["choices"][0]["text"]
-            return raw
-        
-        else:
-            return "ക്ഷമിക്കണം, DeepSeek സെർവറിൽ പിഴവുണ്ടായി. വീണ്ടും ശ്രമിക്കുക."
-
-    except Exception as e:
-        print("DeepSeek API Error:", e)
-        return "ക്ഷമിക്കണം, ഇപ്പോൾ ഉത്തരമില്ല. പിന്നീട് വീണ്ടും ശ്രമിക്കുക."
-
-
-
-# def clean_malayalam_output(text):
-#     # Remove excessive repetition
-#     lines = text.split('\n')
-#     unique_lines = list(dict.fromkeys(lines))  # removes duplicate lines
-#     result = '\n'.join(unique_lines)
-
-#     # Optional: truncate repeating phrases
-#     result = re.sub(r'(.*?)\1+', r'\1', result)
-#     return result.strip()
+    return query_llama(full_prompt)

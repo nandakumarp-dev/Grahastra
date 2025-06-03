@@ -4,6 +4,10 @@ from core.astrology_utils import get_planet_positions, get_nakshatra
 from core.nlp_utils import detect_intent_and_generate_answer
 from core.astrology_utils import get_birth_chart_data
 
+from core.astrology_utils import calculate_lagna
+
+import swisseph as swe
+
 def landing_page(request):
     answer = None
 
@@ -27,7 +31,15 @@ def landing_page(request):
                 moon_deg = positions['Moon']
                 nakshatra = get_nakshatra(moon_deg)
 
-                chart_data = get_birth_chart_data(positions, nakshatra)
+                # Extract date and time parts from dob and tob
+                year, month, day = map(int, dob.split('-'))
+                hour, minute = map(int, tob.split(':'))
+                ut_time = hour + minute / 60.0
+                jd = swe.julday(year, month, day, ut_time)
+
+                
+                lagna = calculate_lagna(jd, lat, lon)
+                chart_data = get_birth_chart_data(positions, nakshatra, lagna)
                 answer = detect_intent_and_generate_answer(question, chart_data)
 
             except Exception as e:
