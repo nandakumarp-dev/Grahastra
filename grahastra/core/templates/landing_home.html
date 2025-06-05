@@ -35,7 +35,7 @@
       scroll-snap-align: start;
       padding: 4rem 1rem 2rem;
       text-align: center;
-      background: linear-gradient(135deg, #1a1a1a, #111);
+      background: linear-gradient(135deg,rgb(0, 0, 0), #111);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -46,6 +46,14 @@
       font-size: 3rem;
       color: #fff;
       animation: glowFade 2s ease-in-out infinite alternate;
+    }
+    .gold-btn {
+      box-shadow: 0 0 12px rgba(255, 215, 0, 0.6);
+      animation: glowFade 1.5s ease-in-out infinite alternate;
+    }
+    .gold-btn:hover {
+      background-color: #ffd700;
+      color: #000;
     }
     @keyframes glowFade {
       from {
@@ -76,7 +84,6 @@
       background: #1c1c1c;
       border: none;
       border-radius: 1rem;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
       transition: transform 0.3s, box-shadow 0.3s;
       color: #fff;
     }
@@ -89,6 +96,7 @@
       margin-bottom: 2rem;
       font-family: 'Playfair Display', serif;
       font-size: 2rem;
+      color: #ffd700;
     }
     .footer {
       font-size: 0.9rem;
@@ -96,6 +104,14 @@
       background-color: #111;
       padding: 1rem;
       scroll-snap-align: end;
+    }
+    @media (max-width: 576px) {
+      section {
+        padding: 2rem 0.5rem;
+      }
+      .section-title {
+        font-size: 1.5rem;
+      }
     }
   </style>
 </head>
@@ -147,7 +163,6 @@
         </div>
       </div>
     </div>
-    
   </section>
 
   <section class="container-fluid d-flex flex-column justify-content-center align-items-center text-center">
@@ -177,13 +192,13 @@
   <section class="container text-center">
     <h2 class="section-title">Start Your Journey</h2>
     <p class="lead">Your cosmic blueprint is just a question away.</p>
-    <a href="/" class="btn btn-outline-warning btn-lg mt-3">Ask Your First Question →</a>
+    <a href="/" class="btn btn-outline-warning gold-btn btn-lg mt-3">Ask Your First Question →</a>
   </section>
 
   <footer class="footer text-center">
     © 2025 Grahastra • Powered by Ancient Wisdom & Modern AI
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
