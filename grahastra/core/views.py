@@ -8,6 +8,8 @@ from core.astrology_utils import calculate_lagna
 
 import swisseph as swe
 
+from django.views import View
+
 def landing_page(request):
     answer = None
 
@@ -47,4 +49,13 @@ def landing_page(request):
                 answer = "Something went wrong with your input."
 
     return render(request, 'landing.html', {'answer': answer})
+
+
+class Landing_Home(View):
+
+    def get(self,request,*args,**kwargs):
+
+        return render(request,'landing_home.html')
+    
+    
 
