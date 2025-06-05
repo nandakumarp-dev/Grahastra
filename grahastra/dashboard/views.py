@@ -15,3 +15,10 @@ class MyChartView(View):
     def get(self,request,*args,**kwargs):
 
          return render(request,'dashboard/mychart_page.html')
+    
+
+class ContactView(View):
+
+    def get(self,request,*args,**kwargs):
+
+         return render(request,'dashboard/contact_page.html')
