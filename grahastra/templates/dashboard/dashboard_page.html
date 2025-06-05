@@ -106,7 +106,7 @@
           <img src="https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg" width="32" height="32" class="rounded-circle" alt="Profile">
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="/profile">Profile Details</a></li>
+          <li><a class="dropdown-item" href="/settings">Settings</a></li>
           <li><a class="dropdown-item" href="/logout">Logout</a></li>
         </ul>
       </div>
@@ -120,25 +120,25 @@
       <div class="col">
         <div class="widget text-center">
           <h5 class="widget-title">Ask AI Astrologer</h5>
-          <a href="/ask" class="btn btn-gold">Start Chat</a>
+          <a href="{% url 'ask_astrology_page' %}" class="btn btn-gold">Start Chat</a>
         </div>
       </div>
       <div class="col">
         <div class="widget text-center">
-          <h5 class="widget-title">Birth Chart</h5>
+          <h5 class="widget-title">My Birth Chart</h5>
           <a href="{% url 'mychart_page' %}" class="btn btn-gold">View Chart</a>
         </div>
       </div>
       <div class="col">
         <div class="widget text-center">
           <h5 class="widget-title">Yogas</h5>
-          <a href="/reports" class="btn btn-gold">View Reports</a>
+          <a href="{% url 'yogas_page' %}" class="btn btn-gold">View Reports</a>
         </div>
       </div>
       <div class="col">
         <div class="widget text-center">
-          <h5 class="widget-title">Settings</h5>
-          <a href="/settings" class="btn btn-gold">Manage</a>
+          <h5 class="widget-title">Profile</h5>
+          <a href="{% url 'profile_page' %}" class="btn btn-gold">Edit</a>
         </div>
       </div>
       <div class="col">
