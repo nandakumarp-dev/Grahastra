@@ -1,199 +1,189 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Grahastra – Celestial AI Guidance</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grahastra - Your AI Vedic Astrologer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --bg: #0a0c10;
-      --section: #13161c;
-      --text: #f8f9fa;
-      --accent: #8cb4ff;
-      --card: #1e2127;
-    }
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: 'Inter', sans-serif;
+    html {
       scroll-behavior: smooth;
     }
-    nav {
-      background-color: var(--card);
-    }
-
-    .navbar-brand {
-      color: white !important;
-    }
-
-    nav .nav-link {
-      color: var(--text) !important;
-    }
-    nav .nav-link:hover {
-      color: var(--accent) !important;
-    }
-    .btn-accent {
-      background-color: var(--accent);
-      color: #000;
-      font-weight: 600;
-      border: none;
-      padding: 8px 20px;
-      border-radius: 6px;
-    }
-    .hero {
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0e0e0e;
+      color: #e0e0e0;
+      scroll-snap-type: y mandatory;
+      overflow-y: scroll;
       height: 100vh;
-      background: radial-gradient(circle at center, #1e2127 0%, #0a0c10 100%);
+    }
+    section {
+      scroll-snap-align: start;
+      height: 100vh;
+      padding: 3rem 1rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      opacity: 0;
+      transform: translateY(50px);
+      animation: fadeInUp 1s ease forwards;
+    }
+    header {
+      height: 100vh;
+      scroll-snap-align: start;
+      padding: 4rem 1rem 2rem;
       text-align: center;
-      padding: 60px 20px;
+      background: linear-gradient(135deg, #1a1a1a, #111);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      animation: fadeIn 1.5s ease forwards;
     }
-    section {
-      padding: 80px 0;
+    .logo-glow {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      color: #fff;
+      animation: glowFade 2s ease-in-out infinite alternate;
     }
-    .feature-card {
-      background-color: var(--card);
-      padding: 30px;
-      border-radius: 10px;
+    @keyframes glowFade {
+      from {
+        text-shadow: 0 0 5px #f0c420, 0 0 10px #f0c420;
+        opacity: 1;
+      }
+      to {
+        text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700;
+        opacity: 0.7;
+      }
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    header p {
+      font-size: 1.2rem;
+      color: #b0b0b0;
+    }
+    .card {
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.2), 0 0 40px rgba(255, 215, 0, 0.15);
+      background: #1c1c1c;
+      border: none;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      transition: transform 0.3s, box-shadow 0.3s;
+      color: #fff;
+    }
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 30px rgba(255,255,255,0.1);
+    }
+    .section-title {
       text-align: center;
-      transition: transform 0.3s;
+      margin-bottom: 2rem;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
     }
-    .feature-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 0 20px rgba(140, 180, 255, 0.1);
-    }
-    footer {
-      background-color: var(--section);
-      color: var(--text);
-      text-align: center;
-      padding: 30px 0;
+    .footer {
+      font-size: 0.9rem;
+      color: #777;
+      background-color: #111;
+      padding: 1rem;
+      scroll-snap-align: end;
     }
   </style>
 </head>
 <body>
+  <header class="position-relative">
+    <h1 class="logo-glow"
+    <p>Ask the stars. Hear their AI-guided answers. Instantly.</p>
+    <a href="{%url 'login_page' %}" class="btn btn-outline-warning fw-semibold mt-3" style="box-shadow: 0 0 12px rgba(255, 215, 0, 0.6); animation: glowFade 1.5s ease-in-out infinite alternate;">Ask</a>
+  </h1>
+  </header>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg sticky-top shadow-sm">
-    <div class="container">
-      <a class="navbar-brand fw-bold text-uppercase" href="#">Grahastra</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navLinks">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navLinks">
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
-          <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-        </ul>
-        <a class="btn btn-accent ms-3" href="#login">Login</a>
-      </div>
-    </div>
-  </nav>
-
-  <!-- Hero Section -->
-  <section class="hero" id="home" data-aos="fade-up">
-    <div class="container">
-      <h1 class="display-4 fw-bold">Chart Your Destiny With Precision</h1>
-      <p class="lead mt-3">Grahastra combines authentic Vedic astrology with advanced AI to offer accurate, personalized insights like never before.</p>
-      <a href="#contact" class="btn btn-accent mt-4">Begin My Reading</a>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section id="features" class="bg-dark" data-aos="fade-up">
-    <div class="container">
-      <div class="text-center mb-5">
-        <h2 class="fw-bold">What Makes Grahastra Special?</h2>
-        <p>Unique capabilities for the modern seeker.</p>
-      </div>
-      <div class="row g-4">
-        <div class="col-md-4" data-aos="zoom-in">
-          <div class="feature-card">
-            <h4>AI-Powered Guidance</h4>
-            <p>Get real-time readings based on your unique chart and transits.</p>
-          </div>
+  <section class="container-fluid d-flex flex-column justify-content-center align-items-center text-center">
+    <h2 class="section-title">Why Grahastra?</h2>
+    <div class="row g-4 w-100 px-4">
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h4>🌠 Instant Vedic Answers</h4>
+          <p>Ask anything about your life — career, love, health — and get astrology-backed insights in seconds powered by AI.</p>
         </div>
-        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
-          <div class="feature-card">
-            <h4>Birth Chart & Yogas</h4>
-            <p>Instantly detect powerful yogas like Raja, Gajakesari, and Budhaditya.</p>
-          </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h4>🧭 Accurate Birth Chart Analysis</h4>
+          <p>We calculate your birth chart using NASA-grade ephemeris data. No guesswork — pure Vedic astrology.</p>
         </div>
-        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
-          <div class="feature-card">
-            <h4>Personalized Analysis</h4>
-            <p>Receive clear, non-technical interpretations of every placement.</p>
-          </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h4>🪐 Yogas That Matter</h4>
+          <p>Discover if you have Raja Yoga, Gajakesari, Budhaditya and more. Let AI interpret them for you.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- About -->
-  <section id="about" data-aos="fade-up">
-    <div class="container text-center">
-      <h2 class="fw-bold mb-4">About Grahastra</h2>
-      <p>Grahastra is more than just astrology — it’s a conversation with your chart. Merging the wisdom of Jyotish Shastra with cutting-edge technology, Grahastra helps you gain clarity on life, karma, and purpose through a personalized lens.</p>
-    </div>
-  </section>
-
-  <!-- Contact -->
-  <section id="contact" data-aos="fade-up">
-    <div class="container">
-      <div class="text-center mb-4">
-        <h2 class="fw-bold">Get Your Chart Reading</h2>
-        <p>Fill your details to receive instant cosmic guidance.</p>
+  <section class="container-fluid d-flex flex-column justify-content-center align-items-center text-center">
+    <h2 class="section-title">How It Works</h2>
+    <div class="row g-4 w-100 px-4">
+      <div class="col-md-6">
+        <div class="card p-4 h-100">
+          <h4>💬 You Ask a Question</h4>
+          <p>Submit your birth details and your specific question. Whether it's about love, career, or health — Grahastra is listening.</p>
+        </div>
       </div>
-      <form class="row g-3">
-  <div class="col-md-6">
-    <label class="form-label">Your Name</label>
-    <input type="text" class="form-control" placeholder="Full name" required>
-  </div>
-  <div class="col-md-6">
-    <label class="form-label">Email ID</label>
-    <input type="email" class="form-control" placeholder="you@example.com" required>
-  </div>
-  <div class="col-md-6">
-    <label class="form-label">Date of Birth</label>
-    <input type="date" class="form-control" required>
-  </div>
-  <div class="col-md-6">
-    <label class="form-label">Time of Birth</label>
-    <input type="time" class="form-control" required>
-  </div>
-  <div class="col-md-6">
-    <label class="form-label">Latitude</label>
-    <input type="text" class="form-control" placeholder="e.g. 8.5241" required>
-  </div>
-  <div class="col-md-6">
-    <label class="form-label">Longitude</label>
-    <input type="text" class="form-control" placeholder="e.g. 76.9366" required>
-  </div>
-  <div class="col-12">
-    <label class="form-label">Your Question</label>
-    <input type="text" class="form-control" placeholder="What clarity do you seek today?" required>
-  </div>
-  <div class="col-12 text-center mt-5">
-    <button class="btn btn-accent">Submit</button>
-  </div>
-</form>
+      <div class="col-md-6">
+        <div class="card p-4 h-100">
+          <h4>🧠 Chart + AI Magic</h4>
+          <p>We generate your Vedic chart using Swiss Ephemeris, then feed it into an intelligent LLM prompt to craft a humanlike, astrologically valid reply.</p>
+        </div>
+      </div>
+    </div>
+    
+  </section>
 
+  <section class="container-fluid d-flex flex-column justify-content-center align-items-center text-center">
+    <h2 class="section-title">Our Promise</h2>
+    <div class="row g-4 w-100 px-4">
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h4>📜 Trustworthy Guidance</h4>
+          <p>We don’t use fluff. Each answer is based on your planetary positions, yogas, and classical Vedic astrology principles.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h4>💼 Made for Modern Life</h4>
+          <p>Astrology isn't about fate — it's a tool for reflection. Grahastra brings Vedic clarity to your everyday choices.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 h-100">
+          <h4>⚙️ Built with AI</h4>
+          <p>Our responses come from large language models combined with astrology logic — for intelligent insights, instantly.</p>
+        </div>
+      </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer>
-    <p>&copy; 2025 Grahastra. All rights reserved.</p>
-    <small>Authentic Vedic AI Astrology</small>
+  <section class="container text-center">
+    <h2 class="section-title">Start Your Journey</h2>
+    <p class="lead">Your cosmic blueprint is just a question away.</p>
+    <a href="/" class="btn btn-outline-warning btn-lg mt-3">Ask Your First Question →</a>
+  </section>
+
+  <footer class="footer text-center">
+    © 2025 Grahastra • Powered by Ancient Wisdom & Modern AI
   </footer>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script>AOS.init();</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
