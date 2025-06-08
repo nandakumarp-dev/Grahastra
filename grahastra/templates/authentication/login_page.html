@@ -51,17 +51,17 @@
 <body>
   <div class="auth-box" id="authBox">
     <h2 id="formTitle">Login to Grahastra</h2>
-    <form id="authForm">
-      <div class="mb-3">
-        <label for="email" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="email" required>
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" required>
-      </div>
-      <button type="submit" class="btn btn-gold w-100">Login</button>
-
+      <form method="post" action="{% url 'login_page' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-gold w-100">Login</button>
       <div class="text-center mt-3">
         <button type="button" class="btn btn-outline-light w-100">
           <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Icon" style="width:20px; margin-right:8px;"> Continue with Google
