@@ -52,7 +52,8 @@
 <body>
   <div class="auth-box">
     <h2>Create Your Grahastra Account</h2>
-    <form action="/signup" method="post">
+    <form action="{% url 'signup_page' %}" method="post">
+      {% csrf_token %}
       <div class="mb-3">
         <label for="fullName" class="form-label">Full Name</label>
         <input type="text" class="form-control" id="fullName" name="fullName" required>
@@ -72,7 +73,7 @@
 
       <div class="mb-3">
         <label for="gender" class="form-label">Gender</label>
-        <select id="gender" class="form-control " required>
+        <select id="gender" name="gender" class="form-control" required>
           <option value="">Select</option>
           <option value="male">Male</option>
           <option value="female">Female</option>

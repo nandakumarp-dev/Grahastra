@@ -1,9 +1,11 @@
 from django.shortcuts import render,redirect
 from django.views import View
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model ,logout
+User = get_user_model()
 from django.contrib.auth.hashers import make_password
 from authentication.models import Profile
 from django.contrib.auth import authenticate, login
+from django.contrib import messages
 
 # Create your views here.
 
@@ -12,16 +14,16 @@ class LoginView(View):
         return render(request, 'authentication/login_page.html')
 
     def post(self, request):
-        username = request.POST.get("username")
+        email = request.POST.get("email")
         password = request.POST.get("password")
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=email, password=password)  # Use email
 
         if user:
             login(request, user)
-            return redirect('profile')  # profile page coming up next
+            return redirect('dashboard_page')
         else:
             return render(request, 'authentication/login_page.html', {
-                'error': 'Invalid username or password.'
+                'error': 'Invalid email or password.'
             })
     
 
@@ -42,13 +44,17 @@ class SignUpView(View):
         if password != confirm:
             return render(request, 'authentication/signup_page.html', {'error': "Passwords do not match."})
 
-        if User.objects.filter(username=full_name).exists():
-            return render(request, 'authentication/signup_page.html', {'error': "Username already exists."})
+        if User.objects.filter(email=email).exists():
+            return render(request, 'authentication/signup_page.html', {'error': "Email already registered."})
 
-        user = User.objects.create(
-            username=full_name,
+        # Split full name
+        first_name, last_name = (full_name.split(" ", 1) + [""])[:2]
+
+        user = User.objects.create_user(
             email=email,
-            password=make_password(password)
+            password=password,
+            first_name=first_name,
+            last_name=last_name
         )
 
         Profile.objects.create(
@@ -60,3 +66,9 @@ class SignUpView(View):
         )
 
         return redirect('login_page')
+    
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return redirect('Landin_home')
