@@ -95,9 +95,14 @@
       </div>
       <button type="submit" class="btn btn-gold w-100 mb-2">Sign Up</button>
       <div class="text-center text-light mb-2">or</div>
+      <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
       <button type="button" class="btn btn-outline-light w-100">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Icon" style="width:20px; margin-right:8px;"> Sign up with Google
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
+            alt="Google Icon" 
+            style="width:20px; margin-right:8px;"> 
+        Sign up with Google
       </button>
+      </a>
       <div class="text-center mt-3">
         <small>Already have an account? <a href="{% url 'login_page' %}" class="text-warning fw-semibold text-decoration-none">Login here</a></small>
       </div>
