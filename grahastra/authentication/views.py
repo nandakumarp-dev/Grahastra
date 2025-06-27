@@ -6,6 +6,9 @@ from django.contrib.auth.hashers import make_password
 from authentication.models import Profile
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
+import threading
+from grahastra.utility import send_email
+from datetime import datetime
 
 # Create your views here.
 
@@ -64,6 +67,19 @@ class SignUpView(View):
             birth_time=tob,
             birth_place=pob
         )
+
+        subject = 'Welcome to Grahastra ✨'
+        recipient = user.email
+        template = 'email/registration_success_email.html'
+        context = {
+                    'name': full_name,
+                    'email': email,
+                    'password': password,
+                    'year': datetime.now().year
+                }
+
+        thread = threading.Thread(target=send_email, args=(subject, recipient, template, context))
+        thread.start()
 
         return redirect('login_page')
     
