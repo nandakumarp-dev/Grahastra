@@ -7,9 +7,11 @@ from authentication.models import Profile
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 import threading
+import swisseph as swe
 from grahastra.utility import send_email
-from datetime import datetime
+from datetime import datetime, timedelta
 from grahastra.utility import get_coordinates_from_place
+from core.astrology_utils import get_birth_chart_data, get_house_placements,get_nakshatra,calculate_lagna,get_planet_positions
 
 # Create your views here.
 
@@ -62,6 +64,14 @@ class SignUpView(View):
         )
 
         lat, lng = get_coordinates_from_place(pob)
+        positions = get_planet_positions(dob, tob, lat, lng)
+        nakshatra = get_nakshatra(positions['Moon'])
+        jd = datetime.strptime(dob + ' ' + tob, "%Y-%m-%d %H:%M")
+        jd_utc = jd - timedelta(hours=5, minutes=30)  # IST to UTC
+        ut_hour = jd_utc.hour + jd_utc.minute / 60.0
+        julian_day = swe.julday(jd_utc.year, jd_utc.month, jd_utc.day, ut_hour)
+        lagna = calculate_lagna(julian_day, lat, lng)
+        chart = get_birth_chart_data(positions, nakshatra, lagna)
 
         Profile.objects.create(
             user=user,
@@ -71,6 +81,10 @@ class SignUpView(View):
             birth_place=pob,
             latitude=lat,
             longitude=lng,
+            nakshatra=nakshatra,
+            lagna=lagna,
+            yogas="\n".join(chart['Yogas'])
+
         )
 
         subject = 'Welcome to Grahastra ✨'
@@ -79,13 +93,14 @@ class SignUpView(View):
         context = {
                     'name': full_name,
                     'email': email,
-                    'password': password,
+                    # 'password': password,
                     'year': datetime.now().year
                 }
 
         thread = threading.Thread(target=send_email, args=(subject, recipient, template, context))
         thread.start()
 
+        messages.success(request, "Account created! Please log in.")
         return redirect('login_page')
     
 

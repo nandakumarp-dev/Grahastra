@@ -4,14 +4,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Grahastra - Ask AI Astrologer</title>
-
-  <!-- Bootstrap CSS -->
+  <title>Grahastra - Vedic Birth Chart</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter&family=Playfair+Display&display=swap" rel="stylesheet"/>
-
   <style>
     body {
       background-color: #0e0e0e;
@@ -29,43 +24,23 @@
       from { text-shadow: 0 0 10px rgba(212, 175, 55, 0.6); }
       to { text-shadow: 0 0 20px rgba(212, 175, 55, 1); }
     }
-    .chat-box {
+    .data-box {
       background-color: #1c1c1c;
       padding: 2rem;
       border-radius: 1rem;
       box-shadow: 0 0 25px rgba(212, 175, 55, 0.1);
-      max-height: 300px;
-      overflow-y: auto;
       margin-bottom: 2rem;
     }
-    .chat-message {
-      margin-bottom: 1rem;
+    .astro-table {
+      background-color: #1c1c1c;
+      color: #fff;
     }
-    .user-message {
-      text-align: right;
+    .astro-table th {
+      background-color: #2a2a2a;
       color: #d4af37;
     }
-    .ai-message {
-      text-align: left;
-      color: #ffffff;
-    }
-    .input-area input {
-      background-color: #0e0e0e;
+    .astro-table td {
       border: 1px solid #444;
-      color: #ffffff;
-      border-radius: 0.5rem;
-      padding: 0.75rem;
-    }
-    .input-area button {
-      background-color: #d4af37;
-      color: #000;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      padding: 0.75rem 1.5rem;
-      border: none;
-    }
-    .input-area button:hover {
-      background-color: #bfa133;
     }
     footer {
       border-top: 1px solid #333;
@@ -81,46 +56,90 @@
   <a class="navbar-brand brand-text" href="#">Grahastra</a>
 </nav>
 
-<!-- Astro Form Section -->
-<section id="astro-form" class="astro-form-section py-5">
+<!-- Main Section -->
+<section class="py-5">
   <div class="container">
     <div class="text-center mb-5">
-      <h2 class="brand-text">Ask Your Astrologer</h2>
-      <p>Enter your birth details and your question below</p>
+      <h2 class="brand-text">Your Vedic Birth Chart</h2>
+      <p class="text-light">Fill in your birth details below to receive your personalized astrological insights.</p>
+
     </div>
-    <form method="POST" class="astro-form row g-3">
-        {% csrf_token %}
-      <div class="col-md-6">
-        <label for="dob" class="form-label">Date of Birth:</label>
-        <input type="date" class="form-control" name="dob" required>
+
+
+    <!-- Form -->
+    <form method="POST" class="row g-3 mb-5">
+      {% csrf_token %}
+      <div class="col-md-4">
+        <label class="form-label">Date of Birth</label>
+        <input type="date" name="dob" class="form-control" required>
       </div>
-      <div class="col-md-6">
-        <label for="tob" class="form-label">Time of Birth:</label>
-        <input type="time" class="form-control" name="tob" required>
+      <div class="col-md-4">
+        <label class="form-label">Time of Birth</label>
+        <input type="time" name="tob" class="form-control" required>
       </div>
-      <div class="col-md-6">
-        <label for="latitude" class="form-label">Latitude (e.g. 8.5241):</label>
-        <input type="text" class="form-control" name="latitude" required>
+      <div class="col-md-4">
+        <label class="form-label">Place of Birth</label>
+        <input type="text" name="pob" class="form-control" placeholder="e.g., Trivandrum" required>
       </div>
-      <div class="col-md-6">
-        <label for="longitude" class="form-label">Longitude (e.g. 76.9366):</label>
-        <input type="text" class="form-control" name="longitude" required>
-      </div>
-      <div class="col-12">
-        <label for="question" class="form-label">Your Question:</label>
-        <input type="text" class="form-control" name="question" required>
-      </div>
-      <div class="col-12 text-center">
-        <button type="submit" class="btn btn-warning">Submit</button>
+      <div class="col-12 text-center mt-4">
+        <button class="btn btn-warning px-5">Generate Chart</button>
       </div>
     </form>
 
-    {% if answer %}
-    <div class="response-box mt-4 p-4 rounded" style="background-color: #1c1c1c; box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);">
-      <h4 class="text-warning">Your Astrological Insight:</h4>
-      <p class="text-light">{{ answer }}</p>
+    <!-- Result Display -->
+    {% if chart %}
+    <div class="data-box">
+      <h4 class="text-warning">Summary</h4>
+      {% if dob and tob and pob %}
+        <p class="text-warning mt-3">Chart for: {{ dob }} {{ tob }} at {{ pob }}</p>
+      {% endif %}
+      <p><strong>Lagna (Ascendant):</strong> {{ chart.Lagna }}</p>
+      <p><strong>Nakshatra:</strong> {{ chart.Nakshatra }}</p>
     </div>
-{% endif %}
+
+    <div class="data-box">
+      <h4 class="text-warning">Planetary Table</h4>
+      <div class="table-responsive">
+        <table class="table astro-table">
+          <thead>
+            <tr>
+              <th>Planet</th>
+              <th>Degree</th>
+              <th>Sign (Rasi)</th>
+              <th>Sign Lord</th>
+              <th>Nakshatra</th>
+              <th>Nakshatra Lord</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for planet in chart.Planets %}
+            <tr>
+              <td>{{ planet.name }}</td>
+              <td>{{ planet.degree }}</td>
+              <td>{{ planet.rasi }}</td>
+              <td>{{ planet.rasi_lord }}</td>
+              <td>{{ planet.nakshatra }}</td>
+              <td>{{ planet.nakshatra_lord }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="data-box">
+      <h4 class="text-warning">Yogas Detected</h4>
+      <ul>
+        {% for yoga in chart.Yogas %}
+          <li>{{ yoga }}</li>
+        {% empty %}
+          <li>No prominent yogas found.</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% elif error %}
+    <div class="alert alert-danger text-center">{{ error }}</div>
+    {% endif %}
   </div>
 </section>
 
@@ -138,27 +157,6 @@
   </div>
 </footer>
 
-<!-- JS -->
-<script>
-  function sendMessage() {
-    const input = document.getElementById("user-input");
-    const chatBox = document.getElementById("chat-box");
-    if (input.value.trim() === "") return;
-
-    const userDiv = document.createElement("div");
-    userDiv.className = "chat-message user-message";
-    userDiv.innerText = input.value;
-    chatBox.appendChild(userDiv);
-
-    const aiDiv = document.createElement("div");
-    aiDiv.className = "chat-message ai-message";
-    aiDiv.innerText = "(AI is thinking...)";
-    chatBox.appendChild(aiDiv);
-
-    chatBox.scrollTop = chatBox.scrollHeight;
-    input.value = "";
-  }
-</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

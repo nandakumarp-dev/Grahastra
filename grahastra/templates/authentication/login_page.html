@@ -65,6 +65,11 @@
       {% if error %}
         <div class="alert alert-danger mt-3">{{ error }}</div>
       {% endif %}
+      {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-success">{{ message }}</div>
+      {% endfor %}
+      {% endif %}
 
       <button type="submit" class="btn btn-gold w-100">Login</button>
 

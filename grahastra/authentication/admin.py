@@ -34,6 +34,18 @@ admin.site.register(CustomUser, CustomUserAdmin)
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user', 'gender', 'birth_date', 'birth_place', 'latitude', 'longitude')
-    search_fields = ('user__email', 'birth_place')
-    list_filter = ('gender',)
+    list_display = (
+        'user', 'gender', 'birth_date', 'birth_time', 'birth_place',
+        'latitude', 'longitude', 'nakshatra', 'lagna'
+    )
+    search_fields = ('user__email', 'birth_place', 'nakshatra', 'lagna')
+    list_filter = ('gender', 'nakshatra', 'lagna')
+    readonly_fields = ('latitude', 'longitude', 'nakshatra', 'lagna', 'yogas')
+    fieldsets = (
+        (None, {
+            'fields': ('user', 'gender', 'birth_date', 'birth_time', 'birth_place')
+        }),
+        ('Astrological Details', {
+            'fields': ('latitude', 'longitude', 'nakshatra', 'lagna', 'yogas')
+        })
+    )

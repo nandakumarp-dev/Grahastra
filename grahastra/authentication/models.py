@@ -49,6 +49,9 @@ class Profile(models.Model):
     profile_photo = models.ImageField(upload_to='profiles/', null=True, blank=True)
     latitude = models.FloatField(null=True, blank=True)
     longitude = models.FloatField(null=True, blank=True)
+    nakshatra = models.CharField(max_length=50, null=True, blank=True)
+    lagna = models.CharField(max_length=50, null=True, blank=True)
+    yogas = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.user.email
