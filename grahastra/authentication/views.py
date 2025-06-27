@@ -9,6 +9,7 @@ from django.contrib import messages
 import threading
 from grahastra.utility import send_email
 from datetime import datetime
+from grahastra.utility import get_coordinates_from_place
 
 # Create your views here.
 
@@ -60,12 +61,16 @@ class SignUpView(View):
             last_name=last_name
         )
 
+        lat, lng = get_coordinates_from_place(pob)
+
         Profile.objects.create(
             user=user,
             gender=gender,
             birth_date=dob,
             birth_time=tob,
-            birth_place=pob
+            birth_place=pob,
+            latitude=lat,
+            longitude=lng,
         )
 
         subject = 'Welcome to Grahastra ✨'
