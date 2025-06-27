@@ -1,5 +1,5 @@
 from datetime import datetime
-from core.llm import query_llama
+from core.llm import query_gpt
 
 def detect_intent_and_generate_answer(question, chart_data):
     today = datetime.now().strftime("%B %d, %Y")
@@ -52,4 +52,4 @@ User's Question:
 Your Answer:
 """
 
-    return query_llama(full_prompt)
+    return query_gpt(full_prompt)

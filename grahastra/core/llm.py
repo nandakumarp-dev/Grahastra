@@ -1,16 +1,31 @@
 import requests
+from decouple import config
 
-def query_llama(prompt: str) -> str:
+API_KEY = config('TOGETHER_API_KEY') # Replace this with your actual API key 
+
+def query_gpt(prompt: str) -> str:
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "model": "meta-llama/Meta-Llama-3-70B-Instruct-Turbo",
+        "messages": [
+            {"role": "system", "content": "You are a helpful Vedic astrologer who gives simple, clear answers."},
+            {"role": "user", "content": prompt}
+        ],
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "max_tokens": 500
+    }
     try:
         response = requests.post(
-            "http://localhost:11434/api/generate",
-            json={
-                "model": "llama3",
-                "prompt": prompt,
-                "stream": False
-            },
-            timeout=300  # ← Increase timeout to 5 minutes
+            "https://api.together.xyz/v1/chat/completions",
+            headers=headers,
+            json=payload,
+            timeout=60
         )
-        return response.json().get("response", "")
+        response.raise_for_status()
+        return response.json()["choices"][0]["message"]["content"]
     except Exception as e:
-        return f"AI Error: {e}"
+        return f"API Error: {e}"
