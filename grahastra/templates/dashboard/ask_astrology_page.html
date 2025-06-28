@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,14 +91,25 @@
 <main class="flex-grow-1 d-flex align-items-stretch" style="min-height: calc(100vh - 136px);">
   <div class="container my-auto py-5 d-flex flex-column justify-content-center">
     <div class="w-100">
+      <form method="post" action="{% url 'clear_astro_chats' %}" style="text-align: right; margin-bottom: 1rem;">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-outline-light btn-sm">🗑️ Clear Chat</button>
+</form>
       <h2 class="text-center mb-5 brand-text">Ask AI Astrologer</h2>
       <div class="chat-box" id="chat-box">
         <div class="chat-message ai-message">Welcome to Grahastra. Ask me anything about your birth chart or future!</div>
+        {% for chat in chats %}
+          <div class="chat-message user-message">{{ chat.question }}</div>
+          <div class="chat-message ai-message">{{ chat.answer }}</div>
+        {% endfor %}
       </div>
-      <div class="input-area">
-        <input type="text" id="user-input" placeholder="Type your question...">
-        <button onclick="sendMessage()">Send</button>
-      </div>
+      <form method="post" id="ask-form" onsubmit="sendMessage(event)">
+        {% csrf_token %}
+        <div class="input-area">
+          <input type="text" id="user-input" placeholder="Type your question..." required>
+          <button type="submit">Send</button>
+        </div>
+      </form>
     </div>
   </div>
 </main>
@@ -118,24 +128,58 @@
   </div>
 </footer>
 
+<!-- JS -->
 <script>
-  function sendMessage() {
+  function sendMessage(event) {
+    event.preventDefault();
     const input = document.getElementById("user-input");
     const chatBox = document.getElementById("chat-box");
-    if (input.value.trim() === "") return;
+    const question = input.value.trim();
+    if (!question) return;
 
+    // Add user message
     const userDiv = document.createElement("div");
     userDiv.className = "chat-message user-message";
-    userDiv.innerText = input.value;
+    userDiv.innerText = question;
     chatBox.appendChild(userDiv);
 
+    // Add placeholder for AI response
     const aiDiv = document.createElement("div");
     aiDiv.className = "chat-message ai-message";
-    aiDiv.innerText = "(AI response loading...)"; // Replace with actual API integration
+    aiDiv.innerText = "Thinking...";
     chatBox.appendChild(aiDiv);
-
     chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Clear input
     input.value = "";
+
+    fetch("/ask_astrology/", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({ question })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log("Server responded with:", data);
+
+      if (data.answer) {
+        aiDiv.innerText = data.answer;
+      } else if (data.error) {
+        aiDiv.innerText = "⚠️ " + data.error;
+      } else {
+        aiDiv.innerText = "⚠️ Unexpected response: " + JSON.stringify(data);
+      }
+
+      chatBox.scrollTop = chatBox.scrollHeight;
+    })
+    .catch(err => {
+      console.error("Fetch failed:", err);
+      aiDiv.innerText = "❌ Network error or bad server response.";
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
   }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

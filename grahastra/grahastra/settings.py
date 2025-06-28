@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core','authentication',
+    'core',
+    'authentication',
     'dashboard',
     'social_django',
+    'astrologerchatbot',
 ]
 
 MIDDLEWARE = [

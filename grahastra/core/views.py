@@ -2,7 +2,6 @@ from django.shortcuts import render
 from django.views import View
 from datetime import datetime, timedelta
 import swisseph as swe
-
 from grahastra.utility import get_coordinates_from_place
 from core.astrology_utils import (
     get_planet_positions, get_nakshatra, calculate_lagna,

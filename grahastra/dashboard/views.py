@@ -103,12 +103,6 @@ class ContactView(View):
          return render(request,'dashboard/contact_page.html')
     
 
-class AskAstrologyView(View):
-
-    def get(self,request,*args,**kwargs):
-
-         return render(request,'dashboard/ask_astrology_page.html')
-    
 class ProfileView(View):
 
     def get(self,request,*args,**kwargs):
