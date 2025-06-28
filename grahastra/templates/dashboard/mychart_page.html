@@ -56,49 +56,82 @@
   </div>
 </nav>
 
-<!-- Birth Chart Content -->
+<!-- Content -->
 <div class="container py-5 mt-4">
   <h2 class="text-center mb-5 brand-text">Your Birth Chart</h2>
 
-  <div class="section-box">
-    <h4 class="section-title">Basic Details</h4>
-    <p><strong>Name:</strong> [User Name]</p>
-    <p><strong>Date of Birth:</strong> [DOB]</p>
-    <p><strong>Time of Birth:</strong> [Time]</p>
-    <p><strong>Place of Birth:</strong> [Place]</p>
-  </div>
+  {% if error %}
+    <div class="alert alert-warning text-center">
+      {{ error }}
+    </div>
+  {% else %}
+    <div class="section-box">
+      <h4 class="section-title">Basic Details</h4>
+      <p><strong>Name : </strong>  {{ request.user.first_name }} {{ request.user.last_name }}</p>
+      <p><strong>Date of Birth : </strong>  {{ request.user.profile.birth_date }}</p>
+      <p><strong>Time of Birth : </strong>  {{ request.user.profile.birth_time }}</p>
+      <p><strong>Place of Birth : </strong>  {{ request.user.profile.birth_place }}</p>
+    </div>
 
-  <div class="section-box">
-    <h4 class="section-title">Planetary Positions</h4>
-    <ul>
-      <li>Sun: Aries in 10th House</li>
-      <li>Moon: Taurus in 11th House</li>
-      <li>Mars: Cancer in 1st House</li>
-      <!-- add other planets -->
-    </ul>
-  </div>
+    <div class="section-box">
+      <h4 class="section-title">Planetary Positions</h4>
+      <div class="table-responsive">
+        <table class="table table-dark table-striped">
+          <thead>
+            <tr>
+              <th>Planet</th>
+              <th>Degree</th>
+              <th>Rasi</th>
+              <th>Rasi Lord</th>
+              <th>Nakshatra</th>
+              <th>Nakshatra Lord</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in chart_data.Planets %}
+            <tr>
+              <td>{{ p.name }}</td>
+              <td>{{ p.degree }}</td>
+              <td>{{ p.rasi }}</td>
+              <td>{{ p.rasi_lord }}</td>
+              <td>{{ p.nakshatra }}</td>
+              <td>{{ p.nakshatra_lord }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-  <div class="section-box">
-    <h4 class="section-title">Ascendant & Houses</h4>
-    <p><strong>Ascendant:</strong> Leo</p>
-    <p><strong>1st House:</strong> Self, Personality</p>
-    <p><strong>2nd House:</strong> Wealth, Speech</p>
-    <!-- etc. -->
-  </div>
+    <div class="section-box">
+      <h4 class="section-title">Ascendant & Houses</h4>
+      <p><strong>Ascendant (Lagna Rasi):</strong> {{ lagna_rasi }}</p>
+      <p><strong>Nakshatra:</strong> {{ nakshatra }}</p>
+      {% if chart_data.houses %}
+        {% for house_num, desc in chart_data.houses.items %}
+          <p><strong>{{ house_num }} House:</strong> {{ desc }}</p>
+        {% endfor %}
+      {% endif %}
+    </div>
 
-  <div class="section-box">
-    <h4 class="section-title">Important Yogas</h4>
-    <ul>
-      <li>Gajakesari Yoga</li>
-      <li>Budhaditya Yoga</li>
-      <li>Raja Yoga</li>
-    </ul>
-  </div>
+    {% if chart_data.yogas %}
+    <div class="section-box">
+      <h4 class="section-title">Important Yogas</h4>
+      <ul>
+        {% for yoga in chart_data.yogas %}
+          <li>{{ yoga }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
 
-  <div class="section-box">
-    <h4 class="section-title">Interpretation by Astrologer</h4>
-    <p>Your strong Sun in the 10th house indicates natural leadership abilities. Gajakesari Yoga brings wisdom and fortune. However, Mars in Cancer can cause emotional outbursts—balance with meditation is advised...</p>
-  </div>
+    {% if chart_data.interpretation %}
+    <div class="section-box">
+      <h4 class="section-title">Interpretation by Astrologer</h4>
+      <p>{{ chart_data.interpretation }}</p>
+    </div>
+    {% endif %}
+  {% endif %}
 </div>
 
 <!-- Footer -->
