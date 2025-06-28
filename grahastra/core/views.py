@@ -63,7 +63,7 @@ def landing_page(request):
                     "nakshatra_lord": get_nakshatra_lord(nak),
                 })
 
-            chart["Lagna"] = f"{lagna_sign} {format_deg(asc_deg)}"
+            chart["Lagna"] = lagna_sign
             chart["Nakshatra"] = nakshatra
 
             context = {

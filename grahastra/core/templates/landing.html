@@ -91,10 +91,10 @@
     <div class="data-box">
       <h4 class="text-warning">Summary</h4>
       {% if dob and tob and pob %}
-        <p class="text-warning mt-3">Chart for: {{ dob }} {{ tob }} at {{ pob }}</p>
+        <p class="text-light mt-3"><strong>Chart for :</strong> {{ dob }} {{ tob }} at {{ pob }}</p>
       {% endif %}
-      <p><strong>Lagna (Ascendant):</strong> {{ chart.Lagna }}</p>
-      <p><strong>Nakshatra:</strong> {{ chart.Nakshatra }}</p>
+      <p><strong>Lagna :</strong> {{ chart.Lagna }}</p>
+      <p><strong>Nakshatra :</strong> {{ chart.Nakshatra }}</p>
     </div>
 
     <div class="data-box">

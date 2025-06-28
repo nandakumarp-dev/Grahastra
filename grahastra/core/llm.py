@@ -1,7 +1,7 @@
 import requests
 from decouple import config
 
-API_KEY = config('TOGETHER_API_KEY') # Replace this with your actual API key 
+API_KEY = config('TOGETHER_API_KEY')
 
 def query_gpt(prompt: str) -> str:
     headers = {

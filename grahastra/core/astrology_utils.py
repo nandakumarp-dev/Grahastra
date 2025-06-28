@@ -123,41 +123,57 @@ def get_birth_chart_data(positions, nakshatra, lagna=None):
 def detect_yogas(chart_data):
     yogas = []
     houses = chart_data.get("Houses", {})
-    positions = {k: v for k, v in chart_data.items() if isinstance(v, (int, float))}
+    signs = chart_data.get("Signs", {})
 
-    # Gajakesari Yoga
+    # Define lords for checking ownership-based yogas
+    rasi_lords = {
+        "Medam": "Mars", "Edavam": "Venus", "Midhunam": "Mercury", "Karkidakam": "Moon",
+        "Chingam": "Sun", "Kanni": "Mercury", "Thulam": "Venus", "Vrischikam": "Mars",
+        "Dhanu": "Jupiter", "Makaram": "Saturn", "Kumbham": "Saturn", "Meenam": "Jupiter"
+    }
+
+    # 1. Gajakesari Yoga – Moon and Jupiter in Kendra (1,4,7,10 from Lagna)
     if houses.get("Moon") in [1, 4, 7, 10] and houses.get("Jupiter") in [1, 4, 7, 10]:
-        yogas.append("🌕 Gajakesari Yoga — strong intellect, reputation, and growth.")
+        yogas.append("🌕 Gajakesari Yoga — Moon and Jupiter in Kendra from Lagna.")
 
-    # Budhaditya Yoga
-    if houses.get("Sun") == houses.get("Mercury"):
-        yogas.append("☀️ Budhaditya Yoga — intelligence, communication skills, and leadership.")
+    # 2. Budhaditya Yoga – Sun and Mercury in same sign and house
+    if signs.get("Sun") == signs.get("Mercury") and houses.get("Sun") == houses.get("Mercury"):
+        yogas.append("☀️ Budhaditya Yoga — Sun and Mercury conjunct. Boosts intellect.")
 
-    # Raja Yoga
-    if houses.get("Jupiter") in [1, 4, 7, 10] and houses.get("Moon") in [1, 4, 7, 10]:
-        yogas.append("👑 Raja Yoga — success, authority, and leadership potential.")
-
-    # Chandra-Mangala Yoga
+    # 3. Chandra-Mangala Yoga – Moon and Mars in same house
     if houses.get("Moon") == houses.get("Mars"):
-        yogas.append("🔥 Chandra-Mangala Yoga — emotional power + drive, good for business and action.")
+        yogas.append("🔥 Chandra-Mangala Yoga — Moon and Mars in same house.")
 
-    # Dhana Yoga
-    if any(houses.get(p) in [2, 11] for p in ["Jupiter", "Venus", "Mercury"]):
-        yogas.append("💰 Dhana Yoga — potential for wealth through favorable planetary alignment.")
+    # 4. Dhana Yoga – Jupiter, Venus, or Mercury in 2nd or 11th
+    for planet in ["Jupiter", "Venus", "Mercury"]:
+        if houses.get(planet) in [2, 11]:
+            yogas.append(f"💰 Dhana Yoga — {planet} in 2nd or 11th house.")
+            break
 
-    # Vipareeta Raja Yoga
-    if sum(1 for p in ["Saturn", "Mars", "Ketu"] if houses.get(p) in [6, 8, 12]) >= 2:
-        yogas.append("🌀 Vipareeta Raja Yoga — rise through adversity, success after struggle.")
+    # 5. Vipareeta Raja Yoga – Lords of 6/8/12 in another dusthana
+    dusthanas = [6, 8, 12]
+    for house in dusthanas:
+        for planet, house_num in houses.items():
+            if house_num == house:
+                rasi = signs.get(planet)
+                lord = rasi_lords.get(rasi)
+                if lord and houses.get(lord) in dusthanas:
+                    yogas.append("🌀 Vipareeta Raja Yoga — Lords of dusthanas in dusthanas.")
+                    break
 
-    # Kemadruma Yoga
+    # 6. Kemadruma Yoga – No planets in 2nd and 12th from Moon
     moon_house = houses.get("Moon")
-    occupied = set(houses.values())
-    if moon_house and ((moon_house % 12) + 1 not in occupied and (moon_house - 1 or 12) not in occupied):
-        yogas.append("🌑 Kemadruma Yoga — emotional isolation, inner reflection, needs connection.")
+    if moon_house:
+        second_from_moon = (moon_house % 12) + 1
+        twelfth_from_moon = 12 if moon_house == 1 else moon_house - 1
+        occupied = set(houses.values())
+        if second_from_moon not in occupied and twelfth_from_moon not in occupied:
+            yogas.append("🌑 Kemadruma Yoga — No planets in 2nd and 12th from Moon.")
 
-    # Neecha Bhanga Raja Yoga (example condition)
-    if positions.get("Saturn", -1) < 30 and houses.get("Saturn") == houses.get("Venus"):
-        yogas.append("🧱 Neecha Bhanga Raja Yoga — overcoming weakness, strength through difficulty.")
+    # 7. Neecha Bhanga Raja Yoga — Debilitated planet (Saturn in Medam) gets cancellation
+    if signs.get("Saturn") == "Medam":
+        if houses.get("Saturn") == houses.get("Venus"):
+            yogas.append("🧱 Neecha Bhanga Raja Yoga — Debilitation canceled.")
 
     return yogas
 
