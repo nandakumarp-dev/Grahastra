@@ -41,3 +41,7 @@ htmlcov/
 # Static and media files (if generated)
 staticfiles/
 media/
+
+#vs code essentials
+
+.vscode/
