@@ -21,6 +21,27 @@
     *, *::before, *::after {
       box-sizing: inherit;
     }
+    header.hero-with-stars {
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    header.hero-with-stars::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: transparent url("{% static 'img/stars-bg.png' %}") repeat;
+      animation: stars 200s linear infinite;
+      z-index: -1;
+      opacity: 0.2;
+      background-size: contain;
+    }
+    @keyframes stars {
+      0% { background-position: 0 0; }
+      100% { background-position: -10000px 5000px; }
+    }
     body {
       font-family: 'Inter', sans-serif;
       background: radial-gradient(circle at top, #1a0033, #000);
@@ -68,14 +89,15 @@
       text-decoration: none;
       transition: transform 0.3s ease;
       display: inline-block;
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
+      width: 100%;
+      max-width: 250px;
+      text-align: center;
     }
     .cta-btn:hover, .btn-purple:hover {
       transform: scale(1.05);
       background-color: #bb86fc;
-    }
-    .cta-btn-small {
-      padding: 0.5rem 1.2rem;
-      font-size: 0.95rem;
     }
     .section-title {
       font-family: 'Playfair Display', serif;
@@ -128,10 +150,12 @@
 <body>
 
 <!-- HEADER / HERO SECTION -->
-<header class="text-center">
+<header class="text-center hero-with-stars">
   <h1 class="logo-glow mb-3">Grahastra</h1>
   <p class="lead mb-4">Not just predictions — cosmic clarity.<br />Ask your stars. Understand your story.</p>
-  <a href="{% url 'login_page' %}" class="cta-btn cta-btn-small mt-3">Ask the Stars</a>
+  <div class="text-center">
+    <a href="{% url 'login_page' %}" class="cta-btn mt-3">Ask the Stars</a>
+  </div>
 </header>
 
 <!-- WHY GRAHASTRA -->
@@ -214,7 +238,7 @@
   <h2 class="section-title">Interactive Experience</h2>
   <div class="interactive-box" data-aos="fade-up">
     <p class="lead">Try asking: <em>"Will I become successful in life?"</em></p>
-    <a href="{% url 'login_page' %}" class="btn btn-purple mt-3">Try a Demo Chat →</a>
+    <a href="{% url 'login_page' %}" class="btn btn-purple mt-5">Try a Demo Chat →</a>
   </div>
 </section>
 
@@ -222,7 +246,10 @@
 <section class="container text-center" id="join">
   <h2 class="section-title">Begin Your Journey</h2>
   <p class="lead">Your stars await. Create your account and start decoding your destiny.</p>
-  <a href="{% url 'signup_page' %}" class="cta-btn btn-lg mt-3">🌌 Create Free Account</a>
+  
+  <div class="text-center">
+    <a href="{% url 'signup_page' %}" class="cta-btn btn-lg mt-5">🌌 JOIN US</a>
+  </div>
 </section>
 
 <!-- FOOTER -->
@@ -231,7 +258,7 @@
   <p>
     <a href="/about" class="text-light">About</a> •
     <a href="/privacy" class="text-light">Privacy</a> •
-    <a href="/contact" class="text-light">Contact</a>
+    <a href="/contact" class="text-light">Contact</a> 
   </p>
 </footer>
 

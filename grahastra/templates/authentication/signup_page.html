@@ -1,17 +1,20 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Grahastra Signup</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #0e0e0e;
+      background: radial-gradient(circle at top, #1a0033, #000),
+                  url('https://www.transparenttextures.com/patterns/stardust.png');
+      background-size: cover;
+      background-repeat: repeat;
+      background-attachment: fixed;
       color: #fff;
       min-height: 100vh;
       display: flex;
@@ -20,94 +23,114 @@
       padding: 2rem;
     }
     .auth-box {
-      background: #1c1c1c;
+      background: #0e0e0e;
+      border: 1px solid #333;
       border-radius: 1rem;
-      padding: 2rem;
-      box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+      padding: 2.5rem 2rem;
+      box-shadow: 0 0 20px rgba(187, 134, 252, 0.15), 0 0 50px rgba(187, 134, 252, 0.05);
       width: 100%;
       max-width: 500px;
+      transition: box-shadow 0.4s ease;
+    }
+    .auth-box:hover {
+      box-shadow: 0 0 40px rgba(187, 134, 252, 0.4), 0 0 70px rgba(187, 134, 252, 0.2);
     }
     .auth-box h2 {
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      color: #d4af37;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: #bb86fc;
       text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    label {
+      font-weight: 500;
+      margin-bottom: 0.5rem;
     }
     .form-control {
       background-color: #111;
       border: 1px solid #333;
       color: #fff;
     }
-    .btn-gold {
-      background-color: #d4af37;
-      color: #000;
-      font-weight: 600;
-      transition: background 0.3s;
+    .form-control:focus {
+      border-color: #bb86fc;
+      box-shadow: 0 0 0 0.2rem rgba(187, 134, 252, 0.25);
     }
-    .btn-gold:hover {
-      background-color: #bfa133;
+    .btn-purple {
+      background-color: #a86ef9;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 0.75rem;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    .btn-purple:hover {
+      background-color: #bb86fc;
+      transform: scale(1.05);
+    }
+    .auth-footer {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    .auth-footer a {
+      color: #bb86fc;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .auth-footer a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <div class="auth-box">
-    <h2>Create Your Grahastra Account</h2>
-    <form action="{% url 'signup_page' %}" method="post">
-      {% csrf_token %}
-      <div class="mb-3">
-        <label for="fullName" class="form-label">Full Name</label>
-        <input type="text" class="form-control" id="fullName" name="fullName" required>
-      </div>
-      <div class="mb-3">
-        <label for="dob" class="form-label">Date of Birth</label>
-        <input type="date" class="form-control" id="dob" name="dob" required>
-      </div>
-      <div class="mb-3">
-        <label for="tob" class="form-label">Time of Birth</label>
-        <input type="time" class="form-control" id="tob" name="tob" required>
-      </div>
-      <div class="mb-3">
-        <label for="pob" class="form-label">Place of Birth</label>
-        <input type="text" class="form-control" id="pob" name="pob" placeholder="eg.Thiruvanthapuram, Kerala" required>
-      </div>
 
-      <div class="mb-3">
-        <label for="gender" class="form-label">Gender</label>
-        <select id="gender" name="gender" class="form-control" required>
-          <option value="">Select</option>
-          <option value="male">Male</option>
-          <option value="female">Female</option>
-          <option value="other">Other</option>
-        </select>
-      </div>
+<div class="auth-box">
+  <h2>Create Your Grahastra Account</h2>
+  <form action="{% url 'signup_page' %}" method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <label for="fullName" class="form-label">Full Name</label>
+      <input type="text" class="form-control" id="fullName" name="fullName" required>
+    </div>
+    <div class="mb-3">
+      <label for="dob" class="form-label">Date of Birth</label>
+      <input type="date" class="form-control" id="dob" name="dob" required>
+    </div>
+    <div class="mb-3">
+      <label for="tob" class="form-label">Time of Birth</label>
+      <input type="time" class="form-control" id="tob" name="tob" required>
+    </div>
+    <div class="mb-3">
+      <label for="pob" class="form-label">Place of Birth</label>
+      <input type="text" class="form-control" id="pob" name="pob" placeholder="e.g. Thiruvananthapuram, Kerala" required>
+    </div>
+    <div class="mb-3">
+      <label for="gender" class="form-label">Gender</label>
+      <select id="gender" name="gender" class="form-control" required>
+        <option value="">Select</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email address</label>
+      <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <div class="mb-3">
+      <label for="confirmPassword" class="form-label">Confirm Password</label>
+      <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+    </div>
+    <button type="submit" class="btn btn-purple w-100 mt-2">Sign Up</button>
+  </form>
 
-      <div class="mb-3">
-        <label for="email" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="email" name="email" required>
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input type="password" class="form-control" id="password" name="password" required>
-      </div>
-      <div class="mb-3">
-        <label for="confirmPassword" class="form-label">Confirm Password</label>
-        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
-      </div>
-      <button type="submit" class="btn btn-gold w-100 mb-2">Sign Up</button>
-      <div class="text-center text-light mb-2">or</div>
-      <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">
-      <button type="button" class="btn btn-outline-light w-100">
-        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" 
-            alt="Google Icon" 
-            style="width:20px; margin-right:8px;"> 
-        Sign up with Google
-      </button>
-      </a>
-      <div class="text-center mt-3">
-        <small>Already have an account? <a href="{% url 'login_page' %}" class="text-warning fw-semibold text-decoration-none">Login here</a></small>
-      </div>
-      
-</form>
+  <div class="auth-footer mt-4">
+    <small>Already have an account? <a href="{% url 'login_page' %}">Login here</a></small>
   </div>
+</div>
+
 </body>
 </html>
