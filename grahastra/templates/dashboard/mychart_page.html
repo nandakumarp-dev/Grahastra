@@ -2,46 +2,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Grahastra - Birth Chart</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Playfair+Display&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
   <style>
     body {
-      background-color: #0e0e0e;
+      background: linear-gradient(to bottom, #000000, #1c002b);
       color: #ffffff;
       font-family: 'Inter', sans-serif;
     }
     .brand-text {
       font-family: 'Playfair Display', serif;
       text-transform: uppercase;
-      color: #d4af37;
-      text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
-      animation: glowPulse 2s ease-in-out infinite alternate;
-    }
-    @keyframes glowPulse {
-      from { text-shadow: 0 0 10px rgba(212, 175, 55, 0.6); }
-      to { text-shadow: 0 0 20px rgba(212, 175, 55, 1); }
+      color: #ffffff;
+      text-shadow: 0 0 15px #e4b8ff, 0 0 35px #9f4bff;
+      font-weight: bold;
     }
     .section-box {
-      background-color: #1c1c1c;
+      background-color: rgba(0, 0, 0, 0.7);
       border-radius: 1rem;
       padding: 2rem;
       margin-bottom: 2rem;
-      box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
+      box-shadow: 0 0 25px rgba(168, 110, 249, 0.2);
     }
     .section-title {
-      color: #d4af37;
+      color: #e0c3ff;
       font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
       margin-bottom: 1rem;
+    }
+    .table th, .table td {
+      color: #fff;
+      vertical-align: middle;
+    }
+    .table thead {
+      background-color: #37006e;
     }
   </style>
 </head>
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark px-3 py-3" style="background-color: #1a1a1a;">
+<nav class="navbar navbar-expand-lg navbar-dark px-3 py-3" style="background-color: #0a0014;">
   <a href="{% url 'dashboard_page' %}" class="navbar-brand brand-text">Grahastra</a>
   <div class="ms-auto d-flex align-items-center">
     <div class="dropdown">
@@ -61,20 +65,19 @@
   <h2 class="text-center mb-5 brand-text">Your Birth Chart</h2>
 
   {% if error %}
-    <div class="alert alert-warning text-center">
-      {{ error }}
-    </div>
+    <div class="alert alert-warning text-center">{{ error }}</div>
   {% else %}
+
     <div class="section-box">
-      <h4 class="section-title">Basic Details</h4>
-      <p><strong>Name : </strong>  {{ request.user.first_name }} {{ request.user.last_name }}</p>
-      <p><strong>Date of Birth : </strong>  {{ request.user.profile.birth_date }}</p>
-      <p><strong>Time of Birth : </strong>  {{ request.user.profile.birth_time }}</p>
-      <p><strong>Place of Birth : </strong>  {{ request.user.profile.birth_place }}</p>
+      <h4 class="section-title">🌟 Basic Birth Details</h4>
+      <p><strong>Name:</strong> {{ request.user.first_name }} {{ request.user.last_name }}</p>
+      <p><strong>Date of Birth:</strong> {{ request.user.profile.birth_date }}</p>
+      <p><strong>Time of Birth:</strong> {{ request.user.profile.birth_time }}</p>
+      <p><strong>Place of Birth:</strong> {{ request.user.profile.birth_place }}</p>
     </div>
 
     <div class="section-box">
-      <h4 class="section-title">Planetary Positions</h4>
+      <h4 class="section-title">🪐 Planetary Positions</h4>
       <div class="table-responsive">
         <table class="table table-dark table-striped">
           <thead>
@@ -104,7 +107,7 @@
     </div>
 
     <div class="section-box">
-      <h4 class="section-title">Ascendant & Houses</h4>
+      <h4 class="section-title">🌅 Ascendant & Houses</h4>
       <p><strong>Ascendant (Lagna Rasi):</strong> {{ lagna_rasi }}</p>
       <p><strong>Nakshatra:</strong> {{ nakshatra }}</p>
       {% if chart_data.houses %}
@@ -114,9 +117,88 @@
       {% endif %}
     </div>
 
+    <div class="section-box">
+      <h4 class="section-title">📅 Vimshottari Dasha Periods</h4>
+      <div class="table-responsive">
+        <table class="table table-dark table-sm">
+          <thead>
+            <tr>
+              <th>Mahadasha</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Antardashas</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for dasha in chart_data.dasha_periods %}
+            <tr>
+              <td>{{ dasha.main }}</td>
+              <td>{{ dasha.start }}</td>
+              <td>{{ dasha.end }}</td>
+              <td>
+                {% for ant in dasha.antardasha %}
+                  {{ ant }}{% if not forloop.last %}, {% endif %}
+                {% endfor %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section-box">
+      <h4 class="section-title">💫 Navamsa Chart</h4>
+      {% if chart_data.navamsa %}
+        <ul>
+          {% for nav in chart_data.navamsa %}
+            <li><strong>{{ nav.planet }}:</strong> {{ nav.position }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No Navamsa chart data available.</p>
+      {% endif %}
+    </div>
+
+    <div class="section-box">
+      <h4 class="section-title">🏠 Bhava Chart (House-wise Planet Distribution)</h4>
+      {% if chart_data.bhavas %}
+        <ul>
+          {% for bhava, value in chart_data.bhavas.items %}
+            <li><strong>{{ bhava }}:</strong> {{ value }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No Bhava chart data available.</p>
+      {% endif %}
+    </div>
+
+    <div class="section-box">
+      <h4 class="section-title">♈ Rahu-Ketu Axis</h4>
+      {% if chart_data.rahu_ketu %}
+        <p><strong>Rahu:</strong> {{ chart_data.rahu_ketu.rahu }}</p>
+        <p><strong>Ketu:</strong> {{ chart_data.rahu_ketu.ketu }}</p>
+      {% else %}
+        <p>No Rahu-Ketu data available.</p>
+      {% endif %}
+    </div>
+
+    <div class="section-box">
+      <h4 class="section-title">🔁 Planetary Aspects</h4>
+      {% if chart_data.aspects %}
+        <ul>
+          {% for aspect in chart_data.aspects %}
+            <li>{{ aspect }}</li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No aspect data available.</p>
+      {% endif %}
+    </div>
+
     {% if chart_data.yogas %}
     <div class="section-box">
-      <h4 class="section-title">Important Yogas</h4>
+      <h4 class="section-title">🔮 Important Yogas</h4>
       <ul>
         {% for yoga in chart_data.yogas %}
           <li>{{ yoga }}</li>
@@ -127,18 +209,19 @@
 
     {% if chart_data.interpretation %}
     <div class="section-box">
-      <h4 class="section-title">Interpretation by Astrologer</h4>
+      <h4 class="section-title">📝 Interpretation by Astrologer</h4>
       <p>{{ chart_data.interpretation }}</p>
     </div>
     {% endif %}
+
   {% endif %}
 </div>
 
 <!-- Footer -->
-<footer class="text-center text-light pt-5 pb-4 mt-5" style="background: linear-gradient(to right, #1a1a1a, #0e0e0e); border-top: 1px solid #333; box-shadow: 0 -5px 20px rgba(212, 175, 55, 0.2);">
+<footer class="text-center text-light pt-5 pb-4 mt-5" style="background-color: #0a0014; border-top: 1px solid #bb86fc33; box-shadow: 0 -5px 20px rgba(168, 110, 249, 0.2);">
   <div class="container">
     <h5 class="mb-3 brand-text">Grahastra</h5>
-    <p class="mb-2">Guiding you through the stars with ancient wisdom and AI precision ✨</p>
+    <p class="mb-2">Unveiling your cosmic design with ancient Vedic wisdom and modern intelligence ✨</p>
     <div class="d-flex justify-content-center gap-4 mb-3">
       <a href="/about" class="text-light text-decoration-none">About</a>
       <a href="/contact" class="text-light text-decoration-none">Contact</a>

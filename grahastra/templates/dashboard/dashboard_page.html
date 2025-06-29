@@ -1,104 +1,104 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Grahastra Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Playfair+Display&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grahastra | Cosmic Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
   <style>
     body {
-      background-color: #0e0e0e;
+      background: linear-gradient(to bottom, #000000, #1c002b);
       color: #ffffff;
       font-family: 'Inter', sans-serif;
     }
 
     .brand-text {
       font-family: 'Playfair Display', serif;
+      color: #fff;
       text-transform: uppercase;
-      color: #d4af37;
-      text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
-      animation: glowPulse 2s ease-in-out infinite alternate;
+      text-shadow: 0 0 15px #e4b8ff, 0 0 35px #9f4bff;
+      font-weight: bold;
     }
 
-    @keyframes glowPulse {
-      from { text-shadow: 0 0 10px rgba(212, 175, 55, 0.6); }
-      to { text-shadow: 0 0 20px rgba(212, 175, 55, 1); }
-    }
-
-    .btn-gold {
-      background-color: #d4af37;
-      color: #000;
+    .btn-glow {
+      background: linear-gradient(135deg, #a86ef9, #6a00ff);
+      color: #fff;
       font-weight: 600;
-      border-radius: 1rem;
+      border-radius: 1.5rem;
       padding: 0.75rem 1.5rem;
+      box-shadow: 0 0 15px #9f4bff;
       transition: all 0.3s ease-in-out;
     }
 
-    .btn-gold:hover {
-      background-color: #bfa133;
+    .btn-glow:hover {
+      background: linear-gradient(135deg, #6a00ff, #a86ef9);
       transform: scale(1.05);
+      box-shadow: 0 0 25px #a86ef9;
     }
 
     .widget {
-  background-color: #1c1c1c;
-  color: #ffffff;
-  border-radius: 1rem;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: none;
-  transition: all 0.4s ease;
-  cursor: pointer;
-  position: relative;
-}
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border-radius: 2rem;
+      padding: 2rem;
+      box-shadow: 0 0 30px rgba(168, 110, 249, 0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
 
     .widget:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
-}
+      transform: translateY(-10px);
+      box-shadow: 0 0 45px rgba(168, 110, 249, 0.4);
+    }
 
     .widget-title {
-      color: #d4af37;
+      color: #ffffff;
+      font-size: 1.4rem;
       font-weight: 700;
-      margin-bottom: 1rem;
       font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      animation: fadeInDown 1s ease forwards;
     }
 
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .nav-link, .dropdown-item {
-      color: #ffffff !important;
-    }
-
-    .dropdown-menu {
-      background-color: #1c1c1c;
-      border-radius: 1rem;
-      border: 1px solid #333;
+    .widget p {
+      font-size: 0.95rem;
+      color: #e2d4f9;
+      margin-bottom: 1.5rem;
     }
 
     .dashboard-title {
-  color: #d4af37;
-  text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
-  animation: glowPulse 2s ease-in-out infinite alternate, fadeIn 1s ease-in-out forwards;
-}
+      font-size: 2.8rem;
+      text-align: center;
+      color: #ffffff;
+      font-family: 'Playfair Display', serif;
+      text-shadow: 0 0 15px #bb86fc;
+      margin-bottom: 2rem;
+    }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    footer {
+      background-color: #0a0014;
+      color: #cfaaff;
+      text-align: center;
+      padding: 2rem 1rem;
+      border-top: 1px solid #bb86fc33;
+    }
+
+    footer a {
+      color: #ffffff;
+      margin: 0 1rem;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-
-  <!-- 🔝 Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #1a1a1a;">
+  <nav class="navbar navbar-expand-lg navbar-dark px-3" style="background-color: #0a0014;">
     <a href="{% url 'dashboard_page' %}" class="navbar-brand brand-text">Grahastra</a>
     <div class="ms-auto d-flex align-items-center">
       <div class="dropdown">
@@ -106,65 +106,76 @@
           <img src="https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg" width="32" height="32" class="rounded-circle" alt="Profile">
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
-          <li><a class="dropdown-item" href="/settings">Settings</a></li>
+          <li><a class="dropdown-item" href="#">My Account</a></li>
+          <li><a class="dropdown-item" href="#">Settings</a></li>
+          <li><hr class="dropdown-divider"></li>
           <li><a class="dropdown-item" href="{% url 'Landin_home' %}">Logout</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- 📦 Dashboard Widgets -->
-  <div class="container py-5 mt-5">
-    <h2 class="text-center mb-5 brand-text dashboard-title">Explore Your Stars, Unlock Your Destiny 🔮</h2>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-5 justify-content-center">
-      <div class="col">
-        <div class="widget text-center">
-          <h5 class="widget-title">Ask AI Astrologer</h5>
-          <a href="{% url 'ask_astrology' %}" class="btn btn-gold">Start Chat</a>
+  <div class="container py-5">
+    <h2 class="dashboard-title">Your Celestial Command Center ✨</h2>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col d-flex">
+        <div class="widget w-100">
+          <h5 class="widget-title">🌟 AI Astrologer</h5>
+          <p>Ask real-time questions and receive intuitive, AI-powered astrological guidance 24/7.</p>
+          <a href="{% url 'ask_astrology' %}" class="btn btn-glow mt-auto">Ask Now</a>
         </div>
       </div>
-      <div class="col">
-        <div class="widget text-center">
-          <h5 class="widget-title">My Birth Chart</h5>
-          <a href="{% url 'mychart_page' %}" class="btn btn-gold">View Chart</a>
+      <div class="col d-flex">
+        <div class="widget w-100">
+          <h5 class="widget-title">🪐 Birth Chart</h5>
+          <p>Explore the cosmic blueprint of your soul. View planetary placements, ascendant, and house lords.</p>
+          <a href="{% url 'mychart_page' %}" class="btn btn-glow mt-auto">View Chart</a>
         </div>
       </div>
-      <div class="col">
-        <div class="widget text-center">
-          <h5 class="widget-title">Yogas</h5>
-          <a href="{% url 'yogas_page' %}" class="btn btn-gold">View Reports</a>
+      <div class="col d-flex">
+        <div class="widget w-100">
+          <h5 class="widget-title">🔮 Yogas</h5>
+          <p>Discover rare and powerful yogas influencing your personality, success, and destiny path.</p>
+          <a href="{% url 'yogas_page' %}" class="btn btn-glow mt-auto">Analyze Yogas</a>
         </div>
       </div>
-      <div class="col">
-        <div class="widget text-center">
-          <h5 class="widget-title">Profile</h5>
-          <a href="{% url 'profile_page' %}" class="btn btn-gold">Edit</a>
+      <div class="col d-flex">
+        <div class="widget w-100">
+          <h5 class="widget-title">📆 Dasha Timeline</h5>
+          <p>View major & minor planetary periods (Mahadasha, Antardasha) with interpretations and timelines.</p>
+          <a href="#" class="btn btn-glow mt-auto">Check Dasha</a>
         </div>
       </div>
-      <div class="col">
-        <div class="widget text-center">
-          <h5 class="widget-title">Contact</h5>
-          <a href="{% url 'contact_page' %}" class="btn btn-gold">Reach Out</a>
+      <div class="col d-flex">
+        <div class="widget w-100">
+          <h5 class="widget-title">🧘‍♂️ My Profile</h5>
+          <p>Update your details, manage preferences, and personalize your spiritual dashboard experience.</p>
+          <a href="#" class="btn btn-glow mt-auto">Edit Profile</a>
+        </div>
+      </div>
+      <div class="col d-flex">
+        <div class="widget w-100">
+          <h5 class="widget-title">📬 Contact Support</h5>
+          <p>Need help? Get in touch with our support team or astrological experts for fast resolution.</p>
+          <a href="{% url 'contact_page' %}" class="btn btn-glow mt-auto">Get Help</a>
         </div>
       </div>
     </div>
   </div>
+
+  <footer>
+    <div class="container">
+      <h5 class="brand-text">Grahastra</h5>
+      <p class="mt-2">Vedic Wisdom Meets AI Brilliance</p>
+      <div class="d-flex justify-content-center mt-3">
+        <a href="#">About</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+      <p class="mt-3 small">&copy; 2025 Grahastra. All rights reserved.</p>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- 🔻 Footer -->
-  <footer class="text-center text-light pt-5 pb-4 mt-5" style="background: linear-gradient(to right, #1a1a1a, #0e0e0e); border-top: 1px solid #333; box-shadow: 0 -5px 20px rgba(212, 175, 55, 0.2);">
-  <div class="container">
-    <h5 class="mb-3 brand-text">Grahastra</h5>
-    <p class="mb-2">Guiding you through the stars with ancient wisdom and AI precision ✨</p>
-    <div class="d-flex justify-content-center gap-4 mb-3">
-      <a href="/about" class="text-light text-decoration-none">About</a>
-      <a href="/contact" class="text-light text-decoration-none">Contact</a>
-      <a href="/privacy" class="text-light text-decoration-none">Privacy Policy</a>
-    </div>
-    <p class="small text-muted">&copy; 2025 Grahastra. All rights reserved.</p>
-  </div>
-</footer>
-
 </body>
 </html>

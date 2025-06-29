@@ -11,51 +11,51 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter&family=Playfair+Display&display=swap" rel="stylesheet"/>
   <style>
     body {
-      background-color: #0e0e0e;
+      background: linear-gradient(to bottom, #000000, #1c002b);
       color: #ffffff;
       font-family: 'Inter', sans-serif;
     }
     .brand-text {
       font-family: 'Playfair Display', serif;
       text-transform: uppercase;
-      color: #d4af37;
-      text-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
-      animation: glowPulse 2s ease-in-out infinite alternate;
-    }
-    @keyframes glowPulse {
-      from { text-shadow: 0 0 10px rgba(212, 175, 55, 0.6); }
-      to { text-shadow: 0 0 20px rgba(212, 175, 55, 1); }
+      color: #ffffff;
+      text-shadow: 0 0 15px #e4b8ff, 0 0 35px #9f4bff;
+      font-weight: bold;
     }
     .profile-box {
-      background-color: #1c1c1c;
+      background-color: rgba(0, 0, 0, 0.7);
       padding: 2rem;
       border-radius: 1rem;
-      box-shadow: 0 0 25px rgba(212, 175, 55, 0.1);
+      box-shadow: 0 0 25px rgba(168, 110, 249, 0.2);
     }
     .profile-img {
       width: 120px;
       height: 120px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid #d4af37;
+      border: 2px solid #a86ef9;
     }
-    .btn-gold {
-      background-color: #d4af37;
-      color: #000;
+    .btn-purple {
+      background-color: #a86ef9;
+      color: #fff;
       font-weight: 600;
       border-radius: 1rem;
       padding: 0.5rem 1.25rem;
+      border: none;
+      box-shadow: 0 0 10px #9f4bff;
     }
-    .btn-gold:hover {
-      background-color: #bfa133;
+    .btn-purple:hover {
+      background-color: #8b3fe0;
     }
-    label { margin-top: 1rem; }
+    label {
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body style="min-height: 100vh; display: flex; flex-direction: column;">
 
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark px-3 py-3" style="background-color: #1a1a1a;">
+<nav class="navbar navbar-expand-lg navbar-dark px-3 py-3" style="background-color: #0a0014;">
   <a href="{% url 'dashboard_page' %}" class="navbar-brand brand-text">Grahastra</a>
   <div class="ms-auto d-flex align-items-center">
     <div class="dropdown">
@@ -106,7 +106,7 @@
             </div>
 
             <div class="text-center mt-4">
-              <button type="submit" class="btn btn-gold">Update Profile</button>
+              <button type="submit" class="btn btn-purple">Update Profile</button>
             </div>
           </form>
         </div>
@@ -116,7 +116,7 @@
 </main>
 
 <!-- Footer -->
-<footer class="text-center text-light pt-5 pb-4 mt-5" style="background: linear-gradient(to right, #1a1a1a, #0e0e0e); border-top: 1px solid #333; box-shadow: 0 -5px 20px rgba(212, 175, 55, 0.2);">
+<footer class="text-center text-light pt-5 pb-4 mt-5" style="background-color: #0a0014; border-top: 1px solid #bb86fc33; box-shadow: 0 -5px 20px rgba(168, 110, 249, 0.2);">
   <div class="container">
     <h5 class="mb-3 brand-text">Grahastra</h5>
     <p class="mb-2">Guiding you through the stars with ancient wisdom and AI precision ✨</p>
