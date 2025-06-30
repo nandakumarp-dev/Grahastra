@@ -9,7 +9,8 @@ import swisseph as swe
 from core.astrology_utils import (
     get_planet_positions, get_nakshatra,
     calculate_lagna, get_birth_chart_data,
-    format_deg, get_rasi_lord, get_sign_name, get_nakshatra_lord
+    format_deg, get_rasi_lord, get_sign_name, get_nakshatra_lord,
+    calculate_navamsa_chart,get_house_placements,
 )
 
 
@@ -55,6 +56,29 @@ class MyChartView(LoginRequiredMixin, View):
             nakshatra = get_nakshatra(positions["Moon"])
             chart = get_birth_chart_data(positions, nakshatra, asc_deg)
 
+            # Calculate Navamsa (D9) chart
+            navamsa_data = calculate_navamsa_chart(positions)
+            chart["Navamsa"] = []
+
+            for planet, navamsa_rasi in navamsa_data.items():
+                chart["Navamsa"].append({
+                    "name": planet,
+                    "navamsa_rasi": navamsa_rasi,
+                    "rasi_lord": get_rasi_lord(navamsa_rasi),
+                })
+
+            
+            # Prepare Bhava (House-wise) chart
+            house_placements = get_house_placements(positions, asc_deg)
+
+            bhava_chart = {i: [] for i in range(1, 13)}  # 1 to 12 houses
+
+            for planet, house in house_placements.items():
+                bhava_chart[house].append(planet)
+
+            chart["Bhava"] = bhava_chart
+
+
             # Planetary Table
             chart["Planets"] = []
 
@@ -88,7 +112,8 @@ class MyChartView(LoginRequiredMixin, View):
                 "chart_data": chart,
                 "lagna_rasi": lagna_sign,
                 "nakshatra": nakshatra,
-                # "user": user,
+                "navamsa_data": chart["Navamsa"],
+                "bhava_chart": chart["Bhava"],
                 "error": None
             })
 

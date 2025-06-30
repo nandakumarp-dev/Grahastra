@@ -118,43 +118,28 @@
     </div>
 
     <div class="section-box">
-      <h4 class="section-title">📅 Vimshottari Dasha Periods</h4>
-      <div class="table-responsive">
-        <table class="table table-dark table-sm">
-          <thead>
-            <tr>
-              <th>Mahadasha</th>
-              <th>Start</th>
-              <th>End</th>
-              <th>Antardashas</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for dasha in chart_data.dasha_periods %}
-            <tr>
-              <td>{{ dasha.main }}</td>
-              <td>{{ dasha.start }}</td>
-              <td>{{ dasha.end }}</td>
-              <td>
-                {% for ant in dasha.antardasha %}
-                  {{ ant }}{% if not forloop.last %}, {% endif %}
-                {% endfor %}
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="section-box">
-      <h4 class="section-title">💫 Navamsa Chart</h4>
-      {% if chart_data.navamsa %}
-        <ul>
-          {% for nav in chart_data.navamsa %}
-            <li><strong>{{ nav.planet }}:</strong> {{ nav.position }}</li>
-          {% endfor %}
-        </ul>
+      <h4 class="section-title">💫 Navamsa Chart (D9)</h4>
+      {% if chart_data.Navamsa %}
+        <div class="table-responsive">
+          <table class="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th>Planet</th>
+                <th>Navamsa Rasi</th>
+                <th>Rasi Lord</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for nav in chart_data.Navamsa %}
+              <tr>
+                <td>{{ nav.name }}</td>
+                <td>{{ nav.navamsa_rasi }}</td>
+                <td>{{ nav.rasi_lord }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       {% else %}
         <p>No Navamsa chart data available.</p>
       {% endif %}
@@ -162,12 +147,31 @@
 
     <div class="section-box">
       <h4 class="section-title">🏠 Bhava Chart (House-wise Planet Distribution)</h4>
-      {% if chart_data.bhavas %}
-        <ul>
-          {% for bhava, value in chart_data.bhavas.items %}
-            <li><strong>{{ bhava }}:</strong> {{ value }}</li>
-          {% endfor %}
-        </ul>
+      {% if bhava_chart %}
+        <div class="table-responsive">
+          <table class="table table-dark table-striped">
+            <thead>
+              <tr>
+                <th>House</th>
+                <th>Planets</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for house, planets in bhava_chart.items %}
+                <tr>
+                  <td>{{ house }}</td>
+                  <td>
+                    {% if planets %}
+                      {{ planets|join:", " }}
+                    {% else %}
+                      —
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       {% else %}
         <p>No Bhava chart data available.</p>
       {% endif %}
