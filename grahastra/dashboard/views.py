@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import Profile
+from authentication.forms import ProfileForm 
 import datetime
 import swisseph as swe
 from core.astrology_utils import (
@@ -128,11 +129,25 @@ class ContactView(View):
          return render(request,'dashboard/contact_page.html')
     
 
-class ProfileView(View):
+class ProfileView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        profile = request.user.profile
+        form = ProfileForm(instance=profile)
+        return render(request, 'dashboard/profile_page.html', {
+            'form': form,
+            'user': request.user,  # 👈 added
+        })
 
-    def get(self,request,*args,**kwargs):
-
-         return render(request,'dashboard/profile_page.html')
+    def post(self, request, *args, **kwargs):
+        profile = request.user.profile
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_page')
+        return render(request, 'dashboard/profile_page.html', {
+            'form': form,
+            'user': request.user,  # 👈 added
+        })
     
 class YogasView(View):
 

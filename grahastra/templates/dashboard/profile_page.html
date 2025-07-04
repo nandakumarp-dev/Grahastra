@@ -80,28 +80,42 @@
             {% csrf_token %}
 
             <div class="text-center mb-4">
-              {% if user.profile.profile_photo %}
-                <img src="{{ user.profile.profile_photo.url }}" class="profile-img mb-2" alt="User">
-              {% else %}
-                <img src="https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg" class="profile-img mb-2" alt="User">
-              {% endif %}
+              <!-- Show profile image or fallback -->
+              <img
+                id="profile-preview"
+                src="{% if user.profile.profile_photo %}{{ user.profile.profile_photo.url }}{% else %}https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg{% endif %}"
+                class="profile-img mb-2"
+                alt="User"
+              >
+
+              <!-- File upload button -->
               <div>
                 <label for="id_profile_photo" class="btn btn-sm btn-outline-light">Change Photo</label>
-                {{ form.profile_photo }}
+                <input type="file" name="profile_photo" id="id_profile_photo" class="d-none" accept="image/*">
+                <p id="file-name" class="text-muted small mt-2"></p>
               </div>
             </div>
 
             <div class="form-group">
-              <label for="language">Preferred Language</label>
-              {{ form.language|add_class:"form-control bg-dark text-light" }}
+              {{ form.birth_date.label_tag }}
+              {{ form.birth_date|add_class:"form-control bg-dark text-light" }}
 
-              <label for="phone">Phone Number</label>
+              {{ form.birth_time.label_tag }}
+              {{ form.birth_time|add_class:"form-control bg-dark text-light" }}
+
+              {{ form.birth_place.label_tag }}
+              {{ form.birth_place|add_class:"form-control bg-dark text-light" }}
+
+              {{ form.gender.label_tag }}
+              {{ form.gender|add_class:"form-control bg-dark text-light" }}
+
+              {{ form.phone.label_tag }}
               {{ form.phone|add_class:"form-control bg-dark text-light" }}
 
-              <label for="occupation">Occupation</label>
+              {{ form.occupation.label_tag }}
               {{ form.occupation|add_class:"form-control bg-dark text-light" }}
 
-              <label for="marital_status">Marital Status</label>
+              {{ form.marital_status.label_tag }}
               {{ form.marital_status|add_class:"form-control bg-dark text-light" }}
             </div>
 
@@ -128,6 +142,28 @@
     <p class="small text-muted">&copy; 2025 Grahastra. All rights reserved.</p>
   </div>
 </footer>
+
+<script>
+  const fileInput = document.getElementById("id_profile_photo");
+  const fileNameDisplay = document.getElementById("file-name");
+  const profileImg = document.getElementById("profile-preview");
+
+  fileInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file) {
+      fileNameDisplay.textContent = "Selected file: " + file.name;
+
+      // Optional: live preview of selected image
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        profileImg.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      fileNameDisplay.textContent = "";
+    }
+  });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
