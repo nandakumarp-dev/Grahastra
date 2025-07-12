@@ -1,8 +1,6 @@
 from django.shortcuts import render,redirect
 from django.views import View
 from django.contrib.auth import get_user_model ,logout
-User = get_user_model()
-from django.contrib.auth.hashers import make_password
 from authentication.models import Profile
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
@@ -11,19 +9,24 @@ import swisseph as swe
 from grahastra.utility import send_email
 from datetime import datetime, timedelta
 from grahastra.utility import get_coordinates_from_place
-from core.astrology_utils import get_birth_chart_data, get_house_placements,get_nakshatra,calculate_lagna,get_planet_positions
+from core.astrology_utils import get_birth_chart_data,get_nakshatra,calculate_lagna,get_planet_positions
 from django.db import transaction
+User = get_user_model()
 
 # Create your views here.
 
 class LoginView(View):
+
     def get(self, request):
+
         return render(request, 'authentication/login_page.html')
 
+
     def post(self, request):
+
         email = request.POST.get("email")
         password = request.POST.get("password")
-        user = authenticate(request, email=email, password=password)  # Use email
+        user = authenticate(request, email=email, password=password) 
 
         if user:
             login(request, user)
@@ -35,11 +38,13 @@ class LoginView(View):
     
 
 class SignUpView(View):
+
     def get(self, request):
+
         return render(request, 'authentication/signup_page.html')
+    
 
     def post(self, request):
-        from django.db import transaction  # can go at the top too
 
         full_name = request.POST.get("fullName")
         email = request.POST.get("email")
@@ -95,7 +100,6 @@ class SignUpView(View):
         except Exception as e:
             return render(request, 'authentication/signup_page.html', {'error': f"Signup failed: {e}"})
 
-        # Outside transaction (non-critical)
         subject = 'Welcome to Grahastra ✨'
         recipient = user.email
         template = 'email/registration_success_email.html'
@@ -113,6 +117,9 @@ class SignUpView(View):
     
 
 class LogoutView(View):
+
     def get(self, request):
+
         logout(request)
+
         return redirect('Landin_home')

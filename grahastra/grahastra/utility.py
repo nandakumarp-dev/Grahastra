@@ -25,6 +25,7 @@ def send_email(subject, recipient, template, context):
 
 
 def get_coordinates_from_place(pob):
+    
     api_key = settings.OPENCAGE_API_KEY
     url = f'https://api.opencagedata.com/geocode/v1/json?q={pob}&key={api_key}&limit=1'
 

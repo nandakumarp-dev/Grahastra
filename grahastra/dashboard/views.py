@@ -26,12 +26,14 @@ class MyChartView(LoginRequiredMixin, View):
 
         try:
             profile = user.profile
+
+            # Ensure all required birth data is available
             if not all([profile.birth_date, profile.birth_time, profile.latitude, profile.longitude]):
                 return render(request, 'dashboard/mychart_page.html', {
                     "error": "Please complete your birth details in the profile page."
                 })
 
-            # Date & Time setup
+            # Convert to UTC for calculations
             dt = datetime.datetime.combine(profile.birth_date, profile.birth_time)
             dt_utc = dt - datetime.timedelta(hours=5, minutes=30)
             jd = swe.julday(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour + dt_utc.minute / 60.0)
@@ -40,7 +42,7 @@ class MyChartView(LoginRequiredMixin, View):
             swe.set_ephe_path('core/ephe/')
             swe.set_sid_mode(swe.SIDM_LAHIRI)
 
-            # Planet positions
+            # Get planet positions
             positions = get_planet_positions(
                 profile.birth_date.strftime('%Y-%m-%d'),
                 profile.birth_time.strftime('%H:%M'),
@@ -48,11 +50,13 @@ class MyChartView(LoginRequiredMixin, View):
                 profile.longitude
             )
 
-            # Lagna and Nakshatra
+            # Lagna & Nakshatra
             asc_deg, lagna_sign = calculate_lagna(jd, profile.latitude, profile.longitude)
             nakshatra = get_nakshatra(positions["Moon"])
 
             chart = get_birth_chart_data(positions, nakshatra, asc_deg)
+
+            # Navamsa chart
             chart["Navamsa"] = [
                 {
                     "name": planet,
@@ -62,11 +66,14 @@ class MyChartView(LoginRequiredMixin, View):
                 for planet, nav_rasi in calculate_navamsa_chart(positions).items()
             ]
 
-            bhava_chart = {i: [] for i in range(1, 13)}
+            # Bhava chart: use string keys so the template can access them
+            bhava_chart = {str(i): [] for i in range(1, 13)}
             for planet, house in get_house_placements(positions, asc_deg).items():
-                bhava_chart[house].append(planet)
+                bhava_chart[str(house)].append(planet)
 
             chart["Bhava"] = bhava_chart
+
+            # Planets including Ascendant
             chart["Planets"] = [
                 {
                     "name": "Ascendant",
@@ -91,7 +98,12 @@ class MyChartView(LoginRequiredMixin, View):
                     "nakshatra_lord": get_nakshatra_lord(nak),
                 })
 
-            chart.update({"Lagna": lagna_sign, "Nakshatra": nakshatra})
+            chart.update({
+                "Lagna": lagna_sign,
+                "Nakshatra": nakshatra
+            })
+
+            
 
             return render(request, 'dashboard/mychart_page.html', {
                 "chart_data": chart,
@@ -99,8 +111,10 @@ class MyChartView(LoginRequiredMixin, View):
                 "nakshatra": nakshatra,
                 "navamsa_data": chart["Navamsa"],
                 "bhava_chart": chart["Bhava"],
+                'house_numbers': [str(i) for i in range(1, 13)],
+                "range_1_13": range(1, 13),
                 "error": None
-            })
+            },)
 
         except Profile.DoesNotExist:
             return redirect('profile')
