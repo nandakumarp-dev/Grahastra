@@ -33,6 +33,11 @@
       font-size: 1.5rem;
       margin-bottom: 1rem;
     }
+    .modal-content {
+      background-color: #1a0026;
+      color: #fff;
+      border-radius: 1rem;
+    }
     .table th, .table td {
       color: #fff;
       vertical-align: middle;
@@ -68,161 +73,106 @@
     <div class="alert alert-warning text-center">{{ error }}</div>
   {% else %}
 
-    <div class="section-box">
-      <h4 class="section-title">🌟 Basic Birth Details</h4>
-      <p><strong>Name:</strong> {{ request.user.first_name }} {{ request.user.last_name }}</p>
-      <p><strong>Date of Birth:</strong> {{ request.user.profile.birth_date }}</p>
-      <p><strong>Time of Birth:</strong> {{ request.user.profile.birth_time }}</p>
-      <p><strong>Place of Birth:</strong> {{ request.user.profile.birth_place }}</p>
-    </div>
+  <div class="section-box">
+    <h4 class="section-title">🌟 Basic Birth Details</h4>
+    <p><strong>Name:</strong> {{ request.user.first_name }} {{ request.user.last_name }}</p>
+    <p><strong>Date of Birth:</strong> {{ request.user.profile.birth_date }}</p>
+    <p><strong>Time of Birth:</strong> {{ request.user.profile.birth_time }}</p>
+    <p><strong>Place of Birth:</strong> {{ request.user.profile.birth_place }}</p>
+  </div>
 
-    <div class="section-box">
-      <h4 class="section-title">🪐 Planetary Positions</h4>
+  <!-- Zodiac Wheel -->
+  <div class="section-box text-center">
+    <h4 class="section-title">🌀 Enhanced Planetary Zodiac Wheel</h4>
+    <svg id="zodiac-wheel" width="400" height="400" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="200" cy="200" r="180" stroke="#bb86fc" stroke-width="2" fill="none" />
+    </svg>
+    <p class="text-white mt-3">Click a planet to view details.</p>
+  </div>
+
+  <!-- Planet Modal -->
+  <div class="modal fade" id="planetModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="planetName">Planet Info</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="planetDetails"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Planetary Insights -->
+  <div class="section-box">
+    <h4 class="section-title">🧠 Planetary Insights</h4>
+    <ul>
+      {% for planet in chart_data.Planets %}
+        <li><strong>{{ planet.name }}</strong>: in <strong>{{ planet.rasi }}</strong> ({{ planet.degree }}°), Lord: {{ planet.rasi_lord }}, Nakshatra: {{ planet.nakshatra }} ({{ planet.nakshatra_lord }})</li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Navamsa Chart (D9) -->
+  <div class="section-box">
+    <h4 class="section-title">💫 Navamsa Chart (D9)</h4>
+    {% if chart_data.Navamsa %}
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for nav in chart_data.Navamsa %}
+          <div class="col">
+            <div class="card h-100 text-white bg-gradient" style="background: linear-gradient(145deg, #1c002b, #2d0045); border: 1px solid #bb86fc33;">
+              <div class="card-body">
+                <h5 class="card-title" style="color: #e0c3ff;">{{ nav.name }}</h5>
+                <p class="mb-1"><strong>Navamsa Rasi:</strong> {{ nav.navamsa_rasi }}</p>
+                <p class="mb-0"><strong>Rasi Lord:</strong> {{ nav.rasi_lord }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">No Navamsa chart data available.</p>
+    {% endif %}
+  </div>
+
+  <!-- Bhava Chart -->
+  <div class="section-box">
+    <h4 class="section-title">🏠 Bhava Chart (House-wise Planet Distribution)</h4>
+    {% if bhava_chart %}
       <div class="table-responsive">
         <table class="table table-dark table-striped">
           <thead>
             <tr>
-              <th>Planet</th>
-              <th>Degree</th>
-              <th>Rasi</th>
-              <th>Rasi Lord</th>
-              <th>Nakshatra</th>
-              <th>Nakshatra Lord</th>
+              <th>House</th>
+              <th>Planets</th>
             </tr>
           </thead>
           <tbody>
-            {% for p in chart_data.Planets %}
-            <tr>
-              <td>{{ p.name }}</td>
-              <td>{{ p.degree }}</td>
-              <td>{{ p.rasi }}</td>
-              <td>{{ p.rasi_lord }}</td>
-              <td>{{ p.nakshatra }}</td>
-              <td>{{ p.nakshatra_lord }}</td>
-            </tr>
+            {% for house, planets in bhava_chart.items %}
+              <tr>
+                <td>{{ house }}</td>
+                <td>
+                  {% if planets %}
+                    {{ planets|join:", " }}
+                  {% else %}
+                    —
+                  {% endif %}
+                </td>
+              </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
-    </div>
-
-    <div class="section-box">
-      <h4 class="section-title">🌅 Ascendant & Houses</h4>
-      <p><strong>Ascendant (Lagna Rasi):</strong> {{ lagna_rasi }}</p>
-      <p><strong>Nakshatra:</strong> {{ nakshatra }}</p>
-      {% if chart_data.houses %}
-        {% for house_num, desc in chart_data.houses.items %}
-          <p><strong>{{ house_num }} House:</strong> {{ desc }}</p>
-        {% endfor %}
-      {% endif %}
-    </div>
-
-    <div class="section-box">
-      <h4 class="section-title">💫 Navamsa Chart (D9)</h4>
-      {% if chart_data.Navamsa %}
-        <div class="table-responsive">
-          <table class="table table-dark table-striped">
-            <thead>
-              <tr>
-                <th>Planet</th>
-                <th>Navamsa Rasi</th>
-                <th>Rasi Lord</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for nav in chart_data.Navamsa %}
-              <tr>
-                <td>{{ nav.name }}</td>
-                <td>{{ nav.navamsa_rasi }}</td>
-                <td>{{ nav.rasi_lord }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      {% else %}
-        <p>No Navamsa chart data available.</p>
-      {% endif %}
-    </div>
-
-    <div class="section-box">
-      <h4 class="section-title">🏠 Bhava Chart (House-wise Planet Distribution)</h4>
-      {% if bhava_chart %}
-        <div class="table-responsive">
-          <table class="table table-dark table-striped">
-            <thead>
-              <tr>
-                <th>House</th>
-                <th>Planets</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for house, planets in bhava_chart.items %}
-                <tr>
-                  <td>{{ house }}</td>
-                  <td>
-                    {% if planets %}
-                      {{ planets|join:", " }}
-                    {% else %}
-                      —
-                    {% endif %}
-                  </td>
-                </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-        </div>
-      {% else %}
-        <p>No Bhava chart data available.</p>
-      {% endif %}
-    </div>
-
-    <div class="section-box">
-      <h4 class="section-title">♈ Rahu-Ketu Axis</h4>
-      {% if chart_data.rahu_ketu %}
-        <p><strong>Rahu:</strong> {{ chart_data.rahu_ketu.rahu }}</p>
-        <p><strong>Ketu:</strong> {{ chart_data.rahu_ketu.ketu }}</p>
-      {% else %}
-        <p>No Rahu-Ketu data available.</p>
-      {% endif %}
-    </div>
-
-    <div class="section-box">
-      <h4 class="section-title">🔁 Planetary Aspects</h4>
-      {% if chart_data.aspects %}
-        <ul>
-          {% for aspect in chart_data.aspects %}
-            <li>{{ aspect }}</li>
-          {% endfor %}
-        </ul>
-      {% else %}
-        <p>No aspect data available.</p>
-      {% endif %}
-    </div>
-
-    {% if chart_data.yogas %}
-    <div class="section-box">
-      <h4 class="section-title">🔮 Important Yogas</h4>
-      <ul>
-        {% for yoga in chart_data.yogas %}
-          <li>{{ yoga }}</li>
-        {% endfor %}
-      </ul>
-    </div>
+    {% else %}
+      <p class="text-muted">No Bhava chart data available.</p>
     {% endif %}
-
-    {% if chart_data.interpretation %}
-    <div class="section-box">
-      <h4 class="section-title">📝 Interpretation by Astrologer</h4>
-      <p>{{ chart_data.interpretation }}</p>
-    </div>
-    {% endif %}
+  </div>
 
   {% endif %}
 </div>
 
 <!-- Footer -->
-<footer class="text-center text-light pt-5 pb-4 mt-5" style="background-color: #0a0014; border-top: 1px solid #bb86fc33; box-shadow: 0 -5px 20px rgba(168, 110, 249, 0.2);">
+<footer class="text-center text-light pt-5 pb-4 mt-5" style="background-color: #0a0014; border-top: 1px solid #bb86fc33;">
   <div class="container">
     <h5 class="mb-3 brand-text">Grahastra</h5>
     <p class="mb-2">Unveiling your cosmic design with ancient Vedic wisdom and modern intelligence ✨</p>
@@ -235,6 +185,84 @@
   </div>
 </footer>
 
+<script>
+  const planets = {{ chart_data.Planets|safe }};
+  const centerX = 200, centerY = 200, radius = 160;
+  const svg = document.getElementById("zodiac-wheel");
+
+  const signs = [
+    '♈ Aries','♉ Taurus','♊ Gemini','♋ Cancer','♌ Leo','♍ Virgo',
+    '♎ Libra','♏ Scorpio','♐ Sagittarius','♑ Capricorn','♒ Aquarius','♓ Pisces'
+  ];
+
+  function degToRad(deg) {
+    return (deg - 90) * Math.PI / 180;
+  }
+
+  for (let i = 0; i < 12; i++) {
+    const angle = degToRad(i * 30 + 15);
+    const x = centerX + (radius - 40) * Math.cos(angle);
+    const y = centerY + (radius - 40) * Math.sin(angle);
+    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    text.setAttribute("x", x);
+    text.setAttribute("y", y);
+    text.setAttribute("fill", "#ffffff");
+    text.setAttribute("font-size", "10");
+    text.setAttribute("text-anchor", "middle");
+    text.textContent = signs[i];
+    svg.appendChild(text);
+
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    const angleLine = degToRad(i * 30);
+    const x1 = centerX + radius * Math.cos(angleLine);
+    const y1 = centerY + radius * Math.sin(angleLine);
+    line.setAttribute("x1", centerX);
+    line.setAttribute("y1", centerY);
+    line.setAttribute("x2", x1);
+    line.setAttribute("y2", y1);
+    line.setAttribute("stroke", "#8e44ad");
+    line.setAttribute("stroke-width", "1");
+    svg.appendChild(line);
+  }
+
+planets.forEach(p => {
+  if (!p.degree) return;
+
+  const angle = degToRad(parseFloat(p.degree));
+  const x = centerX + radius * Math.cos(angle);
+  const y = centerY + radius * Math.sin(angle);
+
+  // Yellow circle
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", x);
+  circle.setAttribute("cy", y);
+  circle.setAttribute("r", 6);
+  circle.setAttribute("fill", "#f1c40f");
+  circle.style.cursor = 'pointer';
+  circle.addEventListener('click', () => {
+    document.getElementById("planetName").textContent = p.name;
+    document.getElementById("planetDetails").innerHTML = `
+      <p><strong>Rasi:</strong> ${p.rasi}</p>
+      <p><strong>Degree:</strong> ${p.degree}</p>
+      <p><strong>Rasi Lord:</strong> ${p.rasi_lord}</p>
+      <p><strong>Nakshatra:</strong> ${p.nakshatra}</p>
+      <p><strong>Nakshatra Lord:</strong> ${p.nakshatra_lord}</p>`;
+    new bootstrap.Modal(document.getElementById("planetModal")).show();
+  });
+  svg.appendChild(circle);
+
+  // Add label next to circle
+  const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  label.setAttribute("x", x + 8);
+  label.setAttribute("y", y);
+  label.setAttribute("fill", "#ffffff");
+  label.setAttribute("font-size", "10");
+  label.setAttribute("font-family", "Inter, sans-serif");
+  label.setAttribute("text-anchor", "start");
+  label.textContent = p.name;
+  svg.appendChild(label);
+});
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

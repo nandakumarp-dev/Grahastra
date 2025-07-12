@@ -61,17 +61,17 @@
   <div class="container py-5">
     <h2 class="text-center mb-5 brand-text">🔮 Yogas in Your Birth Chart</h2>
 
-    {% if chart_data.yogas %}
-      {% for yoga in chart_data.yogas %}
+    {% if yogas %}
+      {% for yoga in yogas %}
         <div class="yoga-box">
-          <h4 class="yoga-title">{{ yoga.name }}</h4>
-          <p class="yoga-description">{{ yoga.description }}</p>
+          <h4 class="yoga-title">{{ yoga }}</h4>
+          <p class="yoga-description">This yoga has been detected in your chart based on planetary positions.</p>
         </div>
       {% endfor %}
     {% else %}
-      <div class="text-center text-muted">No yogas found in your birth chart.</div>
+      <div class="text-center text-muted">No yogas found in your birth chart or birth details are incomplete.</div>
     {% endif %}
-    
+
   </div>
 </main>
 
