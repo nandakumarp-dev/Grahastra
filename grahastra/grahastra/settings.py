@@ -119,11 +119,6 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
 ]
 
-# AUTHENTICATION_BACKENDS = (
-#     'social_core.backends.google.GoogleOAuth2',
-#     'django.contrib.auth.backends.ModelBackend',
-# )
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 

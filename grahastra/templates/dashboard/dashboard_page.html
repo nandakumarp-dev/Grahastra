@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -103,7 +104,11 @@
     <div class="ms-auto d-flex align-items-center">
       <div class="dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
-          <img src="https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg" width="32" height="32" class="rounded-circle" alt="Profile">
+        <img src="{% if request.user.profile.profile_photo %}{{ request.user.profile.profile_photo.url }}{% else %}{% static 'img/default-profile.png' %}{% endif %}"
+            width="32"
+            height="32"
+            class="rounded-circle"
+            alt="Profile">
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
           <li><a class="dropdown-item" href="#">My Account</a></li>
