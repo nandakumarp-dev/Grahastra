@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'dashboard',
     'social_django',
     'astrologerchatbot',
+    'payment',
 ]
 
 MIDDLEWARE = [

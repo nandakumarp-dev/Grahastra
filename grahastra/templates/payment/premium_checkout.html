@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Grahastra Checkout</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body style="background: #000; color: #fff; font-family: 'Inter', sans-serif; text-align: center; padding-top: 100px;">
+  <h1>Confirm Payment for {{ plan.name|capfirst }}</h1>
+  <p>Amount: ₹{{ amount|floatformat:2 }}</p>
+  <button id="rzp-button" style="padding: 10px 30px; background: #9f4bff; color: white; font-size: 18px; border-radius: 8px;">Pay Now</button>
+
+  <form action="{% url 'premium_verify' %}" method="POST" id="payment-form">
+    {% csrf_token %}
+    <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+    <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+  </form>
+
+  <script>
+    const options = {
+      key: "{{ razorpay_merchant_key }}",
+      amount: "{{ amount }}",
+      currency: "{{ currency }}",
+      name: "Grahastra Premium",
+      description: "Premium Plan: {{ plan.name|capfirst }}",
+      handler: function (response) {
+        document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+        document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+        document.getElementById('razorpay_signature').value = response.razorpay_signature;
+        document.getElementById('payment-form').submit();
+      },
+      prefill: {
+        name: "{{ user_name }}",
+        email: "{{ user_email }}"
+      },
+      theme: {
+        color: "#a86ef9"
+      }
+    };
+    const rzp = new Razorpay(options);
+    document.getElementById('rzp-button').onclick = function (e) {
+      rzp.open();
+      e.preventDefault();
+    };
+  </script>
+</body>
+</html>
