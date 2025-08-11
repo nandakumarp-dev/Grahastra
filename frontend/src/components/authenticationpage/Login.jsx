@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../landingpage/css/Login.css"; // custom styles
+import "../authenticationpage/css/Login.css"; // custom styles
 
 
 function Login() {

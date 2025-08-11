@@ -1,6 +1,6 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../landingpage/css/Signup.css";
+import "../authenticationpage/css/Signup.css";
 
 function Signup() {
   return (
