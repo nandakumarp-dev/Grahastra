@@ -16,7 +16,7 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: transparent url("../../../assets/stars-bg.png") repeat;
+  background: transparent url("../../../assets/landingpage/stars-bg.png") repeat;
   animation: stars 200s linear infinite;
   z-index: -1; /* behind everything */
   opacity: 0.2;

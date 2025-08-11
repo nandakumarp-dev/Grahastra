@@ -1,32 +1,48 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../authenticationpage/css/Login.css"; // custom styles
-
+import "../authenticationpage/css/Login.css";
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Temporary validation (replace with API call)
-    if (!email || !password) {
-      setError("Please fill in all fields.");
+  async function loginAPI(event) {
+    event.preventDefault();
+
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/login/",
+        credentials,
+        { withCredentials: true } // needed if backend sets cookies
+      );
+
+      if (response.status === 200) {
+        // Store access token in sessionStorage instead of localStorage
+        sessionStorage.setItem("accessToken", response.data.access_token);
+        setMessage("Login successful!");
+        setError("");
+        navigate("/");
+      } else {
+        setError(response.data.msg || "Login failed.");
+        setMessage("");
+      }
+    } catch (err) {
+      setError(err.response?.data?.msg || "An error occurred. Please try again.");
       setMessage("");
-    } else {
-      setError("");
-      setMessage("Login successful!"); // Replace with actual login logic
     }
-  };
+  }
 
   return (
     <div className="login-page">
       <div className="auth-box">
         <h2>Login to Grahastra</h2>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={loginAPI}>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email
@@ -35,9 +51,10 @@ function Login() {
               type="email"
               id="email"
               className="form-control"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={credentials.email}
+              onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
               required
+              name="email"
             />
           </div>
 
@@ -49,16 +66,17 @@ function Login() {
               type="password"
               id="password"
               className="form-control"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={credentials.password}
+              onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
               required
+              name="password"
             />
           </div>
 
           {error && <div className="alert alert-danger mt-3">{error}</div>}
           {message && <div className="alert alert-success mt-3">{message}</div>}
 
-          <button type="submit" className="btn-purple mt-3 pt-2 pb-2">
+          <button type="submit" className="btn-purple mt-3 pt-2 pb-2 w-100">
             Login
           </button>
         </form>
