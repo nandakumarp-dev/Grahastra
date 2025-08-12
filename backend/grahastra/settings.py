@@ -44,11 +44,13 @@ INSTALLED_APPS = [
     'social_django',
     'astrologerchatbot',
     'payment',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -175,3 +177,13 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 # geocoding for converting pob to cordinate
 
 OPENCAGE_API_KEY = config("OPENCAGE_API_KEY")
+
+# connecting frontend and backend 
+
+CORS_ALLOW_ALL_ORIGINS = True  # Dev only, restrict in prod
+
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
