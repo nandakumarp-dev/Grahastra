@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Profile
-from authentication.forms import ProfileForm
+# from authentication.forms import ProfileForm
 from core.astrology_utils import (
     get_planet_positions, get_nakshatra,
     calculate_lagna, get_birth_chart_data,
@@ -125,23 +125,23 @@ class ContactView(View):
         return render(request, 'dashboard/contact_page.html')
 
 
-class ProfileView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        form = ProfileForm(instance=request.user.profile)
-        return render(request, 'dashboard/profile_page.html', {
-            'form': form,
-            'user': request.user,
-        })
+# class ProfileView(LoginRequiredMixin, View):
+#     def get(self, request, *args, **kwargs):
+#         form = ProfileForm(instance=request.user.profile)
+#         return render(request, 'dashboard/profile_page.html', {
+#             'form': form,
+#             'user': request.user,
+#         })
 
-    def post(self, request, *args, **kwargs):
-        form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return redirect('profile_page')
-        return render(request, 'dashboard/profile_page.html', {
-            'form': form,
-            'user': request.user,
-        })
+#     def post(self, request, *args, **kwargs):
+#         form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('profile_page')
+#         return render(request, 'dashboard/profile_page.html', {
+#             'form': form,
+#             'user': request.user,
+#         })
 
 
 class YogasView(LoginRequiredMixin, View):

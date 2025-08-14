@@ -6,32 +6,57 @@ import "../authenticationpage/css/Login.css";
 
 function Login() {
   const navigate = useNavigate();
-  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  async function loginAPI(event) {
+  const loginAPI = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    setError("");
+    setMessage("");
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/login/", {
-  email: credentials.email,
-  password: credentials.password
-}, { withCredentials: true });
+      const response = await axios.post(
+        "http://127.0.0.1:8000/login/",
+        {
+          email: credentials.email,
+          password: credentials.password,
+        },
+        { withCredentials: true } // important for Django session login
+      );
 
       if (response.data.success) {
-        setMessage(response.data.message);
+        setMessage(response.data.message || "Login successful!");
         setError("");
-        navigate("/dashboard"); // redirect to home/dashboard
+
+        // Optionally store session/JWT (if using JWT later)
+        // localStorage.setItem("token", response.data.token);
+
+        navigate("/dashboard"); // redirect after login
       } else {
-        setError(response.data.message || "Login failed.");
+        setError(
+          response.data.errors
+            ? Object.values(response.data.errors).join(", ")
+            : response.data.message || "Login failed."
+        );
         setMessage("");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "An error occurred. Please try again.");
+      setError(
+        err.response?.data?.message ||
+          err.response?.data?.errors ||
+          "An error occurred. Please try again."
+      );
       setMessage("");
+    } finally {
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="login-page">
@@ -39,6 +64,7 @@ function Login() {
         <h2>Login to Grahastra</h2>
 
         <form onSubmit={loginAPI}>
+          {/* Email */}
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email
@@ -56,6 +82,7 @@ function Login() {
             />
           </div>
 
+          {/* Password */}
           <div className="mb-3">
             <label htmlFor="password" className="form-label">
               Password
@@ -73,17 +100,23 @@ function Login() {
             />
           </div>
 
+          {/* Alerts */}
           {error && <div className="alert alert-danger mt-3">{error}</div>}
           {message && <div className="alert alert-success mt-3">{message}</div>}
 
-          <button type="submit" className="btn-purple mt-3 pt-2 pb-2 w-100">
-            Login
+          {/* Submit */}
+          <button
+            type="submit"
+            className="btn-purple mt-3 pt-2 pb-2 w-100"
+            disabled={loading}
+          >
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 
         <div className="auth-footer mt-4">
           <small>
-            Don't have an account? <a href="/signup">Sign up here</a>
+            Don’t have an account? <a href="/signup">Sign up here</a>
           </small>
         </div>
       </div>
