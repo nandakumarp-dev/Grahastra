@@ -6,7 +6,6 @@ import "../authenticationpage/css/Login.css";
 
 function Login() {
   const navigate = useNavigate();
-
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
@@ -18,21 +17,22 @@ function Login() {
       const response = await axios.post(
         "http://127.0.0.1:8000/login/",
         credentials,
-        { withCredentials: true } // needed if backend sets cookies
+        {
+          withCredentials: true, // include cookies (if using session login)
+          headers: { "Content-Type": "application/json" },
+        }
       );
 
-      if (response.status === 200) {
-        // Store access token in sessionStorage instead of localStorage
-        sessionStorage.setItem("accessToken", response.data.access_token);
-        setMessage("Login successful!");
+      if (response.data.success) {
+        setMessage(response.data.message);
         setError("");
-        navigate("/");
+        navigate("/"); // redirect to home/dashboard
       } else {
-        setError(response.data.msg || "Login failed.");
+        setError(response.data.message || "Login failed.");
         setMessage("");
       }
     } catch (err) {
-      setError(err.response?.data?.msg || "An error occurred. Please try again.");
+      setError(err.response?.data?.message || "An error occurred. Please try again.");
       setMessage("");
     }
   }
@@ -52,7 +52,9 @@ function Login() {
               id="email"
               className="form-control"
               value={credentials.email}
-              onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+              onChange={(e) =>
+                setCredentials({ ...credentials, email: e.target.value })
+              }
               required
               name="email"
             />
@@ -67,7 +69,9 @@ function Login() {
               id="password"
               className="form-control"
               value={credentials.password}
-              onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+              onChange={(e) =>
+                setCredentials({ ...credentials, password: e.target.value })
+              }
               required
               name="password"
             />
