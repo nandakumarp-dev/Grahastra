@@ -1,7 +1,7 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Dashboard.css";
-import defaultProfile from "../assets/default-profile.png"; // Adjust path as needed
+import "../dashboard/css/Dashboard.css";
+import defaultProfile from "../../assets/landingpage/stars-bg.png"; // Adjust path as needed
 
 export default function Dashboard() {
   // Example user profile data (replace with props or context)

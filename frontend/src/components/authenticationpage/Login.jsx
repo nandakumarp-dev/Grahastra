@@ -14,19 +14,15 @@ function Login() {
     event.preventDefault();
 
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/login/",
-        credentials,
-        {
-          withCredentials: true, // include cookies (if using session login)
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      const response = await axios.post("http://127.0.0.1:8000/login/", {
+  email: credentials.email,
+  password: credentials.password
+}, { withCredentials: true });
 
       if (response.data.success) {
         setMessage(response.data.message);
         setError("");
-        navigate("/"); // redirect to home/dashboard
+        navigate("/dashboard"); // redirect to home/dashboard
       } else {
         setError(response.data.message || "Login failed.");
         setMessage("");

@@ -6,6 +6,8 @@ import Landing from './components/landingpage/Landing'; // Our landing page comp
 import './App.css'; // Any global overrides
 import Login from './components/authenticationpage/Login';
 import Signup from './components/authenticationpage/Signup';
+import Dashboard from './components/dashboard/Dashboard';
+
 
 
 
@@ -17,6 +19,7 @@ function App() {
       <Route path="/" element={<Landing />}></Route>
       <Route path="/login" element={<Login />}></Route>
       <Route path="/signup" element={<Signup />}></Route>
+      <Route path="/dashboard" element={<Dashboard />}></Route>
     </Routes>
   </BrowserRouter>
   );

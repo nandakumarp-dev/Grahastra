@@ -38,19 +38,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
-    'authentication',
-    'dashboard',
-    'social_django',
-    'astrologerchatbot',
+    "rest_framework",
+    'corsheaders','core',
+    'authentication','dashboard',
+    'social_django','astrologerchatbot',
     'payment',
-    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -180,7 +178,7 @@ OPENCAGE_API_KEY = config("OPENCAGE_API_KEY")
 
 # connecting frontend and backend 
 
-CORS_ALLOW_ALL_ORIGINS = True  # Dev only, restrict in prod
+CORS_ALLOW_CREDENTIALS = True
 
 
 CORS_ALLOWED_ORIGINS = [

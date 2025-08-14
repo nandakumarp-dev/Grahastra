@@ -1,10 +1,14 @@
 from django.shortcuts import render,redirect
 from django.views import View
+from rest_framework.views import APIView
 from django.contrib.auth import get_user_model ,logout
 from authentication.models import Profile
-from django.contrib.auth import authenticate, login
+from .serializers import LoginSerializer
+from django.contrib.auth import login
 from django.contrib import messages
 import threading
+from rest_framework.response import Response
+from rest_framework import status
 import swisseph as swe
 from grahastra.utility import send_email
 from datetime import datetime, timedelta
@@ -13,28 +17,29 @@ from core.astrology_utils import get_birth_chart_data,get_nakshatra,calculate_la
 from django.db import transaction
 User = get_user_model()
 
+
 # Create your views here.
 
-class LoginView(View):
+class LoginView(APIView):
 
     def get(self, request):
 
         return render(request, 'authentication/login_page.html')
-
+    
 
     def post(self, request):
-
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        user = authenticate(request, email=email, password=password) 
-
-        if user:
-            login(request, user)
-            return redirect('dashboard_page')
-        else:
-            return render(request, 'authentication/login_page.html', {
-                'error': 'Invalid email or password.'
-            })
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.validated_data["user"]
+            login(request, user)  # create session
+            return Response(
+                {"success": True, "message": "Login successful"},
+                status=status.HTTP_200_OK
+            )
+        return Response(
+            {"success": False, "errors": serializer.errors},
+            status=status.HTTP_400_BAD_REQUEST
+        )
     
 
 class SignUpView(View):
