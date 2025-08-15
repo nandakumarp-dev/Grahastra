@@ -2,11 +2,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css'; // Global Bootstrap
-import Landing from './components/landingpage/Landing'; // Our landing page component
-import './App.css'; // Any global overrides
-import Login from './components/authenticationpage/Login';
-import Signup from './components/authenticationpage/Signup';
-import Dashboard from './components/dashboard/Dashboard';
+import Login from './features/auth/Login';
+import Signup from './features/auth/Signup';
+import Landing from './features/landing/Landing';
+import Dashboard from './features/dashboard/Dashboard';
 
 
 

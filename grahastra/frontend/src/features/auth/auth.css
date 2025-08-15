@@ -1,3 +1,93 @@
+.login-page {
+  font-family: "Inter", sans-serif;
+  background: radial-gradient(circle at top, #1a0033, #000),
+    url("https://www.transparenttextures.com/patterns/stardust.png");
+  background-size: cover;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.auth-box {
+  background: #0e0e0e;
+  border: 1px solid #333;
+  border-radius: 1rem;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 0 20px rgba(187, 134, 252, 0.15),0 0 50px rgba(187, 134, 252, 0.05);
+  width: 100%;
+  max-width: 420px;
+  transition: box-shadow 0.4s ease;
+}
+
+.auth-box:hover {
+  box-shadow: 0 0 40px rgba(187, 134, 252, 0.4),
+    0 0 70px rgba(187, 134, 252, 0.2);
+}
+
+.auth-box h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 1.8rem;
+  color: #bb86fc;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+label {
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.form-control {
+  background-color: #111;
+  border: 1px solid #333;
+  color: #fff;
+  
+}
+
+.form-control:focus {
+  border-color: #bb86fc;
+  box-shadow: 0 0 0 0.2rem rgba(187, 134, 252, 0.25);
+}
+
+.btn-purple {
+  background-color: #a86ef9;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 1rem;
+  border: none;
+  transition: all 0.3s ease;
+  max-width: 355px;
+  
+}
+
+.btn-purple:hover {
+  background-color: #bb86fc;
+  transform: scale(1.05);
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 1.5rem;
+}
+
+.auth-footer a {
+  color: #bb86fc;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+
+/* signup.css  */
+
 .signup-body {
   font-family: 'Inter', sans-serif;
   background: radial-gradient(circle at top, #1a0033, #000),

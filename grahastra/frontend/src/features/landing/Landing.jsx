@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import "./css/Landing.css";
+import "./Landing.css";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Link } from 'react-router-dom';
-
 
 function Landing() {
   useEffect(() => {
