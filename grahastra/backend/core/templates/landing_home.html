@@ -1,0 +1,269 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grahastra - Your AI Vedic Astrologer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <style>
+    html, body {
+      scroll-behavior: smooth;
+      scroll-snap-type: y mandatory;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    *, *::before, *::after {
+      box-sizing: inherit;
+    }
+    header.hero-with-stars {
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    header.hero-with-stars::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: transparent url("{% static 'img/stars-bg.png' %}") repeat;
+      animation: stars 200s linear infinite;
+      z-index: -1;
+      opacity: 0.2;
+      background-size: contain;
+    }
+    @keyframes stars {
+      0% { background-position: 0 0; }
+      100% { background-position: -10000px 5000px; }
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top, #1a0033, #000);
+      background-size: 300% 300%;
+      animation: bgMove 60s ease infinite;
+      color: #e0e0e0;
+    }
+    @keyframes bgMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    section, header {
+      min-height: 100vh;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      scroll-snap-align: start;
+      padding: 4rem 1rem;
+      overflow: hidden;
+    }
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+    .logo-glow {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px #9f4bff;
+      animation: glowPulse 3s ease-in-out infinite alternate;
+    }
+    @keyframes glowPulse {
+      from { text-shadow: 0 0 10px #9f4bff; }
+      to { text-shadow: 0 0 30px #bb86fc; }
+    }
+    .cta-btn, .btn-purple {
+      background-color: #a86ef9;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 1rem;
+      box-shadow: 0 0 15px #bb86fc;
+      border: none;
+      text-decoration: none;
+      transition: transform 0.3s ease;
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      font-size: 1.1rem;
+      width: 100%;
+      max-width: 250px;
+      text-align: center;
+    }
+    .cta-btn:hover, .btn-purple:hover {
+      transform: scale(1.05);
+      background-color: #bb86fc;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      color: #ffffff;
+      text-shadow: 0 0 10px #bb86fc;
+    }
+    .card {
+      background: linear-gradient(145deg, #1e0033, #2c0050);
+      border: 1px solid #bb86fc44;
+      border-radius: 1rem;
+      padding: 2rem;
+      color: #fff;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 0 25px rgba(168, 110, 249, 0.15);
+      height: 100%;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 40px rgba(187, 134, 252, 0.4);
+    }
+    .interactive-box {
+      background: linear-gradient(145deg, #1f0033, #2d0054);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 30px rgba(187, 134, 252, 0.2);
+      text-align: center;
+    }
+    footer {
+      background-color: #0a0014;
+      color: #aaa;
+      font-size: 0.9rem;
+      padding: 2rem 1rem;
+      text-align: center;
+      border-top: 1px solid #bb86fc33;
+    }
+    .lead {
+      font-size: 1.25rem;
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- HEADER / HERO SECTION -->
+<header class="text-center hero-with-stars">
+  <h1 class="logo-glow mb-3">Grahastra</h1>
+  <p class="lead mb-4">Not just predictions — cosmic clarity.<br />Ask your stars. Understand your story.</p>
+  <div class="text-center">
+    <a href="{% url 'login_page' %}" class="cta-btn mt-3">Ask the Stars</a>
+  </div>
+</header>
+
+<!-- WHY GRAHASTRA -->
+<section class="container" id="why">
+  <h2 class="section-title">Why Choose Grahastra?</h2>
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+    <div class="col" data-aos="fade-up">
+      <div class="card text-center">
+        <h5>🌠 Instant Answers</h5>
+        <p>Real-time astrological insights powered by AI trained in ancient Jyotisha.</p>
+      </div>
+    </div>
+    <div class="col" data-aos="fade-up" data-aos-delay="100">
+      <div class="card text-center">
+        <h5>🔭 Cosmic Precision</h5>
+        <p>Accurate birth charts powered by NASA ephemeris data and Vedic principles.</p>
+      </div>
+    </div>
+    <div class="col" data-aos="fade-up" data-aos-delay="200">
+      <div class="card text-center">
+        <h5>🔐 Total Privacy</h5>
+        <p>Your questions and data are encrypted, sacred, and never shared.</p>
+      </div>
+    </div>
+    <div class="col" data-aos="fade-up" data-aos-delay="300">
+      <div class="card text-center">
+        <h5>🧠 Ancient + AI</h5>
+        <p>We blend 5000 years of Vedic wisdom with cutting-edge AI for unmatched clarity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="container" id="how">
+  <h2 class="section-title">How It Works</h2>
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col" data-aos="fade-right">
+      <div class="card text-center">
+        <h4>💬 Ask Anything</h4>
+        <p>Submit your birth details and ask any life question — love, career, karma, or health.</p>
+      </div>
+    </div>
+    <div class="col" data-aos="fade-left">
+      <div class="card text-center">
+        <h4>🔮 AI Vedic Insights</h4>
+        <p>We calculate your chart and apply astrological rules using intelligent models.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="container" id="testimonials">
+  <h2 class="section-title">What Users Say</h2>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="col" data-aos="zoom-in">
+      <div class="card text-center">
+        <p>“Grahastra gave me clarity in minutes. The insights were eerily accurate.”</p>
+        <p class="text-info fw-semibold">– Aditi, Mumbai</p>
+      </div>
+    </div>
+    <div class="col" data-aos="zoom-in" data-aos-delay="100">
+      <div class="card text-center">
+        <p>“The Yogas section explained things no astrologer told me before!”</p>
+        <p class="text-info fw-semibold">– Rahul, Kochi</p>
+      </div>
+    </div>
+    <div class="col" data-aos="zoom-in" data-aos-delay="200">
+      <div class="card text-center">
+        <p>“Absolutely love the design and instant answers. I'm hooked!”</p>
+        <p class="text-info fw-semibold">– Priya, Bangalore</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO CHAT -->
+<section class="container" id="demo">
+  <h2 class="section-title">Interactive Experience</h2>
+  <div class="interactive-box" data-aos="fade-up">
+    <p class="lead">Try asking: <em>"Will I become successful in life?"</em></p>
+    <a href="{% url 'login_page' %}" class="btn btn-purple mt-5">Try a Demo Chat →</a>
+  </div>
+</section>
+
+<!-- JOIN CTA -->
+<section class="container text-center" id="join">
+  <h2 class="section-title">Begin Your Journey</h2>
+  <p class="lead">Your stars await. Create your account and start decoding your destiny.</p>
+  
+  <div class="text-center">
+    <a href="{% url 'signup_page' %}" class="cta-btn btn-lg mt-5">🌌 JOIN US</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>&copy; 2025 Grahastra • Powered by Ancient Wisdom + AI</p>
+  <p>
+    <a href="/about" class="text-light">About</a> •
+    <a href="/privacy" class="text-light">Privacy</a> •
+    <a href="/contact" class="text-light">Contact</a> 
+  </p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init();</script>
+</body>
+</html>

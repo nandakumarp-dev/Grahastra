@@ -1,0 +1,170 @@
+{% load static %}
+{% load form_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grahastra - Update Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Playfair+Display&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #000000, #1c002b);
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+    }
+    .brand-text {
+      font-family: 'Playfair Display', serif;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 0 15px #e4b8ff, 0 0 35px #9f4bff;
+      font-weight: bold;
+    }
+    .profile-box {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 25px rgba(168, 110, 249, 0.2);
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #a86ef9;
+    }
+    .btn-purple {
+      background-color: #a86ef9;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 1rem;
+      padding: 0.5rem 1.25rem;
+      border: none;
+      box-shadow: 0 0 10px #9f4bff;
+    }
+    .btn-purple:hover {
+      background-color: #8b3fe0;
+    }
+    label {
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark px-3 py-3" style="background-color: #0a0014;">
+  <a href="{% url 'dashboard_page' %}" class="navbar-brand brand-text">Grahastra</a>
+  <div class="ms-auto d-flex align-items-center">
+    <div class="dropdown">
+      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+        <img src="https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg" width="32" height="32" class="rounded-circle" alt="Profile">
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end bg-dark border-0">
+        <li><a class="dropdown-item text-light" href="/settings">Settings</a></li>
+        <li><a class="dropdown-item text-light" href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Profile Update Form -->
+<main class="flex-grow-1 d-flex align-items-center">
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="profile-box">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="text-center mb-4">
+              <!-- Show profile image or fallback -->
+              <img
+                id="profile-preview"
+                src="{% if user.profile.profile_photo %}{{ user.profile.profile_photo.url }}{% else %}https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg{% endif %}"
+                class="profile-img mb-2"
+                alt="User"
+              >
+
+              <!-- File upload button -->
+              <div>
+                <label for="id_profile_photo" class="btn btn-sm btn-outline-light">Change Photo</label>
+                <input type="file" name="profile_photo" id="id_profile_photo" class="d-none" accept="image/*">
+                <p id="file-name" class="text-muted small mt-2"></p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              {{ form.birth_date.label_tag }}
+              {{ form.birth_date|add_class:"form-control bg-dark text-light" }}
+
+              {{ form.birth_time.label_tag }}
+              {{ form.birth_time|add_class:"form-control bg-dark text-light" }}
+
+              {{ form.birth_place.label_tag }}
+              {{ form.birth_place|add_class:"form-control bg-dark text-light" }}
+
+              {{ form.gender.label_tag }}
+              {{ form.gender|add_class:"form-control bg-dark text-light" }}
+
+              {{ form.phone.label_tag }}
+              {{ form.phone|add_class:"form-control bg-dark text-light" }}
+
+              {{ form.occupation.label_tag }}
+              {{ form.occupation|add_class:"form-control bg-dark text-light" }}
+
+              {{ form.marital_status.label_tag }}
+              {{ form.marital_status|add_class:"form-control bg-dark text-light" }}
+            </div>
+
+            <div class="text-center mt-4">
+              <button type="submit" class="btn btn-purple">Update Profile</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="text-center text-light pt-5 pb-4 mt-5" style="background-color: #0a0014; border-top: 1px solid #bb86fc33; box-shadow: 0 -5px 20px rgba(168, 110, 249, 0.2);">
+  <div class="container">
+    <h5 class="mb-3 brand-text">Grahastra</h5>
+    <p class="mb-2">Guiding you through the stars with ancient wisdom and AI precision ✨</p>
+    <div class="d-flex justify-content-center gap-4 mb-3">
+      <a href="/about" class="text-light text-decoration-none">About</a>
+      <a href="/contact" class="text-light text-decoration-none">Contact</a>
+      <a href="/privacy" class="text-light text-decoration-none">Privacy Policy</a>
+    </div>
+    <p class="small text-muted">&copy; 2025 Grahastra. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  const fileInput = document.getElementById("id_profile_photo");
+  const fileNameDisplay = document.getElementById("file-name");
+  const profileImg = document.getElementById("profile-preview");
+
+  fileInput.addEventListener("change", function () {
+    const file = this.files[0];
+    if (file) {
+      fileNameDisplay.textContent = "Selected file: " + file.name;
+
+      // Optional: live preview of selected image
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        profileImg.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    } else {
+      fileNameDisplay.textContent = "";
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

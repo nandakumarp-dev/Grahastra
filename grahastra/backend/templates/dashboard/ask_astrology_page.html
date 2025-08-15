@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grahastra - Ask AI Astrologer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to bottom, #000000, #1c002b);
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+    }
+    .brand-text {
+      font-family: 'Playfair Display', serif;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 0 15px #e4b8ff, 0 0 35px #9f4bff;
+      font-weight: bold;
+    }
+    .chat-box {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 30px rgba(168, 110, 249, 0.15);
+      max-height: 500px;
+      overflow-y: auto;
+      margin-bottom: 2rem;
+    }
+    .chat-message {
+      margin-bottom: 1rem;
+      white-space: pre-wrap;
+    }
+    .user-message {
+      text-align: right;
+      color: #bb86fc;
+    }
+    .ai-message {
+      text-align: left;
+      color: #ffffff;
+    }
+    .input-area {
+      display: flex;
+      gap: 1rem;
+    }
+    .input-area input {
+      flex: 1;
+      background-color: #1c002b;
+      border: 1px solid #444;
+      color: #ffffff;
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+    }
+    .input-area button {
+      background: linear-gradient(135deg, #a86ef9, #6a00ff);
+      color: #fff;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      box-shadow: 0 0 10px #9f4bff;
+    }
+    .input-area button:hover {
+      background: linear-gradient(135deg, #6a00ff, #a86ef9);
+      box-shadow: 0 0 15px #bb86fc;
+    }
+  </style>
+</head>
+<body style="min-height: 100vh; display: flex; flex-direction: column;">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark px-3 py-3" style="background-color: #0a0014;">
+  <a href="{% url 'dashboard_page' %}" class="navbar-brand brand-text">Grahastra</a>
+  <div class="ms-auto d-flex align-items-center">
+    <div class="dropdown">
+      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+        <img src="https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg" width="32" height="32" class="rounded-circle" alt="Profile">
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end bg-dark border-0">
+        <li><a class="dropdown-item text-light" href="/settings">Settings</a></li>
+        <li><a class="dropdown-item text-light" href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Ask AI Section -->
+<main class="flex-grow-1 d-flex align-items-stretch" style="min-height: calc(100vh - 136px);">
+  <div class="container my-auto py-5 d-flex flex-column justify-content-center">
+    <div class="w-100">
+      <form method="post" action="{% url 'clear_astro_chats' %}" style="text-align: right; margin-bottom: 1rem;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-light btn-sm">🗑️ Clear Chat</button>
+      </form>
+      <h2 class="text-center mb-5 brand-text">Ask AI Astrologer</h2>
+      <div class="chat-box" id="chat-box">
+        <div class="chat-message ai-message">Welcome to Grahastra. Ask me anything about your birth chart or future!</div>
+        {% for chat in chats %}
+          <div class="chat-message user-message">{{ chat.question }}</div>
+          <div class="chat-message ai-message">{{ chat.answer }}</div>
+        {% endfor %}
+      </div>
+      <form method="post" id="ask-form" onsubmit="sendMessage(event)">
+        {% csrf_token %}
+        <div class="input-area">
+          <input type="text" id="user-input" placeholder="Type your question..." required>
+          <button type="submit">Send</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="text-center text-light pt-5 pb-4 mt-5" style="background-color: #0a0014; border-top: 1px solid #bb86fc33; box-shadow: 0 -5px 20px rgba(168, 110, 249, 0.2);">
+  <div class="container">
+    <h5 class="mb-3 brand-text">Grahastra</h5>
+    <p class="mb-2">Guiding you through the stars with ancient wisdom and AI precision ✨</p>
+    <div class="d-flex justify-content-center gap-4 mb-3">
+      <a href="/about" class="text-light text-decoration-none">About</a>
+      <a href="/contact" class="text-light text-decoration-none">Contact</a>
+      <a href="/privacy" class="text-light text-decoration-none">Privacy Policy</a>
+    </div>
+    <p class="small text-muted">&copy; 2025 Grahastra. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- JS -->
+<script>
+  function sendMessage(event) {
+    event.preventDefault();
+    const input = document.getElementById("user-input");
+    const chatBox = document.getElementById("chat-box");
+    const question = input.value.trim();
+    if (!question) return;
+
+    const userDiv = document.createElement("div");
+    userDiv.className = "chat-message user-message";
+    userDiv.innerText = question;
+    chatBox.appendChild(userDiv);
+
+    const aiDiv = document.createElement("div");
+    aiDiv.className = "chat-message ai-message";
+    aiDiv.innerText = "Thinking...";
+    chatBox.appendChild(aiDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    input.value = "";
+
+    fetch("/ask_astrology/", {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value,
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: new URLSearchParams({ question })
+    })
+    .then(res => res.json())
+    .then(data => {
+      const text = data.answer || data.error || "⚠️ Unexpected response.";
+      setTimeout(() => {
+        aiDiv.innerText = "";
+        let i = 0;
+        function typeLetter() {
+          if (i < text.length) {
+            aiDiv.innerText += text.charAt(i);
+            i++;
+            chatBox.scrollTop = chatBox.scrollHeight;
+            setTimeout(typeLetter, 30); // Slow typing speed
+          }
+        }
+        typeLetter();
+      }, 600); // Delay for "Thinking..." pause
+    })
+    .catch(err => {
+      aiDiv.innerText = "❌ Network error or bad server response.";
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+  }
+</script>
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

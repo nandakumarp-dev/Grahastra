@@ -1,0 +1,146 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grahastra - Contact Us</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Playfair+Display&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      background: linear-gradient(to bottom, #000000, #1c002b);
+      color: #ffffff;
+      font-family: 'Inter', sans-serif;
+    }
+    .brand-text {
+      font-family: 'Playfair Display', serif;
+      text-transform: uppercase;
+      color: #ffffff;
+      text-shadow: 0 0 15px #e4b8ff, 0 0 35px #9f4bff;
+      font-weight: bold;
+    }
+    .form-box {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 25px rgba(168, 110, 249, 0.2);
+    }
+    .form-label, .form-control, .form-control::placeholder {
+      color: #ffffff;
+    }
+    .form-control {
+      background-color: #1c1c1c;
+      border: 1px solid #777;
+      color: #f5f5f5 !important;
+      caret-color: #ffffff;
+    }
+    .form-control::placeholder {
+      color: #cccccc;
+      opacity: 0.6;
+    }
+    .form-control:focus {
+      background-color: #1f1f1f;
+      border-color: #9f4bff;
+      box-shadow: 0 0 8px rgba(159, 75, 255, 0.5);
+    }
+    select.form-control {
+      background-color: #1a1a1a;
+      color: #ffffff;
+      border: 1px solid #555;
+      background-image: url("data:image/svg+xml,%3Csvg fill='white' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 1rem;
+      padding-right: 2.5rem;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+    }
+    select.form-control option {
+      background-color: #1a1a1a;
+      color: #ffffff;
+    }
+    .btn-purple {
+      background-color: #a86ef9;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 1rem;
+      padding: 0.75rem 1.5rem;
+      transition: all 0.3s ease-in-out;
+      border: none;
+      box-shadow: 0 0 10px #9f4bff;
+    }
+    .btn-purple:hover {
+      background-color: #8b3fe0;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark px-3 py-3" style="background-color: #0a0014;">
+  <a href="{% url 'dashboard_page' %}" class="navbar-brand brand-text">Grahastra</a>
+  <div class="ms-auto d-flex align-items-center">
+    <div class="dropdown">
+      <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+        <img src="https://www.svgrepo.com/show/384674/account-avatar-profile-user-11.svg" width="32" height="32" class="rounded-circle" alt="Profile">
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end bg-dark border-0">
+        <li><a class="dropdown-item text-white" href="/settings">Settings</a></li>
+        <li><a class="dropdown-item text-white" href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Contact Form -->
+<div class="container py-5 mt-4">
+  <h2 class="text-center mb-5 brand-text">📩 Contact Us</h2>
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <form class="form-box">
+        <div class="mb-3">
+          <label for="subject" class="form-label">Subject</label>
+          <input type="text" class="form-control" id="subject" placeholder="Subject of your message">
+        </div>
+        <div class="mb-3">
+          <label for="category" class="form-label">Category</label>
+          <select class="form-control" id="category">
+            <option value="general">General Inquiry</option>
+            <option value="technical">Technical Support</option>
+            <option value="feedback">Feedback</option>
+            <option value="report">Report an Issue</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Message</label>
+          <textarea class="form-control" id="message" rows="5" placeholder="Your message"></textarea>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-purple">Send Message</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center text-light pt-5 pb-4 mt-5" style="background-color: #0a0014; border-top: 1px solid #bb86fc33; box-shadow: 0 -5px 20px rgba(168, 110, 249, 0.2);">
+  <div class="container">
+    <h5 class="mb-3 brand-text">Grahastra</h5>
+    <p class="mb-2">Reach out to us for cosmic guidance, feedback, or support ✨</p>
+    <div class="d-flex justify-content-center gap-4 mb-3">
+      <a href="/about" class="text-light text-decoration-none">About</a>
+      <a href="/contact" class="text-light text-decoration-none">Contact</a>
+      <a href="/privacy" class="text-light text-decoration-none">Privacy Policy</a>
+    </div>
+    <p class="small text-muted">&copy; 2025 Grahastra. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
