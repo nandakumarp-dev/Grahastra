@@ -8,6 +8,7 @@ import Signup from "../features/auth/Signup";
 import Dashboard from "../features/dashboard/Dashboard";
 import Home from "../features/dashboard/Home";
 import Contact from "../features/contact/Contact";
+import BirthChart from "../features/birthchart/BirthChart";
 
 function AppRoutes() {
   return (
@@ -19,6 +20,7 @@ function AppRoutes() {
       <Route path="/dashboard" element={<Dashboard />}>
         <Route index element={<Home />} />
         <Route path="contact" element={<Contact />} />
+        <Route path="birthchart" element={<BirthChart />} />
       </Route>
     </Routes>
   );

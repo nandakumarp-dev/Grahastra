@@ -13,19 +13,19 @@ function Home() {
     {
       title: "🪐 Birth Chart",
       desc: "Explore the cosmic blueprint of your soul. View planetary placements, ascendant, and house lords.",
-      link: "/dashboard/mychart",
+      link: "/dashboard/birthchart",
       btn: "View Chart",
     },
     {
       title: "📆 Numerology Chart",
-      desc: "View major & minor planetary periods (Mahadasha, Antardasha) with interpretations and timelines.",
-      link: "/dashboard/contact",
-      btn: "Check Dasha",
+      desc: "Discover insights from your name and birth date numbers. Decode your Life Path numbers for deeper self-awareness.",
+      link: "/dashboard/numerology",
+      btn: "Check Numerology",
     },
     {
       title: "📬 Contact Support",
       desc: "Need help? Get in touch with our support team or astrological experts for fast resolution.",
-      link: "/dashboard/contact", // ✅ corrected route
+      link: "/dashboard/contact", 
       btn: "Get Help",
     },
   ];
