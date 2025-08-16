@@ -1,0 +1,8 @@
+/* src/pages/dashboard/Navbar.css */
+.brand-text {
+  font-family: 'Playfair Display', serif;
+  color: #fff;
+  text-transform: uppercase;
+  text-shadow: 0 0 15px #e4b8ff, 0 0 35px #9f4bff;
+  font-weight: bold;
+}

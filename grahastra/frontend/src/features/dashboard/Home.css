@@ -1,0 +1,63 @@
+/* src/pages/dashboard/Home.css */
+.dashboard-body {
+  background: linear-gradient(to bottom, #000000, #1c002b);
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-glow {
+  background: linear-gradient(135deg, #a86ef9, #6a00ff);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 0 15px #9f4bff;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-glow:hover {
+  background: linear-gradient(135deg, #6a00ff, #a86ef9);
+  transform: scale(1.05);
+  box-shadow: 0 0 25px #a86ef9;
+}
+
+.widget {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  border-radius: 2rem;
+  padding: 2rem;
+  box-shadow: 0 0 30px rgba(168, 110, 249, 0.2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.widget:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 0 45px rgba(168, 110, 249, 0.4);
+}
+
+.widget-title {
+  color: #ffffff;
+  font-size: 1.4rem;
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+}
+
+.widget p {
+  font-size: 0.95rem;
+  color: #e2d4f9;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-title {
+  font-size: 2.8rem;
+  text-align: center;
+  color: #ffffff;
+  font-family: 'Playfair Display', serif;
+  text-shadow: 0 0 15px #bb86fc;
+  margin-bottom: 2rem;
+}
