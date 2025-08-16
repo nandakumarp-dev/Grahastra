@@ -2,18 +2,20 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./dashboard.css";
+import Navbar from "../../components/Navbar/Navbar";
+import Footer from "../../components/Footer/Footer";
+import { Outlet } from "react-router-dom";
 
-import Navbar from "./Navbar";
-import Home from "./Home";
-import Footer from "./Footer";
 
 function Dashboard() {
   return (
-    <div className="dashboard-body">
+    <>
       <Navbar />
-      <Home />
+      <div className="dashboard-content">
+        <Outlet />
+      </div>
       <Footer />
-    </div>
+    </>
   );
 }
 

@@ -1,15 +1,33 @@
 // src/pages/dashboard/Home.jsx
 import React from "react";
+import { Link } from "react-router-dom"; // ✅ import Link
 
 function Home() {
   const widgets = [
-    { title: "🌟 AI Astrologer", desc: "Ask real-time questions and receive intuitive, AI-powered astrological guidance 24/7.", link: "/ask-astrology", btn: "Ask Now" },
-    { title: "🪐 Birth Chart", desc: "Explore the cosmic blueprint of your soul. View planetary placements, ascendant, and house lords.", link: "/mychart", btn: "View Chart" },
-    { title: "🔮 Yogas", desc: "Discover rare and powerful yogas influencing your personality, success, and destiny path.", link: "/yogas", btn: "Analyze Yogas" },
-    { title: "📆 Dasha Timeline", desc: "View major & minor planetary periods (Mahadasha, Antardasha) with interpretations and timelines.", link: "#", btn: "Check Dasha" },
-    { title: "🧘‍♂️ My Profile", desc: "Update your details, manage preferences, and personalize your spiritual dashboard experience.", link: "/profile", btn: "Edit Profile" },
-    { title: "📬 Contact Support", desc: "Need help? Get in touch with our support team or astrological experts for fast resolution.", link: "/contact", btn: "Get Help" },
-    { title: "💎 Upgrade", desc: "Unlock full astrological power, exclusive features, and lifetime access options.", link: "/upgrade", btn: "Upgrade Now" }
+    {
+      title: "🌟 AI Astrologer",
+      desc: "Ask real-time questions and receive intuitive, AI-powered astrological guidance 24/7.",
+      link: "/dashboard/ask-astrology",
+      btn: "Ask Now",
+    },
+    {
+      title: "🪐 Birth Chart",
+      desc: "Explore the cosmic blueprint of your soul. View planetary placements, ascendant, and house lords.",
+      link: "/dashboard/mychart",
+      btn: "View Chart",
+    },
+    {
+      title: "📆 Numerology Chart",
+      desc: "View major & minor planetary periods (Mahadasha, Antardasha) with interpretations and timelines.",
+      link: "/dashboard/contact",
+      btn: "Check Dasha",
+    },
+    {
+      title: "📬 Contact Support",
+      desc: "Need help? Get in touch with our support team or astrological experts for fast resolution.",
+      link: "/dashboard/contact", // ✅ corrected route
+      btn: "Get Help",
+    },
   ];
 
   return (
@@ -21,7 +39,17 @@ function Home() {
             <div className="widget w-100">
               <h5 className="widget-title">{widget.title}</h5>
               <p>{widget.desc}</p>
-              <a href={widget.link} className="btn btn-glow mt-auto">{widget.btn}</a>
+
+              {/* If link is valid, render Link; otherwise disabled button */}
+              {widget.link !== "#" ? (
+                <Link to={widget.link} className="btn btn-glow mt-auto">
+                  {widget.btn}
+                </Link>
+              ) : (
+                <button className="btn btn-glow mt-auto" disabled>
+                  {widget.btn}
+                </button>
+              )}
             </div>
           </div>
         ))}

@@ -1,0 +1,79 @@
+.contact-body {
+  /* background: linear-gradient(to bottom, #000000, #1c002b); */
+  background-color: transparent;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+.brand-text {
+  font-family: 'Playfair Display', serif;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 0 15px #e4b8ff, 0 0 35px #9f4bff;
+  font-weight: bold;
+}
+
+.form-box {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 0 25px rgba(168, 110, 249, 0.2);
+}
+
+.form-label,
+.form-control,
+.form-control::placeholder {
+  color: #ffffff;
+}
+
+.form-control {
+  background-color: #1c1c1c;
+  border: 1px solid #777;
+  color: #f5f5f5 !important;
+  caret-color: #ffffff;
+}
+
+.form-control::placeholder {
+  color: #cccccc;
+  opacity: 0.6;
+}
+
+.form-control:focus {
+  background-color: #1f1f1f;
+  border-color: #9f4bff;
+  box-shadow: 0 0 8px rgba(159, 75, 255, 0.5);
+}
+
+select.form-control {
+  background-color: #1a1a1a;
+  color: #ffffff;
+  border: 1px solid #555;
+  background-image: url("data:image/svg+xml,%3Csvg fill='white' height='16' viewBox='0 0 24 24' width='16' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+  padding-right: 2.5rem;
+  appearance: none;
+}
+
+select.form-control option {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.btn-purple {
+  background-color: #a86ef9;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 1rem;
+  padding: 0.75rem 1.5rem;
+  transition: all 0.3s ease-in-out;
+  border: none;
+  box-shadow: 0 0 10px #9f4bff;
+}
+
+.btn-purple:hover {
+  background-color: #8b3fe0;
+  transform: scale(1.05);
+}
