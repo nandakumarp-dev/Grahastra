@@ -23,11 +23,24 @@ function Home() {
       btn: "Check Numerology",
     },
     {
+      title: "📊 Daily Horoscope & Transit Alerts",
+      desc: "Get personalized daily predictions and real-time planetary transit alerts tailored to your birth chart.",
+      link: "/dashboard/daily-horoscope",
+      btn: "View Today",
+    },
+    {
+      title: "❤️ Compatibility Match",
+      desc: "Check relationship compatibility using synastry and composite charts. See love, friendship, and career harmony.",
+      link: "/dashboard/compatibility",
+      btn: "Check Match",
+    },
+    {
       title: "📬 Contact Support",
       desc: "Need help? Get in touch with our support team or astrological experts for fast resolution.",
       link: "/dashboard/contact", 
       btn: "Get Help",
     },
+
   ];
 
   return (
