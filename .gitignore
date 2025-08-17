@@ -18,6 +18,7 @@ venv/
 ENV/
 env/
 .venv/
+.env
 
 # VS Code settings
 .vscode/
