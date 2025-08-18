@@ -20,42 +20,33 @@ function Login() {
     setError("");
     setMessage("");
 
-    try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/login/",
-        {
-          email: credentials.email,
-          password: credentials.password,
-        },
-        { withCredentials: true } // important for Django session login
-      );
+  try {
+    const response = await axios.post("http://127.0.0.1:8000/login/", {
+      email: credentials.email,
+      password: credentials.password,
+    });
 
-      if (response.data.success) {
-        setMessage(response.data.message || "Login successful!");
-        setError("");
+    // ✅ Store JWT tokens correctly
+    localStorage.setItem("access", response.data.tokens.access);
+    localStorage.setItem("refresh", response.data.tokens.refresh);
 
-        // Optionally store session/JWT (if using JWT later)
-        // localStorage.setItem("token", response.data.token);
-
-        navigate("/dashboard"); // redirect after login
-      } else {
-        setError(
-          response.data.errors
-            ? Object.values(response.data.errors).join(", ")
-            : response.data.message || "Login failed."
-        );
-        setMessage("");
-      }
-    } catch (err) {
-      setError(
+    setMessage("Login successful | Redirecting...");
+    setTimeout(() => navigate("/dashboard"), 1000);
+  } catch (err) {
+    setError(
+      err.response?.data?.detail ||
         err.response?.data?.message ||
-          err.response?.data?.errors ||
-          "An error occurred. Please try again."
-      );
-      setMessage("");
+        "Invalid email or password ❌"
+    );
+
     } finally {
       setLoading(false);
     }
+  };
+
+  // ✅ Google login redirect
+  const googleLogin = () => {
+    window.location.href = "http://127.0.0.1:8000/auth/google/";
   };
 
   return (
@@ -113,6 +104,20 @@ function Login() {
             {loading ? "Logging in..." : "Login"}
           </button>
         </form>
+
+        {/* Divider */}
+        <div className="divider mt-3 mb-3 text-center">
+          <span>OR</span>
+        </div>
+
+        {/* Google Login */}
+        <button onClick={googleLogin} className="google-btn">
+          <img
+            src="https://developers.google.com/identity/images/g-logo.png"
+            alt="Google"
+          />
+          <span>Continue with Google</span>
+        </button>
 
         <div className="auth-footer mt-4">
           <small>

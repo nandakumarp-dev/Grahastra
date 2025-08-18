@@ -1,10 +1,11 @@
+# views.py
 import swisseph as swe
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import render, redirect
-from django.views import View
 from rest_framework.views import APIView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from rest_framework import status
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from .models import Profile
 import datetime
 from core.astrology_utils import (
@@ -13,14 +14,10 @@ from core.astrology_utils import (
     format_deg, get_rasi_lord, get_sign_name, get_nakshatra_lord,
     calculate_navamsa_chart, get_house_placements
 )
-from .serializers import ProfileSerializer, PlanetSerializer, NavamsaSerializer, BhavaChartSerializer
-
-class DashboardView(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'dashboard/dashboard_page.html')
-
+from .serializers import ProfileSerializer, PlanetSerializer, NavamsaSerializer
 
 class MyChartAPI(APIView):
+    authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
@@ -28,16 +25,22 @@ class MyChartAPI(APIView):
         try:
             profile = user.profile
         except Profile.DoesNotExist:
-            return Response({"error": "Profile not found"}, status=404)
+            return Response({"error": "Profile not found"}, status=status.HTTP_404_NOT_FOUND)
 
         # ensure required data
         if not all([profile.birth_date, profile.birth_time, profile.latitude, profile.longitude]):
-            return Response({"error": "Please complete your birth details in the profile page."}, status=400)
+            return Response(
+                {"error": "Please complete your birth details in the profile page."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
-        # Convert to UTC
+        # Convert to UTC (assumes IST stored)
         dt = datetime.datetime.combine(profile.birth_date, profile.birth_time)
         dt_utc = dt - datetime.timedelta(hours=5, minutes=30)
-        jd = swe.julday(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour + dt_utc.minute / 60.0)
+        jd = swe.julday(
+            dt_utc.year, dt_utc.month, dt_utc.day,
+            dt_utc.hour + dt_utc.minute / 60.0
+        )
 
         # Ephemeris setup
         swe.set_ephe_path('core/ephe/')
@@ -55,7 +58,8 @@ class MyChartAPI(APIView):
         asc_deg, lagna_sign = calculate_lagna(jd, profile.latitude, profile.longitude)
         nakshatra = get_nakshatra(positions["Moon"])
 
-        chart = get_birth_chart_data(positions, nakshatra, asc_deg)
+        # Main chart (if you use it elsewhere)
+        _ = get_birth_chart_data(positions, nakshatra, asc_deg)
 
         # Navamsa chart
         navamsa = [
@@ -68,11 +72,12 @@ class MyChartAPI(APIView):
         for planet, house in get_house_placements(positions, asc_deg).items():
             bhava_chart[str(house)].append(planet)
 
-        # Planets
+        # Planets payload: include both raw number and display string
         planets = [
             {
                 "name": "Ascendant",
-                "degree": format_deg(asc_deg),
+                "degree": asc_deg,
+                "degree_str": format_deg(asc_deg),
                 "rasi": lagna_sign,
                 "rasi_lord": get_rasi_lord(lagna_sign),
                 "nakshatra": get_nakshatra(asc_deg),
@@ -85,7 +90,8 @@ class MyChartAPI(APIView):
             nak = get_nakshatra(deg)
             planets.append({
                 "name": name,
-                "degree": format_deg(deg),
+                "degree": deg,
+                "degree_str": format_deg(deg),
                 "rasi": rasi,
                 "rasi_lord": get_rasi_lord(rasi),
                 "nakshatra": nak,
@@ -105,69 +111,4 @@ class MyChartAPI(APIView):
                 "Navamsa": NavamsaSerializer(navamsa, many=True).data,
                 "Bhava": bhava_chart,
             }
-        })
-
-
-class ContactView(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'dashboard/contact_page.html')
-
-
-# class ProfileView(LoginRequiredMixin, View):
-#     def get(self, request, *args, **kwargs):
-#         form = ProfileForm(instance=request.user.profile)
-#         return render(request, 'dashboard/profile_page.html', {
-#             'form': form,
-#             'user': request.user,
-#         })
-
-#     def post(self, request, *args, **kwargs):
-#         form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('profile_page')
-#         return render(request, 'dashboard/profile_page.html', {
-#             'form': form,
-#             'user': request.user,
-#         })
-
-
-class YogasView(LoginRequiredMixin, View):
-    def get(self, request, *args, **kwargs):
-        user = request.user
-
-        try:
-            profile = user.profile
-            if not all([profile.birth_date, profile.birth_time, profile.latitude, profile.longitude]):
-                return render(request, 'dashboard/yogas_page.html', {
-                    "error": "Please complete your birth details in the profile page.",
-                    "yogas": []
-                })
-
-            # Date and JD setup
-            dt = datetime.datetime.combine(profile.birth_date, profile.birth_time)
-            dt_utc = dt - datetime.timedelta(hours=5, minutes=30)
-            jd = swe.julday(dt_utc.year, dt_utc.month, dt_utc.day, dt_utc.hour + dt_utc.minute / 60.0)
-
-            # Ephemeris setup
-            swe.set_ephe_path('core/ephe/')
-            swe.set_sid_mode(swe.SIDM_LAHIRI)
-
-            # Position and chart data
-            positions = get_planet_positions(
-                profile.birth_date.strftime('%Y-%m-%d'),
-                profile.birth_time.strftime('%H:%M'),
-                profile.latitude,
-                profile.longitude
-            )
-            asc_deg, _ = calculate_lagna(jd, profile.latitude, profile.longitude)
-            nakshatra = get_nakshatra(positions["Moon"])
-            chart = get_birth_chart_data(positions, nakshatra, asc_deg)
-
-            return render(request, 'dashboard/yogas_page.html', {
-                "yogas": chart.get("Yogas", []),
-                "error": None
-            })
-
-        except Profile.DoesNotExist:
-            return redirect('profile_page')
+        }, status=status.HTTP_200_OK)

@@ -34,34 +34,41 @@ function Signup() {
     setError("");
     setLoading(true);
 
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match ❌");
+      setLoading(false);
+      return;
+    }
+
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/signup/",
-        formData,
-        { withCredentials: true }
-      );
+      const response = await axios.post("http://127.0.0.1:8000/signup/", formData);
 
       if (response.data.success) {
+        // ✅ Save tokens in localStorage
+        localStorage.setItem("access", response.data.tokens.access);
+        localStorage.setItem("refresh", response.data.tokens.refresh);
+
         setMessage(response.data.message || "Signup successful ✅");
         setError("");
-        // Redirect to dashboard or login after short delay
+
+        // Redirect to dashboard after short delay
         setTimeout(() => navigate("/dashboard"), 1500);
       } else {
         // Handle serializer validation errors
         setError(
-  response.data.errors
-    ? Object.values(response.data.errors).flat().join(", ")   // convert object → string
-    : response.data.message || "Signup failed ❌"
-);
+          response.data.errors
+            ? Object.values(response.data.errors).flat().join(", ")
+            : response.data.message || "Signup failed ❌"
+        );
       }
     } catch (err) {
       setError(
-  typeof err.response?.data?.message === "string"
-    ? err.response.data.message
-    : typeof err.response?.data?.errors === "object"
-    ? Object.values(err.response.data.errors).flat().join(", ")
-    : "An error occurred. Please try again."
-);
+        typeof err.response?.data?.message === "string"
+          ? err.response.data.message
+          : typeof err.response?.data?.errors === "object"
+          ? Object.values(err.response.data.errors).flat().join(", ")
+          : "An error occurred. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -75,13 +82,10 @@ function Signup() {
         <form onSubmit={handleSubmit}>
           {/* Full Name */}
           <div className="mb-3">
-            <label htmlFor="fullName" className="form-label">
-              Full Name
-            </label>
+            <label className="form-label">Full Name</label>
             <input
               type="text"
               className="form-control"
-              id="fullName"
               name="fullName"
               value={formData.fullName}
               onChange={handleChange}
@@ -91,13 +95,10 @@ function Signup() {
 
           {/* Date of Birth */}
           <div className="mb-3">
-            <label htmlFor="dob" className="form-label">
-              Date of Birth
-            </label>
+            <label className="form-label">Date of Birth</label>
             <input
               type="date"
               className="form-control"
-              id="dob"
               name="dob"
               value={formData.dob}
               onChange={handleChange}
@@ -107,13 +108,10 @@ function Signup() {
 
           {/* Time of Birth */}
           <div className="mb-3">
-            <label htmlFor="tob" className="form-label">
-              Time of Birth
-            </label>
+            <label className="form-label">Time of Birth</label>
             <input
               type="time"
               className="form-control"
-              id="tob"
               name="tob"
               value={formData.tob}
               onChange={handleChange}
@@ -123,13 +121,10 @@ function Signup() {
 
           {/* Place of Birth */}
           <div className="mb-3">
-            <label htmlFor="pob" className="form-label">
-              Place of Birth
-            </label>
+            <label className="form-label">Place of Birth</label>
             <input
               type="text"
               className="form-control"
-              id="pob"
               name="pob"
               value={formData.pob}
               onChange={handleChange}
@@ -140,11 +135,8 @@ function Signup() {
 
           {/* Gender */}
           <div className="mb-3">
-            <label htmlFor="gender" className="form-label">
-              Gender
-            </label>
+            <label className="form-label">Gender</label>
             <select
-              id="gender"
               name="gender"
               className="form-control"
               value={formData.gender}
@@ -160,13 +152,10 @@ function Signup() {
 
           {/* Email */}
           <div className="mb-3">
-            <label htmlFor="email" className="form-label">
-              Email address
-            </label>
+            <label className="form-label">Email address</label>
             <input
               type="email"
               className="form-control"
-              id="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
@@ -176,13 +165,10 @@ function Signup() {
 
           {/* Password */}
           <div className="mb-3">
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
+            <label className="form-label">Password</label>
             <input
               type="password"
               className="form-control"
-              id="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
@@ -192,13 +178,10 @@ function Signup() {
 
           {/* Confirm Password */}
           <div className="mb-3">
-            <label htmlFor="confirmPassword" className="form-label">
-              Confirm Password
-            </label>
+            <label className="form-label">Confirm Password</label>
             <input
               type="password"
               className="form-control"
-              id="confirmPassword"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}

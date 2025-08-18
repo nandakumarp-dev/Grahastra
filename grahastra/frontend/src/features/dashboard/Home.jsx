@@ -4,12 +4,7 @@ import { Link } from "react-router-dom"; // ✅ import Link
 
 function Home() {
   const widgets = [
-    {
-      title: "🌟 AI Astrologer",
-      desc: "Ask real-time questions and receive intuitive, AI-powered astrological guidance 24/7.",
-      link: "/dashboard/ask-astrology",
-      btn: "Ask Now",
-    },
+
     {
       title: "🪐 Birth Chart",
       desc: "Explore the cosmic blueprint of your soul. View planetary placements, ascendant, and house lords.",
@@ -21,6 +16,12 @@ function Home() {
       desc: "Discover insights from your name and birth date numbers. Decode your Life Path numbers for deeper self-awareness.",
       link: "/dashboard/numerology",
       btn: "Check Numerology",
+    },
+    {
+      title: "🌟 AI Astrologer",
+      desc: "Ask real-time questions and receive intuitive, AI-powered astrological guidance 24/7.",
+      link: "/dashboard/ask-astrology",
+      btn: "Ask Now",
     },
     {
       title: "📊 Daily Horoscope & Transit Alerts",
