@@ -7,6 +7,7 @@ from django.conf import settings
 # -------------------------------
 # Custom User Manager
 # -------------------------------
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -32,11 +33,11 @@ class CustomUserManager(BaseUserManager):
 # -------------------------------
 # Custom User
 # -------------------------------
+
 class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     first_name = models.CharField(max_length=30, blank=True)
     last_name = models.CharField(max_length=30, blank=True)
-
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(default=timezone.now)
@@ -53,6 +54,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 # -------------------------------
 # Astrology Profile
 # -------------------------------
+
 class Profile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile"

@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
-
 from .serializers import LoginSerializer, SignupSerializer
 
 User = get_user_model()
@@ -23,6 +22,7 @@ def get_tokens_for_user(user):
 # -------------------------------
 # SIGNUP VIEW (JWT-based)
 # -------------------------------
+
 class SignupView(APIView):
     permission_classes = [AllowAny]
 
@@ -55,6 +55,7 @@ class SignupView(APIView):
 # -------------------------------
 # LOGIN VIEW (JWT-based)
 # -------------------------------
+
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
@@ -89,6 +90,7 @@ class LoginView(APIView):
 # -------------------------------
 # LOGOUT VIEW (JWT blacklist refresh)
 # -------------------------------
+
 class LogoutView(APIView):
     """
     Blacklist the refresh token on logout
