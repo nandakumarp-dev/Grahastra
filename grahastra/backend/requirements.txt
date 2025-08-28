@@ -25,3 +25,4 @@ social-auth-app-django==5.4.3
 social-auth-core==4.6.1
 sqlparse==0.5.3
 urllib3==2.4.0
+gunicorn
