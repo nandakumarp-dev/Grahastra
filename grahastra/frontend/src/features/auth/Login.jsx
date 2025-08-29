@@ -21,7 +21,7 @@ function Login() {
     setMessage("");
 
   try {
-    const response = await axios.post("https://grahastra.onrender.com/login/", {
+    const response = await axios.post("http://127.0.0.1:8000/login/", {
       email: credentials.email,
       password: credentials.password,
     });
@@ -105,19 +105,19 @@ function Login() {
           </button>
         </form>
 
-        {/* Divider */}
+        {/* Divider
         <div className="divider mt-3 mb-3 text-center">
           <span>OR</span>
-        </div>
+        </div> */}
 
-        {/* Google Login */}
+        {/* Google Login
         <button onClick={googleLogin} className="google-btn">
           <img
             src="https://developers.google.com/identity/images/g-logo.png"
             alt="Google"
           />
           <span>Continue with Google</span>
-        </button>
+        </button> */}
 
         <div className="auth-footer mt-4">
           <small>

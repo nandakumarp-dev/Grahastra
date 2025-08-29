@@ -48,7 +48,7 @@ function Signup() {
         localStorage.setItem("access", response.data.tokens.access);
         localStorage.setItem("refresh", response.data.tokens.refresh);
 
-        setMessage(response.data.message || "Signup successful ✅");
+        setMessage(response.data.message || "Signup successful");
         setError("");
 
         // Redirect to dashboard after short delay
