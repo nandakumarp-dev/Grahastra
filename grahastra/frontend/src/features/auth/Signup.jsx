@@ -41,7 +41,7 @@ function Signup() {
     }
 
     try {
-      const response = await axios.post("https://grahastra.onrender.com/signup/", formData);
+      const response = await axios.post("http://127.0.0.1:8000/signup/", formData);
 
       if (response.data.success) {
         // ✅ Save tokens in localStorage
