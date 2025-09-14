@@ -11,12 +11,12 @@ function Home() {
       link: "/dashboard/birthchart",
       btn: "View Chart",
     },
-    {
-      title: "📆 Numerology Chart",
-      desc: "Discover insights from your name and birth date numbers. Decode your Life Path numbers for deeper self-awareness.",
-      link: "/dashboard/numerology",
-      btn: "Check Numerology",
-    },
+    // {
+    //   title: "📆 Numerology Chart",
+    //   desc: "Discover insights from your name and birth date numbers. Decode your Life Path numbers for deeper self-awareness.",
+    //   link: "/dashboard/numerology",
+    //   btn: "Check Numerology",
+    // },
     {
       title: "🌟 AI Astrologer",
       desc: "Ask real-time questions and receive intuitive, AI-powered astrological guidance 24/7.",
