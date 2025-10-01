@@ -112,3 +112,7 @@ class BirthChartAPI(APIView):
                 "Bhava": bhava_chart,
             }
         }, status=status.HTTP_200_OK)
+
+
+
+#have to order function call
