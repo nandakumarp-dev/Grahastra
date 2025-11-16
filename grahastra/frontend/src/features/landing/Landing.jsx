@@ -1,43 +1,38 @@
-// Landing.jsx
+// Landing.jsx - Professional Redesign
 import React, { useEffect, useRef } from "react";
 import "./Landing.css";
 import { Link } from 'react-router-dom';
 
 function Landing() {
   const starsRef = useRef();
-  const cosmicCanvasRef = useRef();
+  const canvasRef = useRef();
 
   useEffect(() => {
-    // Enhanced floating stars with constellations
-    const stars = starsRef.current;
-    const starCount = window.innerWidth < 768 ? 80 : 200;
+    // Professional star field implementation
+    const starsContainer = starsRef.current;
+    const starCount = window.innerWidth < 768 ? 100 : 250;
+
+    // Clear existing stars
+    starsContainer.innerHTML = '';
 
     for (let i = 0; i < starCount; i++) {
       const star = document.createElement('div');
-      star.className = 'star';
       
-      const size = Math.random() * 4;
-      const duration = 3 + Math.random() * 4;
-      const brightness = 0.3 + Math.random() * 0.7;
+      const size = Math.random();
+      let starClass = 'star--small';
+      if (size > 0.7) starClass = 'star--large';
+      else if (size > 0.4) starClass = 'star--medium';
       
-      star.style.width = `${size}px`;
-      star.style.height = `${size}px`;
+      star.className = `star ${starClass}`;
       star.style.left = `${Math.random() * 100}%`;
       star.style.top = `${Math.random() * 100}%`;
-      star.style.opacity = brightness;
-      star.style.setProperty('--duration', `${duration}s`);
-      star.style.animationDelay = `${Math.random() * 8}s`;
+      star.style.animationDelay = `${Math.random() * 5}s`;
       
-      // Add twinkle effect
-      if (Math.random() > 0.7) {
-        star.classList.add('twinkle-star');
-      }
-      
-      stars.appendChild(star);
+      starsContainer.appendChild(star);
     }
 
-    // Cosmic canvas animation
-    const canvas = cosmicCanvasRef.current;
+    // Canvas background animation
+    const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     
     const resizeCanvas = () => {
@@ -48,19 +43,19 @@ function Landing() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Nebula particles
+    // Subtle particle system for professional look
     const particles = [];
-    const particleCount = window.innerWidth < 768 ? 30 : 80;
+    const particleCount = window.innerWidth < 768 ? 20 : 50;
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: Math.random() * 3 + 1,
-        speedX: (Math.random() - 0.5) * 0.5,
-        speedY: (Math.random() - 0.5) * 0.5,
-        color: `hsl(${Math.random() * 60 + 200}, 70%, ${50 + Math.random() * 30}%)`,
-        opacity: Math.random() * 0.3 + 0.1
+        size: Math.random() * 2 + 0.5,
+        speedX: (Math.random() - 0.5) * 0.2,
+        speedY: (Math.random() - 0.5) * 0.2,
+        color: `hsl(${200 + Math.random() * 60}, 60%, ${60 + Math.random() * 20}%)`,
+        opacity: Math.random() * 0.1 + 0.05
       });
     }
 
@@ -71,11 +66,11 @@ function Landing() {
         particle.x += particle.speedX;
         particle.y += particle.speedY;
         
-        // Wrap around edges
-        if (particle.x < 0) particle.x = canvas.width;
-        if (particle.x > canvas.width) particle.x = 0;
-        if (particle.y < 0) particle.y = canvas.height;
-        if (particle.y > canvas.height) particle.y = 0;
+        // Boundary check with smooth wrapping
+        if (particle.x < -10) particle.x = canvas.width + 10;
+        if (particle.x > canvas.width + 10) particle.x = -10;
+        if (particle.y < -10) particle.y = canvas.height + 10;
+        if (particle.y > canvas.height + 10) particle.y = -10;
         
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
@@ -89,12 +84,11 @@ function Landing() {
     
     animateParticles();
 
-    // Enhanced Intersection Observer with parallax
+    // Intersection Observer for scroll animations
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.style.animationPlayState = 'running';
-          entry.target.classList.add('animate-in');
+          entry.target.classList.add('animate-fade-in');
         }
       });
     }, { 
@@ -102,204 +96,218 @@ function Landing() {
       rootMargin: '50px'
     });
 
-    document.querySelectorAll('.feature-card, .testimonial-card, .section-title, .cosmic-btn').forEach(el => {
-      el.style.animationPlayState = 'paused';
+    // Observe all animatable elements
+    document.querySelectorAll('.card, .section__title, .section__subtitle, .button').forEach(el => {
       observer.observe(el);
     });
-
-    // Mobile touch effects
-    const handleTouchMove = (e) => {
-      const touch = e.touches[0];
-      const stars = document.querySelectorAll('.star');
-      stars.forEach((star, index) => {
-        const speed = (index % 3) * 0.5;
-        star.style.transform = `translate(${(touch.clientX - window.innerWidth/2) * speed}px, ${(touch.clientY - window.innerHeight/2) * speed}px)`;
-      });
-    };
-
-    window.addEventListener('touchmove', handleTouchMove);
 
     return () => {
       observer.disconnect();
       window.removeEventListener('resize', resizeCanvas);
-      window.removeEventListener('touchmove', handleTouchMove);
     };
   }, []);
 
   return (
     <>
-      {/* Enhanced Cosmic Background */}
-      <canvas ref={cosmicCanvasRef} className="cosmic-canvas"></canvas>
-      <div className="cosmic-bg"></div>
-      <div ref={starsRef} className="stars"></div>
-      
-      {/* Animated Nebula Orbs */}
-      <div className="nebula-orb orb-1"></div>
-      <div className="nebula-orb orb-2"></div>
-      <div className="nebula-orb orb-3"></div>
-
-      {/* Floating Planets with Rings */}
-      <div className="planet-system system-1">
-        <div className="planet planet-with-ring"></div>
-        <div className="planet-ring"></div>
-      </div>
-      <div className="planet-system system-2">
-        <div className="planet gas-giant"></div>
-      </div>
+      {/* Professional Background System */}
+      <div className="background-container"></div>
+      <canvas ref={canvasRef} className="cosmic-overlay"></canvas>
+      <div ref={starsRef} className="stars-container"></div>
 
       {/* Hero Section */}
       <section className="hero">
-        <div className="cosmic-gate"></div>
-        <div className="hero-content">
-          <div className="title-container">
-            <h1 className="main-title cosmic-glow">GRAHASTRA</h1>
-            <div className="title-underline"></div>
-          </div>
-          <p className="tagline cosmic-subtitle">
-            Where Stars Speak Your Truth
-            <span className="subtitle-line">AI-Powered Vedic Astrology & Numerology</span>
-          </p>
-          <div className="cta-buttons">
-            <Link to="/signup" className="cosmic-btn primary-glow">
-              <span className="btn-icon">🌌</span>
-              Start Free Journey
-            </Link>
-            <Link to="/demo" className="cosmic-btn secondary-glow">
-              <span className="btn-icon">🔮</span>
-              Live Demo
-            </Link>
-          </div>
-          <div className="scroll-indicator">
-            <div className="scroll-arrow"></div>
+        <div className="container">
+          <div className="hero__content">
+            <h1 className="hero__title animate-fade-in">
+              GRAHASTRA
+            </h1>
+            <p className="hero__subtitle animate-fade-in">
+              AI-Powered Vedic Astrology & Numerology Platform
+              <br />
+              <span style={{ fontSize: '1rem', opacity: 0.8 }}>
+                Discover your cosmic blueprint with cutting-edge technology
+              </span>
+            </p>
+            <div className="button-group">
+              <Link to="/signup" className="button button--primary">
+                <span className="button__icon">✨</span>
+                Start Free Journey
+              </Link>
+              <Link to="/demo" className="button button--secondary">
+                <span className="button__icon">🔍</span>
+                View Demo
+              </Link>
+            </div>
+            <div className="scroll-indicator">
+              <div className="scroll-arrow"></div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
       <section className="section">
-        <div className="section-header">
-          <h2 className="section-title cosmic-text">Cosmic Superpowers</h2>
-          <p className="section-subtitle">Harness the power of ancient wisdom with cutting-edge AI technology</p>
-        </div>
-        <div className="features-grid">
-          <div className="feature-card cosmic-card">
-            <div className="feature-icon-wrapper">
-              <span className="feature-icon cosmic-icon">✨</span>
-              <div className="icon-glow"></div>
-            </div>
-            <h3>Instant AI Insights</h3>
-            <p>Get real-time answers to your life questions powered by ancient Vedic wisdom</p>
-            <div className="feature-underline"></div>
+        <div className="container">
+          <div className="section__header">
+            <h2 className="section__title animate-fade-in">Advanced Features</h2>
+            <p className="section__subtitle animate-fade-in">
+              Harness the power of artificial intelligence with ancient Vedic wisdom
+            </p>
           </div>
-          <div className="feature-card cosmic-card">
-            <div className="feature-icon-wrapper">
-              <span className="feature-icon cosmic-icon">🌌</span>
-              <div className="icon-glow"></div>
+          <div className="grid grid--3col">
+            <div className="card animate-fade-in">
+              <div className="card__icon">
+                <span>✨</span>
+              </div>
+              <h3 className="card__title">AI Insights</h3>
+              <p className="card__description">
+                Real-time answers to life questions powered by advanced machine learning algorithms
+              </p>
             </div>
-            <h3>Birth Chart Magic</h3>
-            <p>Precise planetary positions with NASA data accuracy</p>
-            <div className="feature-underline"></div>
-          </div>
-          <div className="feature-card cosmic-card">
-            <div className="feature-icon-wrapper">
-              <span className="feature-icon cosmic-icon">🔢</span>
-              <div className="icon-glow"></div>
+            <div className="card animate-fade-in">
+              <div className="card__icon">
+                <span>🌌</span>
+              </div>
+              <h3 className="card__title">Birth Chart Analysis</h3>
+              <p className="card__description">
+                Precise planetary positions with NASA-grade astronomical data accuracy
+              </p>
             </div>
-            <h3>Numerology Secrets</h3>
-            <p>Discover your life path number and destiny patterns</p>
-            <div className="feature-underline"></div>
+            <div className="card animate-fade-in">
+              <div className="card__icon">
+                <span>🔢</span>
+              </div>
+              <h3 className="card__title">Numerology</h3>
+              <p className="card__description">
+                Comprehensive life path analysis and destiny pattern recognition
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="section cosmic-section">
-        <div className="section-header">
-          <h2 className="section-title cosmic-text">3 Steps to Cosmic Clarity</h2>
-          <p className="section-subtitle">Your journey to self-discovery starts here</p>
-        </div>
-        <div className="steps-container">
-          <div className="step-line"></div>
-          <div className="features-grid">
-            <div className="feature-card step-card">
-              <div className="step-number">1</div>
-              <div className="feature-icon-wrapper">
-                <span className="feature-icon">📅</span>
-                <div className="icon-glow"></div>
-              </div>
-              <h3>Enter Birth Details</h3>
-              <p>Share your birth date, time, and place</p>
-            </div>
-            <div className="feature-card step-card">
-              <div className="step-number">2</div>
-              <div className="feature-icon-wrapper">
-                <span className="feature-icon">💭</span>
-                <div className="icon-glow"></div>
-              </div>
-              <h3>Ask Anything</h3>
-              <p>Career, love, health, or spiritual growth</p>
-            </div>
-            <div className="feature-card step-card">
-              <div className="step-number">3</div>
-              <div className="feature-icon-wrapper">
-                <span className="feature-icon">🌟</span>
-                <div className="icon-glow"></div>
-              </div>
-              <h3>Receive Wisdom</h3>
-              <p>AI-powered insights in seconds</p>
-            </div>
+      {/* How It Works - Simple Alternative */}
+<section className="section" style={{ background: 'rgba(30, 27, 75, 0.3)' }}>
+  <div className="container">
+    <div className="section__header">
+      <h2 className="section__title animate-fade-in">How It Works</h2>
+      <p className="section__subtitle animate-fade-in">
+        Simple three-step process to cosmic clarity
+      </p>
+    </div>
+    <div className="steps-simple">
+      <div className="grid grid--3col">
+        <div className="card step animate-fade-in">
+          <div className="step__number">1</div>
+          <h3 className="card__title">Enter Details</h3>
+          <p className="card__description">
+            Provide your birth date, time, and location for precise calculations
+          </p>
+          <div className="card__icon">
+            <span>📅</span>
           </div>
         </div>
-      </section>
+        <div className="card step animate-fade-in">
+          <div className="step__number">2</div>
+          <h3 className="card__title">Ask Questions</h3>
+          <p className="card__description">
+            Inquire about career, relationships, health, or spiritual growth
+          </p>
+          <div className="card__icon">
+            <span>💭</span>
+          </div>
+        </div>
+        <div className="card step animate-fade-in">
+          <div className="step__number">3</div>
+          <h3 className="card__title">Receive Insights</h3>
+          <p className="card__description">
+            Get AI-powered astrological guidance in seconds
+          </p>
+          <div className="card__icon">
+            <span>🌟</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* Testimonials */}
       <section className="section">
-        <div className="section-header">
-          <h2 className="section-title cosmic-text">Stellar Reviews</h2>
-          <p className="section-subtitle">Join thousands of cosmic explorers</p>
-        </div>
-        <div className="testimonial-grid">
-          <div className="testimonial-card cosmic-card">
-            <div className="testimonial-quote">"</div>
-            <p>The AI predicted my job change 2 months before it happened! Mind-blowing accuracy!</p>
-            <div className="testimonial-author">
-              <strong>— Priya, Mumbai</strong>
-            </div>
-            <div className="rating-stars">★★★★★</div>
+        <div className="container">
+          <div className="section__header">
+            <h2 className="section__title animate-fade-in">User Testimonials</h2>
+            <p className="section__subtitle animate-fade-in">
+              Join thousands of satisfied users worldwide
+            </p>
           </div>
-          <div className="testimonial-card cosmic-card">
-            <div className="testimonial-quote">"</div>
-            <p>Finally, astrology that makes sense! The numerology insights transformed my business decisions.</p>
-            <div className="testimonial-author">
-              <strong>— Alex, New York</strong>
+          <div className="grid grid--2col">
+            <div className="card animate-fade-in">
+              <div className="testimonial__quote">"</div>
+              <div className="testimonial__content">
+                <p className="testimonial__text">
+                  The AI accurately predicted my career transition months in advance. 
+                  The insights were incredibly precise and helpful for planning.
+                </p>
+                <div className="testimonial__author">— Priya, Mumbai</div>
+                <div className="testimonial__rating">★★★★★</div>
+              </div>
             </div>
-            <div className="rating-stars">★★★★★</div>
-          </div>
-          <div className="testimonial-card cosmic-card">
-            <div className="testimonial-quote">"</div>
-            <p>As a skeptic, I was shocked by how accurate the relationship analysis was. Game-changer!</p>
-            <div className="testimonial-author">
-              <strong>— Maria, London</strong>
+            <div className="card animate-fade-in">
+              <div className="testimonial__quote">"</div>
+              <div className="testimonial__content">
+                <p className="testimonial__text">
+                  As a business owner, the numerology insights transformed my 
+                  decision-making process. Highly recommended for professionals.
+                </p>
+                <div className="testimonial__author">— Alex, New York</div>
+                <div className="testimonial__rating">★★★★★</div>
+              </div>
             </div>
-            <div className="rating-stars">★★★★★</div>
+            <div className="card animate-fade-in">
+              <div className="testimonial__quote">"</div>
+              <div className="testimonial__content">
+                <p className="testimonial__text">
+                  The relationship analysis was remarkably accurate. It provided 
+                  clarity I hadn't found through traditional counseling.
+                </p>
+                <div className="testimonial__author">— Maria, London</div>
+                <div className="testimonial__rating">★★★★★</div>
+              </div>
+            </div>
+            <div className="card animate-fade-in">
+              <div className="testimonial__quote">"</div>
+              <div className="testimonial__content">
+                <p className="testimonial__text">
+                  The combination of Vedic wisdom and modern technology is 
+                  revolutionary. The insights have been life-changing.
+                </p>
+                <div className="testimonial__author">— Raj, Dubai</div>
+                <div className="testimonial__rating">★★★★★</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Final CTA */}
-      <section className="final-cta">
-        <div className="cta-content">
-          <h2 className="glow-text cosmic-glow">Ready to Meet Your Stars?</h2>
-          <p className="cta-subtitle">
-            Join thousands discovering their cosmic blueprint
-          </p>
-          <Link to="/signup" className="cosmic-btn cta-glow">
-            <span className="btn-icon">🚀</span>
-            Launch My Journey
-          </Link>
-          <p className="cta-note">
-            ✨ Free 7-day trial • No credit card needed
-          </p>
+      <section className="cta">
+        <div className="container container--narrow">
+          <div className="cta__content">
+            <h2 className="cta__title animate-fade-in">
+              Begin Your Cosmic Journey
+            </h2>
+            <p className="cta__subtitle animate-fade-in">
+              Discover your unique astrological blueprint with our AI-powered platform
+            </p>
+            <Link to="/signup" className="button button--primary cta__button">
+              <span className="button__icon">🚀</span>
+              Start Free Trial
+            </Link>
+            <p className="cta__note">
+              ✨ 7-day free trial • No credit card required • Cancel anytime
+            </p>
+          </div>
         </div>
       </section>
     </>
