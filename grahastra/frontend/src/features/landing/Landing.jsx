@@ -1,23 +1,20 @@
-// Landing.jsx - Professional Redesign
+// Landing.jsx - Clean & Aligned
 import React, { useEffect, useRef } from "react";
-import "./Landing.css";
 import { Link } from 'react-router-dom';
+import './Landing.css';
 
 function Landing() {
   const starsRef = useRef();
-  const canvasRef = useRef();
 
   useEffect(() => {
-    // Professional star field implementation
+    // Simple star field
     const starsContainer = starsRef.current;
-    const starCount = window.innerWidth < 768 ? 100 : 250;
+    const starCount = 150;
 
-    // Clear existing stars
     starsContainer.innerHTML = '';
 
     for (let i = 0; i < starCount; i++) {
       const star = document.createElement('div');
-      
       const size = Math.random();
       let starClass = 'star--small';
       if (size > 0.7) starClass = 'star--large';
@@ -31,87 +28,27 @@ function Landing() {
       starsContainer.appendChild(star);
     }
 
-    // Canvas background animation
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-    
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    // Subtle particle system for professional look
-    const particles = [];
-    const particleCount = window.innerWidth < 768 ? 20 : 50;
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2 + 0.5,
-        speedX: (Math.random() - 0.5) * 0.2,
-        speedY: (Math.random() - 0.5) * 0.2,
-        color: `hsl(${200 + Math.random() * 60}, 60%, ${60 + Math.random() * 20}%)`,
-        opacity: Math.random() * 0.1 + 0.05
-      });
-    }
-
-    const animateParticles = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      particles.forEach(particle => {
-        particle.x += particle.speedX;
-        particle.y += particle.speedY;
-        
-        // Boundary check with smooth wrapping
-        if (particle.x < -10) particle.x = canvas.width + 10;
-        if (particle.x > canvas.width + 10) particle.x = -10;
-        if (particle.y < -10) particle.y = canvas.height + 10;
-        if (particle.y > canvas.height + 10) particle.y = -10;
-        
-        ctx.beginPath();
-        ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = particle.color;
-        ctx.globalAlpha = particle.opacity;
-        ctx.fill();
-      });
-      
-      requestAnimationFrame(animateParticles);
-    };
-    
-    animateParticles();
-
-    // Intersection Observer for scroll animations
+    // Scroll animations
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('animate-fade-in');
         }
       });
-    }, { 
-      threshold: 0.1,
-      rootMargin: '50px'
-    });
+    }, { threshold: 0.1 });
 
-    // Observe all animatable elements
-    document.querySelectorAll('.card, .section__title, .section__subtitle, .button').forEach(el => {
+    document.querySelectorAll('.card, .section__title, .section__subtitle, .step').forEach(el => {
       observer.observe(el);
     });
 
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('resize', resizeCanvas);
-    };
+    return () => observer.disconnect();
   }, []);
 
   return (
     <>
-      {/* Professional Background System */}
+      {/* Background */}
       <div className="background-container"></div>
-      <canvas ref={canvasRef} className="cosmic-overlay"></canvas>
+      <div className="cosmic-overlay"></div>
       <div ref={starsRef} className="stars-container"></div>
 
       {/* Hero Section */}
@@ -119,172 +56,255 @@ function Landing() {
         <div className="container">
           <div className="hero__content">
             <h1 className="hero__title animate-fade-in">
-              GRAHASTRA
+              Discover Your Hidden Blueprint
             </h1>
             <p className="hero__subtitle animate-fade-in">
-              AI-Powered Vedic Astrology & Numerology Platform
-              <br />
-              <span style={{ fontSize: '1rem', opacity: 0.8 }}>
-                Discover your cosmic blueprint with cutting-edge technology
-              </span>
+              AI-powered self-understanding through numerology, astrology, and character analysis
             </p>
+            
+            <div className="trust-indicators">
+              <div className="trust-item">
+                <span className="trust-number">50,000+</span>
+                <span className="trust-label">Users</span>
+              </div>
+              <div className="trust-item">
+                <span className="trust-number">127+</span>
+                <span className="trust-label">Data Points</span>
+              </div>
+              <div className="trust-item">
+                <span className="trust-number">98%</span>
+                <span className="trust-label">Accuracy</span>
+              </div>
+            </div>
+
             <div className="button-group">
               <Link to="/signup" className="button button--primary">
-                <span className="button__icon">✨</span>
-                Start Free Journey
+                Start Free Analysis
               </Link>
-              <Link to="/demo" className="button button--secondary">
-                <span className="button__icon">🔍</span>
-                View Demo
+              <Link to="/login" className="button button--secondary">
+                Already a User? Login
               </Link>
-            </div>
-            <div className="scroll-indicator">
-              <div className="scroll-arrow"></div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
+      {/* Problem Statement */}
+      <section className="section section--light">
+        <div className="container container--narrow">
+          <div className="section__header">
+            <h2 className="section__title">Traditional self-help is generic. Astrology apps give vague predictions.</h2>
+            <p className="section__subtitle">
+              You're left with more questions than answers. What if you could understand exactly WHY you think and act the way you do?
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
       <section className="section">
         <div className="container">
           <div className="section__header">
-            <h2 className="section__title animate-fade-in">Advanced Features</h2>
-            <p className="section__subtitle animate-fade-in">
-              Harness the power of artificial intelligence with ancient Vedic wisdom
+            <h2 className="section__title">How Grahastra Works</h2>
+            <p className="section__subtitle">
+              Simple three-step process to understanding your unique blueprint
             </p>
           </div>
+          
           <div className="grid grid--3col">
-            <div className="card animate-fade-in">
-              <div className="card__icon">
-                <span>✨</span>
+            <div className="card step animate-fade-in">
+              <div className="step__number">1</div>
+              <div className="step__visual">
+                <div className="form-mockup">
+                  <div className="form-line"></div>
+                  <div className="form-line short"></div>
+                  <div className="form-line"></div>
+                </div>
               </div>
-              <h3 className="card__title">AI Insights</h3>
+              <h3 className="card__title">Input Your Data</h3>
               <p className="card__description">
-                Real-time answers to life questions powered by advanced machine learning algorithms
+                Share your birth details and personality insights. No birth time required.
               </p>
             </div>
-            <div className="card animate-fade-in">
-              <div className="card__icon">
-                <span>🌌</span>
+            
+            <div className="card step animate-fade-in">
+              <div className="step__number">2</div>
+              <div className="step__visual">
+                <div className="ai-visualization">
+                  <div className="data-point"></div>
+                  <div className="data-point"></div>
+                  <div className="data-point"></div>
+                  <div className="connecting-line"></div>
+                </div>
               </div>
-              <h3 className="card__title">Birth Chart Analysis</h3>
+              <h3 className="card__title">AI Analysis</h3>
               <p className="card__description">
-                Precise planetary positions with NASA-grade astronomical data accuracy
+                Our AI analyzes 127+ data points across numerology, astrology, and psychology.
               </p>
             </div>
-            <div className="card animate-fade-in">
-              <div className="card__icon">
-                <span>🔢</span>
+            
+            <div className="card step animate-fade-in">
+              <div className="step__number">3</div>
+              <div className="step__visual">
+                <div className="insight-card-mockup">
+                  <div className="insight-line"></div>
+                  <div className="insight-line"></div>
+                  <div className="insight-line short"></div>
+                </div>
               </div>
-              <h3 className="card__title">Numerology</h3>
+              <h3 className="card__title">Get Insights</h3>
               <p className="card__description">
-                Comprehensive life path analysis and destiny pattern recognition
+                Receive personalized guidance tailored to your unique patterns and potential.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works - Simple Alternative */}
-<section className="section" style={{ background: 'rgba(30, 27, 75, 0.3)' }}>
-  <div className="container">
-    <div className="section__header">
-      <h2 className="section__title animate-fade-in">How It Works</h2>
-      <p className="section__subtitle animate-fade-in">
-        Simple three-step process to cosmic clarity
-      </p>
-    </div>
-    <div className="steps-simple">
-      <div className="grid grid--3col">
-        <div className="card step animate-fade-in">
-          <div className="step__number">1</div>
-          <h3 className="card__title">Enter Details</h3>
-          <p className="card__description">
-            Provide your birth date, time, and location for precise calculations
-          </p>
-          <div className="card__icon">
-            <span>📅</span>
-          </div>
-        </div>
-        <div className="card step animate-fade-in">
-          <div className="step__number">2</div>
-          <h3 className="card__title">Ask Questions</h3>
-          <p className="card__description">
-            Inquire about career, relationships, health, or spiritual growth
-          </p>
-          <div className="card__icon">
-            <span>💭</span>
-          </div>
-        </div>
-        <div className="card step animate-fade-in">
-          <div className="step__number">3</div>
-          <h3 className="card__title">Receive Insights</h3>
-          <p className="card__description">
-            Get AI-powered astrological guidance in seconds
-          </p>
-          <div className="card__icon">
-            <span>🌟</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-      {/* Testimonials */}
-      <section className="section">
+      {/* Benefits */}
+      <section className="section section--light">
         <div className="container">
           <div className="section__header">
-            <h2 className="section__title animate-fade-in">User Testimonials</h2>
-            <p className="section__subtitle animate-fade-in">
-              Join thousands of satisfied users worldwide
+            <h2 className="section__title">What You'll Discover</h2>
+            <p className="section__subtitle">
+              Uncover insights about yourself that transform how you approach life
             </p>
           </div>
+          
           <div className="grid grid--2col">
             <div className="card animate-fade-in">
-              <div className="testimonial__quote">"</div>
-              <div className="testimonial__content">
-                <p className="testimonial__text">
-                  The AI accurately predicted my career transition months in advance. 
-                  The insights were incredibly precise and helpful for planning.
-                </p>
-                <div className="testimonial__author">— Priya, Mumbai</div>
-                <div className="testimonial__rating">★★★★★</div>
-              </div>
+              <div className="benefit-icon">🎯</div>
+              <h3 className="card__title">Life Purpose & Career</h3>
+              <p className="card__description">
+                Identify your natural talents and ideal career paths based on your unique blueprint.
+              </p>
             </div>
+            
             <div className="card animate-fade-in">
-              <div className="testimonial__quote">"</div>
-              <div className="testimonial__content">
-                <p className="testimonial__text">
-                  As a business owner, the numerology insights transformed my 
-                  decision-making process. Highly recommended for professionals.
-                </p>
-                <div className="testimonial__author">— Alex, New York</div>
-                <div className="testimonial__rating">★★★★★</div>
-              </div>
+              <div className="benefit-icon">💞</div>
+              <h3 className="card__title">Relationships</h3>
+              <p className="card__description">
+                Understand your communication style and build deeper, more meaningful connections.
+              </p>
             </div>
+            
             <div className="card animate-fade-in">
-              <div className="testimonial__quote">"</div>
-              <div className="testimonial__content">
-                <p className="testimonial__text">
-                  The relationship analysis was remarkably accurate. It provided 
-                  clarity I hadn't found through traditional counseling.
-                </p>
-                <div className="testimonial__author">— Maria, London</div>
-                <div className="testimonial__rating">★★★★★</div>
-              </div>
+              <div className="benefit-icon">📈</div>
+              <h3 className="card__title">Personal Growth</h3>
+              <p className="card__description">
+                Break through limiting patterns with AI-guided personal development plans.
+              </p>
             </div>
+            
             <div className="card animate-fade-in">
-              <div className="testimonial__quote">"</div>
-              <div className="testimonial__content">
-                <p className="testimonial__text">
-                  The combination of Vedic wisdom and modern technology is 
-                  revolutionary. The insights have been life-changing.
-                </p>
-                <div className="testimonial__author">— Raj, Dubai</div>
-                <div className="testimonial__rating">★★★★★</div>
+              <div className="benefit-icon">🧠</div>
+              <h3 className="card__title">Mind & Behavior</h3>
+              <p className="card__description">
+                Discover why you think the way you do and optimize your decision-making process.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* AI Difference */}
+      <section className="section">
+        <div className="container container--narrow">
+          <div className="section__header">
+            <h2 className="section__title">Beyond Generic Horoscopes</h2>
+            <p className="section__subtitle">
+              Traditional astrology gives the same reading to millions. Grahastra creates truly personalized insights.
+            </p>
+          </div>
+          
+          <div className="comparison-grid">
+            <div className="comparison-item traditional">
+              <h4>Traditional Approach</h4>
+              <ul>
+                <li>Generic horoscopes for millions</li>
+                <li>Vague predictions</li>
+                <li>Static interpretations</li>
+                <li>One-size-fits-all advice</li>
+              </ul>
+            </div>
+            
+            <div className="comparison-item grahastra">
+              <h4>Grahastra AI</h4>
+              <ul>
+                <li>Personalized insights for you</li>
+                <li>Data-driven pattern recognition</li>
+                <li>Dynamic learning from feedback</li>
+                <li>Actionable, specific guidance</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="section section--light">
+        <div className="container">
+          <div className="section__header">
+            <h2 className="section__title">Trusted by 50,000+ Users</h2>
+          </div>
+          
+          <div className="testimonials-grid">
+            <div className="testimonial-card animate-fade-in">
+              <div className="testimonial-content">
+                "The AI accurately identified career patterns I hadn't noticed. The insights helped me transition into a role that perfectly matches my natural abilities."
               </div>
+              <div className="testimonial-author">Sarah Chen, Product Manager</div>
+            </div>
+            
+            <div className="testimonial-card animate-fade-in">
+              <div className="testimonial-content">
+                "As someone skeptical of traditional astrology, I appreciate the data-driven approach. The behavioral insights are remarkably accurate and practical."
+              </div>
+              <div className="testimonial-author">Michael Torres, Software Engineer</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing */}
+      <section className="section">
+        <div className="container">
+          <div className="section__header">
+            <h2 className="section__title">Choose Your Plan</h2>
+            <p className="section__subtitle">
+              Start with our free analysis and upgrade for deeper insights
+            </p>
+          </div>
+          
+          <div className="pricing-grid">
+            <div className="pricing-card animate-fade-in">
+              <div className="pricing-header">
+                <h3>Free Analysis</h3>
+                <div className="price">$0</div>
+              </div>
+              <ul className="features-list">
+                <li>Basic numerology report</li>
+                <li>Sun sign insights</li>
+                <li>Personality overview</li>
+                <li>3 daily insights</li>
+              </ul>
+              <Link to="/signup" className="button button--secondary">Start Free</Link>
+            </div>
+            
+            <div className="pricing-card featured animate-fade-in">
+              <div className="popular-badge">Most Popular</div>
+              <div className="pricing-header">
+                <h3>Premium</h3>
+                <div className="price">$19<span>/month</span></div>
+              </div>
+              <ul className="features-list">
+                <li>Full astrological analysis</li>
+                <li>Advanced numerology</li>
+                <li>Relationship compatibility</li>
+                <li>Career path recommendations</li>
+                <li>Unlimited daily insights</li>
+              </ul>
+              <Link to="/signup" className="button button--primary">Start Premium</Link>
             </div>
           </div>
         </div>
@@ -294,18 +314,22 @@ function Landing() {
       <section className="cta">
         <div className="container container--narrow">
           <div className="cta__content">
-            <h2 className="cta__title animate-fade-in">
-              Begin Your Cosmic Journey
-            </h2>
+            <h2 className="cta__title animate-fade-in">Ready to Understand Your Operating System?</h2>
             <p className="cta__subtitle animate-fade-in">
-              Discover your unique astrological blueprint with our AI-powered platform
+              Join thousands of users discovering their unique blueprint with AI-powered insights
             </p>
-            <Link to="/signup" className="button button--primary cta__button">
-              <span className="button__icon">🚀</span>
-              Start Free Trial
-            </Link>
-            <p className="cta__note">
-              ✨ 7-day free trial • No credit card required • Cancel anytime
+            
+            <div className="button-group">
+              <Link to="/signup" className="button button--primary">
+                Start Your Free Analysis
+              </Link>
+              <Link to="/login" className="button button--secondary">
+                Already Registered? Login
+              </Link>
+            </div>
+            
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '1rem' }}>
+              30-second setup • No birth time required • Cancel anytime
             </p>
           </div>
         </div>
