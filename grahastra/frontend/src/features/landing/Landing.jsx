@@ -81,9 +81,6 @@ function Landing() {
               <Link to="/signup" className="button button--primary">
                 Start Free Analysis
               </Link>
-              {/* <Link to="/login" className="button button--secondary">
-                Already a User? Login
-              </Link> */}
             </div>
           </div>
         </div>
