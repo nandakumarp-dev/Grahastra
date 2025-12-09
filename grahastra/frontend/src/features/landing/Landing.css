@@ -1,4 +1,4 @@
-/* MYSTIC MODERN THEME */
+/* MYSTIC MODERN THEME - Revised for Alignment and Responsiveness */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Space+Grotesk:wght@300;400;500&display=swap');
 
 :root {
@@ -15,6 +15,14 @@
   --accent-purple: #8b5cf6;
   
   --border-subtle: rgba(255, 255, 255, 0.08);
+  
+  /* Modular Spacing System (New/Refined) */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
+  --space-xxl: 8rem;
   
   /* Animation Speeds */
   --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
@@ -88,9 +96,15 @@ h1, h2, h3 {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 var(--space-sm); /* Use smaller padding on mobile */
   position: relative;
   z-index: 1;
+}
+
+@media (min-width: 769px) {
+  .container {
+    padding: 0 var(--space-md); /* Increase padding on desktop */
+  }
 }
 
 /* Hero Section */
@@ -101,12 +115,12 @@ h1, h2, h3 {
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 4rem 1rem;
+  padding: var(--space-lg) var(--space-sm);
 }
 
 .hero-symbol {
   font-size: 3rem;
-  margin-bottom: 2rem;
+  margin-bottom: var(--space-md);
   animation: float 6s ease-in-out infinite;
   color: var(--accent-purple);
   filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.3));
@@ -122,14 +136,45 @@ h1, h2, h3 {
   font-size: clamp(1rem, 2vw, 1.25rem);
   color: var(--text-secondary);
   max-width: 600px;
-  margin: 0 auto 3rem;
+  margin: 0 auto var(--space-lg); /* Increased margin for separation */
   animation: reveal 1s var(--ease-out) 0.2s backwards;
+}
+
+/* Stats Preview */
+.stats-preview {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-lg); /* Use spacing variable */
+  margin: var(--space-lg) 0;
+  animation: reveal 1s var(--ease-out) 0.3s backwards;
+  flex-wrap: wrap; /* Added flex-wrap for smaller screens */
+}
+
+.stat {
+  text-align: center;
+  /* Added min-width to ensure alignment is maintained when wrapping */
+  min-width: 120px; 
+}
+
+.stat-number {
+  display: block;
+  font-size: clamp(2rem, 4vw, 2.5rem); /* Clamping font size */
+  font-family: 'Cinzel', serif;
+  color: var(--text-gold);
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 /* Buttons */
 .btn-group {
   display: flex;
-  gap: 1.5rem;
+  gap: var(--space-md);
   justify-content: center;
   animation: reveal 1s var(--ease-out) 0.4s backwards;
   flex-wrap: wrap;
@@ -137,7 +182,7 @@ h1, h2, h3 {
 
 .btn {
   padding: 1rem 2.5rem;
-  border-radius: 2px; /* Sharper edges for elegance */
+  border-radius: 2px;
   font-family: 'Space Grotesk', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -148,6 +193,8 @@ h1, h2, h3 {
   position: relative;
   overflow: hidden;
   border: 1px solid transparent;
+  display: inline-flex; /* Use flex for internal icon alignment */
+  align-items: center;
 }
 
 .btn-mystic {
@@ -174,23 +221,43 @@ h1, h2, h3 {
 
 /* Feature Grid */
 .grid-section {
-  padding: 8rem 0;
+  padding: var(--space-xxl) 0; /* Use spacing variable */
+}
+
+/* Section Headers */
+.section-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto var(--space-xl); /* Use spacing variable */
+}
+
+.section-header h2 {
+  font-size: clamp(2rem, 4vw, 2.5rem);
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.section-subtitle {
+  color: var(--text-secondary);
+  font-size: clamp(1rem, 2vw, 1.1rem); /* Clamping font size */
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  margin-top: 4rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Min card size slightly smaller for mobile */
+  gap: var(--space-md);
+  margin-top: var(--space-md);
 }
 
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   padding: 3rem 2rem;
-  transition: all 0.4s ease;
+  transition: all 0.4s var(--ease-out);
   position: relative;
   overflow: hidden;
+  display: flex; /* Added for better structure */
+  flex-direction: column; /* Added for better structure */
 }
 
 .card::before {
@@ -229,36 +296,248 @@ h1, h2, h3 {
 .card p {
   color: var(--text-secondary);
   font-size: 0.95rem;
+  flex-grow: 1; /* Added to push tags to the bottom */
 }
 
-/* Call to Action - Minimal */
-.cta-minimal {
-  text-align: center;
-  padding: 6rem 0;
+/* Card Tags */
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  margin-top: var(--space-md);
+  padding-top: var(--space-sm);
   border-top: 1px solid var(--border-subtle);
 }
 
-.cta-minimal h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  margin-bottom: 2rem;
+.card-tags span {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  background: rgba(139, 92, 246, 0.1);
+  color: var(--accent-purple);
+  border-radius: 2px;
+  white-space: nowrap; /* Prevent tags from breaking */
 }
 
-/* Footer - Simple & Centered */
+/* Process Timeline */
+.process-section {
+  padding: var(--space-xxl) 0;
+  background: linear-gradient(180deg, transparent, rgba(20, 20, 25, 0.3));
+}
+
+.timeline {
+  max-width: 800px;
+  margin: 0 auto;
+  position: relative;
+  /* Visual line down the middle for desktop */
+}
+
+/* Timeline vertical line - Desktop only */
+@media (min-width: 769px) {
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 49px; /* Align with icon edge */
+    height: 100%;
+    width: 1px;
+    background-color: var(--border-subtle);
+    z-index: 0;
+  }
+}
+
+.timeline-step {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+  z-index: 1; /* Keep content above the line */
+}
+
+.timeline-step:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.step-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: var(--bg-deep); /* Icon background to hide line on desktop */
+  border: 1px solid var(--border-subtle);
+  border-radius: 50%; /* Changed to circle for better visual */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--space-md);
+  color: var(--accent-purple);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.1);
+}
+
+.step-content {
+  padding-top: 0.25rem; /* Optical alignment with icon */
+}
+
+.step-content h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.step-content p {
+  color: var(--text-secondary);
+}
+
+/* Testimonial Section */
+.testimonial-section {
+  padding: var(--space-xxl) 0;
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-md);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.testimonial-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.testimonial-card::before {
+  content: '"';
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  font-size: 3rem;
+  font-family: 'Cinzel', serif;
+  color: var(--accent-purple);
+  opacity: 0.3;
+}
+
+.testimonial-content {
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  padding-top: 1rem;
+  flex-grow: 1; /* Push author to the bottom */
+}
+
+.testimonial-author {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 1rem;
+}
+
+.author-name {
+  color: #fff;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+}
+
+.author-title {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* CTA Enhancement */
+.cta-minimal {
+  text-align: center;
+  padding: var(--space-xxl) 0;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.cta-icon {
+  color: var(--accent-purple);
+  margin-bottom: 1.5rem;
+  animation: float 6s ease-in-out infinite;
+}
+
+.cta-subtitle {
+  color: var(--text-secondary);
+  max-width: 500px;
+  margin: 1rem auto 2rem;
+}
+
+/* Footer Enhancement */
 .footer {
-  padding: 4rem 0;
+  padding: var(--space-xl) 0;
   text-align: center;
   border-top: 1px solid var(--border-subtle);
   color: var(--text-secondary);
   font-size: 0.8rem;
 }
 
-/* Responsive Adjustments */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: left; /* Default to left on desktop */
+}
+
+.footer-brand {
+  /* No change */
+}
+
+.footer-symbol {
+  color: var(--accent-purple);
+  margin-bottom: 0.5rem;
+}
+
+.footer-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+  color: #fff;
+}
+
+.footer-tagline {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-end; /* Align links to the right on desktop */
+}
+
+.footer-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.footer-link:hover {
+  color: #fff;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: var(--space-md);
+}
+
+/* Responsive Updates for Mobile */
 @media (max-width: 768px) {
+  /* Hero */
   .hero {
-    padding-top: 2rem;
+    padding-top: var(--space-lg);
     min-height: auto;
   }
   
+  /* Buttons */
   .btn-group {
     flex-direction: column;
     width: 100%;
@@ -269,8 +548,50 @@ h1, h2, h3 {
     width: 100%;
     text-align: center;
   }
+
+  /* Sections */
+  .grid-section, 
+  .process-section, 
+  .testimonial-section, 
+  .cta-minimal {
+    padding: var(--space-xl) 0;
+  }
   
-  .grid-section {
-    padding: 4rem 0;
+  .section-header {
+    margin-bottom: var(--space-lg);
+  }
+  
+  /* Stats */
+  .stats-preview {
+    gap: var(--space-md);
+    flex-direction: row; /* Keep stats in a row but allow wrap */
+    justify-content: space-around;
+  }
+  
+  /* Timeline - Stacked */
+  .timeline-step {
+    flex-direction: column;
+    text-align: center; /* Center content on mobile */
+    align-items: center;
+  }
+  
+  .step-icon {
+    margin-right: 0;
+    margin-bottom: var(--space-sm);
+  }
+
+  .step-content {
+    padding-top: 0;
+  }
+  
+  /* Footer - Stacked */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+    text-align: center;
+  }
+  
+  .footer-links {
+    align-items: center; /* Center links on mobile */
   }
 }

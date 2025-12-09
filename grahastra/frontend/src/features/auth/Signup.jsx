@@ -1,8 +1,9 @@
-// Signup.jsx - Mobile Optimized
+// Signup.jsx - Modern Responsive Design
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import "./auth.css";
+import { User, Calendar, Clock, MapPin, Users, Mail, Lock, Eye, Sparkles } from 'lucide-react';
 
 function Signup() {
   const navigate = useNavigate();
@@ -20,33 +21,41 @@ function Signup() {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
-    createStars();
-    window.addEventListener('resize', createStars);
-    return () => window.removeEventListener('resize', createStars);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      createBackgroundEffects();
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    createBackgroundEffects();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
-  const createStars = () => {
-    const starsContainer = document.querySelector('.auth-stars-container');
-    if (!starsContainer) return;
+  const createBackgroundEffects = () => {
+    const container = document.querySelector('.particles-container');
+    if (!container) return;
     
-    const starCount = window.innerWidth < 768 ? 60 : 120;
-    starsContainer.innerHTML = '';
+    const particleCount = isMobile ? 20 : window.innerWidth < 1024 ? 40 : 60;
+    container.innerHTML = '';
 
-    for (let i = 0; i < starCount; i++) {
-      const star = document.createElement('div');
-      const size = Math.random();
-      let starClass = 'auth-star--small';
-      if (size > 0.7) starClass = 'auth-star--large';
-      else if (size > 0.4) starClass = 'auth-star--medium';
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'floating-particle';
+      particle.style.left = `${Math.random() * 100}%`;
+      particle.style.top = `${Math.random() * 100}%`;
+      particle.style.width = `${Math.random() * 4 + 1}px`;
+      particle.style.height = particle.style.width;
+      particle.style.animationDelay = `${Math.random() * 5}s`;
+      particle.style.animationDuration = `${Math.random() * 3 + 3}s`;
       
-      star.className = `auth-star ${starClass}`;
-      star.style.left = `${Math.random() * 100}%`;
-      star.style.top = `${Math.random() * 100}%`;
-      star.style.animationDelay = `${Math.random() * 5}s`;
-      
-      starsContainer.appendChild(star);
+      container.appendChild(particle);
     }
   };
 
@@ -98,148 +107,255 @@ function Signup() {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-background"></div>
-      <div className="auth-cosmic-overlay"></div>
-      <div className="auth-stars-container"></div>
+    <div className="responsive-auth-container">
+      {/* Background Particles */}
+      <div className="particles-container"></div>
+      
+      {/* Responsive Background Elements */}
+      <div className="responsive-bg-shapes">
+        <div className="bg-shape bg-shape-1"></div>
+        <div className="bg-shape bg-shape-2"></div>
+        <div className="bg-shape bg-shape-3"></div>
+      </div>
 
-      <Link to="/" className="auth-back-home">
-        <div className="back-home-button">
-          ← Back to Home
+      {/* Back Navigation */}
+      <div className="responsive-nav-back">
+        <Link to="/" className="responsive-back-link">
+          <div className="responsive-back-button">
+            ← Back to Home
+          </div>
+        </Link>
+      </div>
+
+      {/* Main Auth Card */}
+      <div className="responsive-auth-card">
+        {/* Header Section */}
+        <div className="responsive-auth-header">
+          <div className="responsive-auth-icon">
+            <Sparkles size={isMobile ? 32 : 40} />
+          </div>
+          <h1 className="responsive-auth-title">Create Your Account</h1>
+          <p className="responsive-auth-subtitle">
+            Join our cosmic community and unlock personalized insights
+          </p>
         </div>
-      </Link>
 
-      <div className="auth-box">
-        <h2>Create Account</h2>
-        <p className="auth-subtitle">Join Grahastra and discover your cosmic blueprint</p>
-
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-grid">
-            <div className="form-group">
-              <label className="form-label">Full Name</label>
-              <input
-                type="text"
-                className="form-control"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                placeholder="Enter your full name"
-                required
-              />
-            </div>
-
-            <div className="form-grid-2col">
-              <div className="form-group">
-                <label className="form-label">Date of Birth</label>
-                <input
-                  type="date"
-                  className="form-control"
-                  name="dob"
-                  value={formData.dob}
-                  onChange={handleChange}
-                  required
-                />
+        {/* Form Section */}
+        <form onSubmit={handleSubmit} className="responsive-auth-form">
+          <div className="form-section">
+            <h3 className="form-section-title">
+              <User size={18} />
+              Personal Information
+            </h3>
+            
+            <div className="form-grid-responsive">
+              {/* Full Name */}
+              <div className="form-group-responsive">
+                <label className="form-label-responsive">
+                  Full Name
+                </label>
+                <div className="input-with-icon">
+                  <User size={18} className="input-icon" />
+                  <input
+                    type="text"
+                    className="form-input-responsive"
+                    name="fullName"
+                    value={formData.fullName}
+                    onChange={handleChange}
+                    placeholder="Enter your full name"
+                    required
+                  />
+                </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Time of Birth</label>
-                <input
-                  type="time"
-                  className="form-control"
-                  name="tob"
-                  value={formData.tob}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Place of Birth</label>
-              <input
-                type="text"
-                className="form-control"
-                name="pob"
-                value={formData.pob}
-                onChange={handleChange}
-                placeholder="City, State, Country"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Gender</label>
-              <select
-                name="gender"
-                className="form-control"
-                value={formData.gender}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select gender</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-
-            <div className="form-group">
-              <label className="form-label">Email Address</label>
-              <input
-                type="email"
-                className="form-control"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="your@email.com"
-                required
-              />
-            </div>
-
-            <div className="form-grid-2col">
-              <div className="form-group">
-                <label className="form-label">Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="Create password"
-                  required
-                />
+              {/* Date of Birth */}
+              <div className="form-group-responsive">
+                <label className="form-label-responsive">
+                  Date of Birth
+                </label>
+                <div className="input-with-icon">
+                  <Calendar size={18} className="input-icon" />
+                  <input
+                    type="date"
+                    className="form-input-responsive"
+                    name="dob"
+                    value={formData.dob}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
               </div>
 
-              <div className="form-group">
-                <label className="form-label">Confirm Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  name="confirmPassword"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
-                  placeholder="Confirm password"
-                  required
-                />
+              {/* Time of Birth */}
+              <div className="form-group-responsive">
+                <label className="form-label-responsive">
+                  Time of Birth
+                </label>
+                <div className="input-with-icon">
+                  <Clock size={18} className="input-icon" />
+                  <input
+                    type="time"
+                    className="form-input-responsive"
+                    name="tob"
+                    value={formData.tob}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Place of Birth */}
+              <div className="form-group-responsive">
+                <label className="form-label-responsive">
+                  Place of Birth
+                </label>
+                <div className="input-with-icon">
+                  <MapPin size={18} className="input-icon" />
+                  <input
+                    type="text"
+                    className="form-input-responsive"
+                    name="pob"
+                    value={formData.pob}
+                    onChange={handleChange}
+                    placeholder="City, State, Country"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Gender */}
+              <div className="form-group-responsive">
+                <label className="form-label-responsive">
+                  Gender
+                </label>
+                <div className="input-with-icon">
+                  <Users size={18} className="input-icon" />
+                  <select
+                    name="gender"
+                    className="form-input-responsive"
+                    value={formData.gender}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">Select gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
 
-          {error && <div className="auth-alert alert-danger">{error}</div>}
-          {message && <div className="auth-alert alert-success">{message}</div>}
+          <div className="form-section">
+            <h3 className="form-section-title">
+              <Mail size={18} />
+              Account Information
+            </h3>
+            
+            <div className="form-grid-responsive">
+              {/* Email */}
+              <div className="form-group-responsive">
+                <label className="form-label-responsive">
+                  Email Address
+                </label>
+                <div className="input-with-icon">
+                  <Mail size={18} className="input-icon" />
+                  <input
+                    type="email"
+                    className="form-input-responsive"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="your@email.com"
+                    required
+                  />
+                </div>
+              </div>
 
+              {/* Password */}
+              <div className="form-group-responsive">
+                <label className="form-label-responsive">
+                  Password
+                </label>
+                <div className="input-with-icon">
+                  <Lock size={18} className="input-icon" />
+                  <input
+                    type="password"
+                    className="form-input-responsive"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Create a strong password"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Confirm Password */}
+              <div className="form-group-responsive">
+                <label className="form-label-responsive">
+                  Confirm Password
+                </label>
+                <div className="input-with-icon">
+                  <Lock size={18} className="input-icon" />
+                  <input
+                    type="password"
+                    className="form-input-responsive"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    placeholder="Confirm your password"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Messages */}
+          {error && (
+            <div className="responsive-alert alert-error">
+              <Eye size={16} />
+              {error}
+            </div>
+          )}
+          {message && (
+            <div className="responsive-alert alert-success">
+              <Sparkles size={16} />
+              {message}
+            </div>
+          )}
+
+          {/* Submit Button */}
           <button
             type="submit"
-            className="auth-button"
+            className="responsive-submit-button"
             disabled={loading}
           >
-            {loading ? "Creating Account..." : "Create Account"}
+            {loading ? (
+              <span className="loading-text">Creating Account...</span>
+            ) : (
+              <>
+                <Sparkles size={18} />
+                <span>Create Account</span>
+              </>
+            )}
           </button>
         </form>
 
-        <div className="auth-footer">
-          <p className="auth-footer-text">
-            Already have an account? <Link to="/login" className="auth-link">Login here</Link>
+        {/* Footer */}
+        <div className="responsive-auth-footer">
+          <p className="footer-text">
+            Already have an account?{" "}
+            <Link to="/login" className="footer-link">
+              Login here
+            </Link>
+          </p>
+          <p className="footer-terms">
+            By creating an account, you agree to our{" "}
+            <a href="#" className="footer-link">Terms</a> and{" "}
+            <a href="#" className="footer-link">Privacy Policy</a>
           </p>
         </div>
       </div>
