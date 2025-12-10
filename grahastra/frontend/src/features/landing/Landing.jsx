@@ -1,3 +1,4 @@
+// source src/landing/landing.jsx 
 import React, { useEffect, useRef } from "react";
 import { Link } from 'react-router-dom';
 import './Landing.css';
@@ -276,7 +277,6 @@ function Landing() {
               <a href="#" className="footer-link">Contact</a>
             </div>
           </div>
-          
           <div className="footer-bottom">
             <p>&copy; {new Date().getFullYear()} Third Eye Signals. All insights encrypted and confidential.</p>
             <p style={{ marginTop: '0.5rem', opacity: 0.5, fontSize: '0.75rem' }}>
