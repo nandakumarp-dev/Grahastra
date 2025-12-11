@@ -1,4 +1,5 @@
-// Dashboard.jsx - Fully Responsive
+// source src/dashboard/dashboard.jsx 
+
 import React, { useState } from "react";
 import "./dashboard.css";
 import { Outlet } from "react-router-dom";
