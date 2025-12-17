@@ -1,8 +1,10 @@
-// Home.jsx - Fully Responsive
+// Home.jsx - Fully Responsive with Working Logout
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Home() {
+  const navigate = useNavigate();
+  
   const userStats = {
     insightsGenerated: 24,
     questionsAsked: 12,
@@ -127,7 +129,24 @@ function Home() {
 
   const handleLogout = () => {
     console.log("Logging out...");
-    // Add your logout logic here
+    
+    // Clear all authentication and user data
+    localStorage.removeItem('user');
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('token');
+    sessionStorage.clear();
+    
+    // Optional: Clear specific app data if needed
+    // localStorage.removeItem('userPreferences');
+    // localStorage.removeItem('chartData');
+    // localStorage.removeItem('birthDetails');
+    
+    // Redirect to login page
+    navigate('/login');
+    
+    // Optional: Force a complete page refresh to reset app state
+    // window.location.href = '/login';
   };
 
   return (
